@@ -40,7 +40,7 @@ Your primary role is to help underprivileged students understand their career re
 **Personal Info:**
 - Name: ${profile.personal?.fullName || 'Student'}
 - Academic Stream: ${profile.academic?.stream || 'Unknown'}
-- Dream Careers: ${profile.career?.dreamCareers?.join(', ') || 'None specified'}
+- Dream Career: ${profile.career?.dreamCareer || 'None specified'}
 `;
     }
 

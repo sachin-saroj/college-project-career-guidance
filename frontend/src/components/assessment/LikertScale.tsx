@@ -33,7 +33,7 @@ export const LikertScale: React.FC<LikertScaleProps> = ({ value, onChange }) => 
         <FormControlLabel
           key={opt.value}
           value={opt.value}
-          control={<Radio size={isMobile ? 'medium' : 'large'} />}
+          control={<Radio size={isMobile ? 'small' : 'medium'} />}
           label={
             <Typography variant={isMobile ? 'body1' : 'body2'} align="center">
               {opt.label}

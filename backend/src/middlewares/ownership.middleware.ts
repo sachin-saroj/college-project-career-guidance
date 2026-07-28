@@ -14,7 +14,7 @@ export const requireOwnership = (Model: any, idParamKey: string = 'id', ownerFie
         return next(new AppError('Resource not found', 404));
       }
 
-      const userId = (req.user as any)._id || req.user?.id;
+      const userId = (req.user as any)._id || req.user?.userId;
       
       // If user is admin, allow
       if (req.user?.role === 'ADMIN') {

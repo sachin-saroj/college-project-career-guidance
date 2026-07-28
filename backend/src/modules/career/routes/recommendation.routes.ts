@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { recommendationController } from '../controllers/recommendation.controller';
-import { requireAuth } from '../../auth/middlewares/requireAuth';
+import { protect } from '../../../middlewares/auth.middleware';
 
 const router = Router();
 
-router.use(requireAuth);
+router.use(protect);
 
 router.get('/', recommendationController.getRecommendations);
 router.get('/:careerId', recommendationController.getCareerDetails);

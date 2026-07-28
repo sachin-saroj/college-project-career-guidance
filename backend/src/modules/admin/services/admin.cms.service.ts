@@ -24,11 +24,11 @@ export class AdminCMSService {
 
   static async updateResource(type: string, id: string, data: any) {
     const Model = this.getModel(type);
-    return await Model.findByIdAndUpdate(id, data, { new: true });
+    return await (Model as any).findByIdAndUpdate(id, data, { new: true });
   }
 
   static async deleteResource(type: string, id: string) {
     const Model = this.getModel(type);
-    return await Model.findByIdAndDelete(id);
+    return await (Model as any).findByIdAndDelete(id);
   }
 }

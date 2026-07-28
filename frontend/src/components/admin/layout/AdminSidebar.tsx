@@ -6,14 +6,14 @@ import PeopleIcon from '@mui/icons-material/People';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useAuthStore } from '../../../modules/auth/store/auth.store';
+import { useAuthStore } from '../../../store/auth.store';
 
 const DRAWER_WIDTH = 260;
 
 export const AdminSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const logout = useAuthStore(state => state.logout);
+  const logout = useAuthStore((state: any) => state.logout);
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },

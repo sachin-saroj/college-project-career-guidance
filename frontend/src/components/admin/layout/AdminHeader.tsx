@@ -1,10 +1,10 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton, Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useAuthStore } from '../../../modules/auth/store/auth.store';
+import { useAuthStore } from '../../../store/auth.store';
 
 export const AdminHeader: React.FC = () => {
-  const user = useAuthStore(state => state.user);
+  const user = useAuthStore((state: any) => state.user);
 
   return (
     <AppBar position="sticky" elevation={0} sx={{ bgcolor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider', color: 'text.primary' }}>

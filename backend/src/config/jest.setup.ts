@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
+jest.setTimeout(30000); // Allow time for Mongo binary download/startup
+
 let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {

@@ -15,7 +15,7 @@ import { globalErrorHandler } from './middlewares/errorHandler';
 import { AppError } from './utils/AppError';
 import { swaggerSpec } from './docs/swagger';
 import * as Sentry from '@sentry/node';
-import { nodeProfilingIntegration } from '@sentry/profiling-node';
+
 
 const app: Application = express();
 
@@ -24,10 +24,8 @@ Sentry.init({
   integrations: [
     new Sentry.Integrations.Http({ tracing: true }),
     new Sentry.Integrations.Express({ app }),
-    nodeProfilingIntegration(),
   ],
   tracesSampleRate: 1.0, 
-  profilesSampleRate: 1.0,
 });
 
 // The request handler must be the first middleware on the app

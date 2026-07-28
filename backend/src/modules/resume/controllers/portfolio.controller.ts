@@ -6,7 +6,7 @@ export class PortfolioController {
   static async getPortfolio(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req.user as any)._id;
-      let portfolio = await PortfolioService.getPortfolioByUserId(userId);
+      const portfolio = await PortfolioService.getPortfolioByUserId(userId);
       
       // If portfolio doesn't exist, we can either return 404 or a null data.
       // Usually, UI wants a 200 with data or a specific format.

@@ -60,7 +60,7 @@ export class AIManagerService {
       content: msg.role === 'model' && msg.structuredData 
         ? msg.structuredData.answer 
         : msg.content
-    }));
+    })) as import('../providers/IAIProvider').ChatMessagePayload[];
 
     // 4. Save user message to DB immediately
     await ChatMessage.create({

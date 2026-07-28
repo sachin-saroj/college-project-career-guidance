@@ -6,13 +6,13 @@ import { Scholarship } from '../../resources/models/Scholarship';
 import { Internship } from '../../resources/models/Internship';
 import { Article } from '../../resources/models/Article';
 import { Roadmap } from '../../resources/models/Roadmap';
-import { Assessment } from '../../assessment/models/Assessment';
+import { AssessmentSession } from '../../assessment/models/AssessmentSession';
 
 export class AdminService {
   static async getStats() {
     const totalUsers = await User.countDocuments();
     const activeUsers = await User.countDocuments({ status: 'ACTIVE' }); // Assuming status field exists or use something else
-    const assessmentsCompleted = await Assessment.countDocuments({ isCompleted: true });
+    const assessmentsCompleted = await AssessmentSession.countDocuments({ status: 'COMPLETED' });
     
     // Total resources
     const totalCourses = await Course.countDocuments();

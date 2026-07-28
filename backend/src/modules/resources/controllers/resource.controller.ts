@@ -45,7 +45,7 @@ export const getRecommendedResources = async (req: Request, res: Response, next:
 
 export const getBookmarks = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = (req.user as any)._id || req.user?.id;
+    const userId = (req.user as any)._id || req.user?.userId;
     const bookmarks = await resourceService.getBookmarks(userId);
     // Frontend expects an array of strings in data or at least an array format
     // Map them to IDs to match frontend expectation
@@ -62,7 +62,7 @@ export const getBookmarks = async (req: Request, res: Response, next: NextFuncti
 
 export const addBookmark = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = (req.user as any)._id || req.user?.id;
+    const userId = (req.user as any)._id || req.user?.userId;
     const { resourceId, resourceType } = req.body;
     
     if (!resourceId || !resourceType) {
@@ -82,7 +82,7 @@ export const addBookmark = async (req: Request, res: Response, next: NextFunctio
 
 export const removeBookmark = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = (req.user as any)._id || req.user?.id;
+    const userId = (req.user as any)._id || req.user?.userId;
     const { id: resourceId } = req.params;
     
     await resourceService.removeBookmark(userId, resourceId);

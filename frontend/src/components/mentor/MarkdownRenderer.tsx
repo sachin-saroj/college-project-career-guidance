@@ -29,7 +29,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = React.memo(({ c
         remarkPlugins={[remarkGfm]}
         components={{
           code(props) {
-            const {children, className, node, ...rest} = props;
+            const {children, className, node, ref, ...rest} = props;
             const match = /language-(\w+)/.exec(className || '');
             return match ? (
               <SyntaxHighlighter
@@ -46,9 +46,9 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = React.memo(({ c
               </code>
             );
           },
-          h1: ({node, ...props}) => <Typography variant="h5" fontWeight="bold" gutterBottom {...props} />,
-          h2: ({node, ...props}) => <Typography variant="h6" fontWeight="bold" gutterBottom {...props} />,
-          h3: ({node, ...props}) => <Typography variant="subtitle1" fontWeight="bold" gutterBottom {...props} />,
+          h1: ({node, ...props}) => <Typography variant="h5" fontWeight="bold" gutterBottom {...props as any} />,
+          h2: ({node, ...props}) => <Typography variant="h6" fontWeight="bold" gutterBottom {...props as any} />,
+          h3: ({node, ...props}) => <Typography variant="subtitle1" fontWeight="bold" gutterBottom {...props as any} />,
         }}
       >
         {content}

@@ -3,6 +3,8 @@ import { Button as MuiButton, ButtonProps as MuiButtonProps, CircularProgress } 
 
 export interface ButtonProps extends Omit<MuiButtonProps, 'disableElevation'> {
   isLoading?: boolean;
+  to?: string;
+  component?: React.ElementType<any>;
 }
 
 export const Button: React.FC<ButtonProps> = ({ 

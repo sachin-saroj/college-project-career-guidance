@@ -33,13 +33,13 @@ describe('RegisterPage', () => {
     expect(screen.getByLabelText(/Last Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
     expect(screen.getAllByLabelText(/Password/i).length).toBeGreaterThan(0);
-    expect(screen.getByRole('button', { name: /Create Account/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Sign Up/i })).toBeInTheDocument();
   });
 
   it('shows validation errors when submitting empty form', async () => {
     renderRegisterPage();
     
-    const submitButton = screen.getByRole('button', { name: /Create Account/i });
+    const submitButton = screen.getByRole('button', { name: /Sign Up/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {

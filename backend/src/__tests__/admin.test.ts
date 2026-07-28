@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../../app';
-import { User } from '../../modules/auth/models/User';
+import app from '../app';
+import { User } from '../modules/auth/models/User';
 
 describe('Admin Endpoints', () => {
   let adminToken: string;

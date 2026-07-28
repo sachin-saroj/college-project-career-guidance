@@ -26,14 +26,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'mui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-          'chart-vendor': ['recharts'],
-          'utils-vendor': ['zod', 'zustand', 'axios', '@tanstack/react-query'],
-        },
-      },
+      output: {},
     },
   },
   test: {

@@ -50,7 +50,8 @@ export class AssessmentService {
     answers.forEach(newAnswer => {
       const existingIdx = session.answers.findIndex(a => a.questionId.toString() === newAnswer.questionId);
       if (existingIdx > -1) {
-        session.answers[existingIdx] = { ...session.answers[existingIdx], ...newAnswer };
+        session.answers[existingIdx].selectedOptionIndex = newAnswer.selectedOptionIndex;
+        session.answers[existingIdx].timeSpentSeconds = newAnswer.timeSpentSeconds;
       } else {
         session.answers.push({
           questionId: new Types.ObjectId(newAnswer.questionId),

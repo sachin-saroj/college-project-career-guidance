@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../modules/auth/store/auth.store';
+import { useAuthStore } from '../store/auth.store';
 import { AdminSidebar } from '../components/admin/layout/AdminSidebar';
 import { AdminHeader } from '../components/admin/layout/AdminHeader';
 

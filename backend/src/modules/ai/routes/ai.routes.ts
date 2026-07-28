@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { aiController } from '../controllers/ai.controller';
-import { requireAuth } from '../../auth/middlewares/requireAuth';
+import { protect } from '../../../middlewares/auth.middleware';
 
 const router = Router();
 
 // All AI routes require authentication
-router.use(requireAuth);
+router.use(protect);
 
 router.post('/session', aiController.createSession);
 router.get('/history', aiController.getHistory);

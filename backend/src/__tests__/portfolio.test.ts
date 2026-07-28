@@ -1,7 +1,7 @@
 import request from 'supertest';
-import app from '../../app';
-import { User } from '../../modules/auth/models/User';
-import { Portfolio } from '../../modules/resume/models/Portfolio';
+import app from '../app';
+import { User } from '../modules/auth/models/User';
+import { Portfolio } from '../modules/resume/models/Portfolio';
 
 describe('Portfolio Endpoints', () => {
   let token: string;
