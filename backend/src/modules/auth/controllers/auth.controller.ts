@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services/auth.service';
+import { User } from '../models/User';
+import { ENV } from '../../../config/env';
 
 const setRefreshCookie = (res: Response, token: string) => {
   res.cookie('jwt_refresh', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
@@ -45,7 +47,9 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
       return res.status(401).json({ status: 'error', message: 'No refresh token provided' });
     }
 
-    const { accessToken } = await AuthService.refreshAuthToken(refreshToken);
+    const { accessToken, refreshToken: newRefreshToken } = await AuthService.refreshAuthToken(refreshToken);
+
+    setRefreshCookie(res, newRefreshToken);
 
     res.status(200).json({
       status: 'success',
@@ -58,7 +62,10 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
 
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (req.user?.userId) {
+    const refreshToken = req.cookies?.jwt_refresh;
+    if (refreshToken) {
+      await User.findOneAndUpdate({ refreshToken }, { refreshToken: null });
+    } else if (req.user?.userId) {
       await AuthService.logoutUser(req.user.userId);
     }
     
@@ -82,6 +89,24 @@ export const getMe = async (req: Request, res: Response, next: NextFunction) => 
       status: 'success',
       data,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const message = await AuthService.forgotPassword(req.body.email);
+    res.status(200).json({ status: 'success', message });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await AuthService.resetPassword(req.params.token, req.body.password);
+    res.status(200).json({ status: 'success', message: 'Password has been successfully reset' });
   } catch (error) {
     next(error);
   }

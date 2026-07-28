@@ -12,6 +12,8 @@ export interface IUser extends Document {
   role: UserRole;
   isEmailVerified: boolean;
   refreshToken?: string | null;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -43,6 +45,8 @@ const userSchema = new Schema<IUser>(
       default: null,
       select: false,
     },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
   {
     timestamps: true,

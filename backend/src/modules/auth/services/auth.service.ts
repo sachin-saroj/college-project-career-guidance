@@ -64,14 +64,19 @@ export class AuthService {
     return { accessToken, refreshToken, user };
   }
 
-  static async refreshAuthToken(token: string): Promise<{ accessToken: string }> {
+  static async refreshAuthToken(token: string): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await User.findOne({ refreshToken: token });
     if (!user) {
       throw new AppError('Invalid refresh token. Please login again.', 401);
     }
 
     const newAccessToken = signAccessToken({ userId: user._id.toString(), role: user.role });
-    return { accessToken: newAccessToken };
+    const newRefreshToken = signRefreshToken({ userId: user._id.toString(), role: user.role });
+
+    user.refreshToken = newRefreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   }
 
   static async logoutUser(userId: string): Promise<void> {
@@ -87,5 +92,45 @@ export class AuthService {
     }
 
     return { user, profile };
+  }
+
+  static async forgotPassword(email: string): Promise<string> {
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Mitigate email enumeration
+      return 'If the email exists, a reset link will be sent.';
+    }
+
+    const crypto = require('crypto');
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    user.passwordResetToken = passwordResetToken;
+    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    await user.save({ validateBeforeSave: false });
+
+    const { logger } = require('../../../utils/logger');
+    logger.info(`[MOCK EMAIL] Password reset token for ${email}: ${resetToken}`);
+
+    return 'If the email exists, a reset link will be sent.';
+  }
+
+  static async resetPassword(token: string, newPassword: string): Promise<void> {
+    const crypto = require('crypto');
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: new Date() },
+    });
+
+    if (!user) {
+      throw new AppError('Token is invalid or has expired', 400);
+    }
+
+    user.passwordHash = newPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
   }
 }

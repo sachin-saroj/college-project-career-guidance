@@ -12,6 +12,7 @@ import { CONSTANTS } from './config/constants';
 import { logger } from './utils/logger';
 import apiV1Router from './routes';
 import { globalErrorHandler } from './middlewares/errorHandler';
+import { generateCsrfToken, verifyCsrfToken } from './middlewares/csrf.middleware';
 import { AppError } from './utils/AppError';
 import { swaggerSpec } from './docs/swagger';
 import * as Sentry from '@sentry/node';
@@ -32,8 +33,24 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
-// 1. Security HTTP Headers
+// 1. HTTPS Redirect for Production
+if (ENV.NODE_ENV === 'production') {
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+
+// 2. Security HTTP Headers
 app.use(helmet({
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true,
+  },
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
@@ -75,6 +92,10 @@ app.use('/api', globalLimiter);
 app.use(express.json({ limit: '10kb' })); // Prevents massive payload DOS
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
+
+// 5.5 CSRF Protection
+app.use(generateCsrfToken);
+app.use(verifyCsrfToken);
 
 // 6. Data Compression
 app.use(compression());

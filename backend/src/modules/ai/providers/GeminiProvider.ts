@@ -2,6 +2,7 @@ import { GoogleGenAI, Type, Schema } from '@google/genai';
 import { IAIProvider, ChatMessagePayload, AIResponse } from './IAIProvider';
 import { IAIStructuredResponse } from '../models/ChatMessage';
 import { AppError } from '../../../utils/AppError';
+import { ENV } from '../../../config/env';
 
 export class GeminiProvider implements IAIProvider {
   private ai: GoogleGenAI;
@@ -9,7 +10,7 @@ export class GeminiProvider implements IAIProvider {
   private modelName = 'gemini-2.5-flash';
 
   constructor() {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = ENV.GEMINI_API_KEY;
     // We instantiate the client. If the key is missing it will fail later if called, 
     // but we don't block server startup.
     this.ai = new GoogleGenAI({ apiKey: apiKey || 'MISSING_KEY' });
@@ -21,7 +22,7 @@ export class GeminiProvider implements IAIProvider {
     prompt: string
   ): Promise<AIResponse> {
     
-    if (!process.env.GEMINI_API_KEY) {
+    if (!ENV.GEMINI_API_KEY) {
       throw new AppError('Gemini API key is missing. Please configure GEMINI_API_KEY.', 500);
     }
 
@@ -109,7 +110,7 @@ export class GeminiProvider implements IAIProvider {
   }
 
   async generateText(systemInstruction: string, prompt: string): Promise<string> {
-    if (!process.env.GEMINI_API_KEY) {
+    if (!ENV.GEMINI_API_KEY) {
       throw new AppError('Gemini API key is missing. Please configure GEMINI_API_KEY.', 500);
     }
     try {
