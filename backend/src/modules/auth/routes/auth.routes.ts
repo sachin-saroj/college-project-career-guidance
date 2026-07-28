@@ -12,6 +12,7 @@ const authLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 min
   max: 5, // 5 requests per IP
   message: 'Too many requests, please try again after 1 minute',
+  skip: () => process.env.NODE_ENV === 'test', // Disable during tests
 });
 
 // Public Routes
