@@ -2,6 +2,8 @@ import { User, IUser } from '../models/User';
 import { Profile } from '../../student/models/Profile';
 import { AppError } from '../../../utils/AppError';
 import { signAccessToken, signRefreshToken } from '../../../utils/jwt';
+import crypto from 'crypto';
+import { logger } from '../../../utils/logger';
 
 export class AuthService {
   
@@ -101,7 +103,6 @@ export class AuthService {
       return 'If the email exists, a reset link will be sent.';
     }
 
-    const crypto = require('crypto');
     const resetToken = crypto.randomBytes(32).toString('hex');
     const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
@@ -109,14 +110,12 @@ export class AuthService {
     user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     await user.save({ validateBeforeSave: false });
 
-    const { logger } = require('../../../utils/logger');
     logger.info(`[MOCK EMAIL] Password reset token for ${email}: ${resetToken}`);
 
     return 'If the email exists, a reset link will be sent.';
   }
 
   static async resetPassword(token: string, newPassword: string): Promise<void> {
-    const crypto = require('crypto');
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     const user = await User.findOne({

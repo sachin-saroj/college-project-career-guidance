@@ -26,7 +26,7 @@ export const AssessmentEnginePage: React.FC = () => {
     if (session && session.currentQuestionIndex !== undefined) {
       setCurrentIndex(session.currentQuestionIndex);
     }
-  }, [session?.currentQuestionIndex]);
+  }, [session, session?.currentQuestionIndex]);
 
   // Track time spent per question
   useEffect(() => {
