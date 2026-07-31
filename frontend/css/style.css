@@ -1,0 +1,26 @@
+/* Custom styles on top of Bootstrap */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+}
+
+.nav-pills .nav-link {
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin: 0 5px;
+}
+
+#chatBox {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+}
+
+#resumeSuggestions {
+    font-family: monospace;
+    font-size: 0.9em;
+}
