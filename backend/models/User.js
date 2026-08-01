@@ -29,8 +29,16 @@ class User {
       _id: Date.now().toString(), // Simple unique ID
       name: userData.name,
       email: userData.email,
+      role: userData.email === 'admin@careersathi.com' ? 'admin' : 'user',
       passwordHash: passwordHash,
       resumeText: userData.resumeText || '',
+      education: '',
+      skills: '',
+      interests: '',
+      careerGoal: '',
+      familyIncome: '',
+      assessmentCompleted: false,
+      lastRecommendations: null,
       createdAt: new Date().toISOString()
     };
     

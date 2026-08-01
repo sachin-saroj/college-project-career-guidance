@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerSathi - Career Assessment</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .quiz-option {
+      cursor: pointer;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+    .quiz-option:hover {
+      border-color: #0d6efd;
+      background-color: #f8f9fa;
+    }
+    .quiz-option.selected {
+      border-color: #0d6efd;
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="dashboard.html">CareerSathi</a>
+      <div class="d-flex">
+        <span class="navbar-text me-3 text-white" id="nav-user-name"></span>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        
+        <!-- Quiz Container -->
+        <div class="card shadow-sm mb-4" id="quiz-container">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Career Assessment Quiz</h2>
+            
+            <!-- Progress Bar -->
+            <div class="progress mb-4" style="height: 10px;">
+              <div id="quiz-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            
+            <p class="text-muted text-end small" id="quiz-progress-text">Question 1 of 5</p>
+
+            <div id="question-box">
+              <h4 class="mb-4 fw-bold" id="question-text">Loading question...</h4>
+              <div id="options-container">
+                <!-- Options injected by JS -->
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-outline-secondary" id="quiz-prev-btn" style="visibility: hidden;">Previous</button>
+              <button class="btn btn-primary" id="quiz-next-btn" disabled>Next</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Results Loading Box -->
+        <div class="card shadow-sm mb-4 d-none text-center p-5" id="assessment-loading">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h4 class="mt-3">Analyzing your profile and answers...</h4>
+          <p class="text-muted">Our AI is generating personalized career recommendations for you.</p>
+        </div>
+
+        <!-- Results Container -->
+        <div class="d-none" id="assessment-result-container">
+          <h2 class="mb-4 text-success fw-bold text-center">Your Top Career Matches</h2>
+          <div id="assessment-result-content">
+            <!-- Cards injected by JS -->
+          </div>
+          <div class="text-center mt-4 mb-5">
+            <button class="btn btn-outline-primary" onclick="location.reload()">Take Quiz Again</button>
+            <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-5 mb-3 text-muted small">
+      &copy; 2026 CareerSathi. Built for students.
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', initQuiz);
+  </script>
+</body>
+</html>

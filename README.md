@@ -1,14 +1,26 @@
-# CareerSathi - Simplified Version
+# CareerSathi - AI Career Guidance Portal
 
-This is a clean, minimal, and fully functional version of the CareerSathi portal built for easy deployment and rapid learning. It uses a plain JavaScript frontend (HTML/CSS/JS) and a minimal Node.js + Express backend with MongoDB.
+CareerSathi is a clean, minimal, and fully functional career guidance portal designed specifically for underprivileged students. It leverages Google's Gemini AI to act as a personalized career counselor and resume reviewer.
 
-## Setup Instructions
+## Architecture & Design Philosophy
+This project was built over a structured 10-phase engineering sprint with a strict **Zero-Setup Philosophy**. It is optimized for college project submissions and rapid learning. 
+- **Frontend**: Pure Vanilla HTML, CSS (Bootstrap 5), and JavaScript. No complex build tools like Webpack or React.
+- **Backend**: Lightweight Node.js + Express server.
+- **Database**: Local JSON file (`backend/database.json`) utilizing the native `fs` module for persistence. No MongoDB or external cloud databases required.
 
-1. **Environment Setup:** 
-   In the `backend` folder, copy `.env.example` to `.env` (or just create a `.env` file) and fill in your connection strings:
-   - `JWT_SECRET`: A secret string for signing JWT tokens.
-   - `GEMINI_API_KEY`: Your Google Gemini API key for the AI mentor feature.
+## Key Features
+1. **JWT Authentication**: Secure user registration and login flows.
+2. **Dynamic Student Profiles**: Students can document their education, skills, interests, career goals, and family income for scholarships.
+3. **AI Career Assessment**: A robust quiz that dynamically generates personalized career roadmaps and matches using the Gemini API.
+4. **AI Resume Builder & Analyzer**: Students can generate clean, ATS-friendly PDF resumes client-side (via html2pdf) and receive AI-driven feedback to improve their CVs.
+5. **Role-Based Admin Dashboard**: A comprehensive admin panel to manage registered students and dynamically update the platform's resources (courses, scholarships, articles).
+6. **Smart Dashboard**: A personalized hub featuring real-time status trackers for profile completion and assessment tracking.
 
-2. **Run the Application:**
-   Navigate into the `backend` directory and install the dependencies by running `npm install`. Once installed, start the server with `npm start` (or `node server.js`). 
-   The server will start on port `5000` (or whatever you set in `.env`), and it automatically serves the frontend at `http://localhost:5000/`. Simply open that URL in your browser to start using the app.
+## Getting Started
+Please see the [Setup Guide](docs/setup-guide.md) for detailed instructions on running the project locally.
+
+## Admin Access
+To test the admin features, register an account with the exact email: `admin@careersathi.com`. This will automatically elevate your privileges and grant access to the Admin Panel.
+
+## Credits
+Built as a comprehensive 10-phase engineering project by Antigravity.

@@ -18,6 +18,10 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/resume', require('./routes/resume'));
+app.use('/api/assessment', require('./routes/assessment'));
+app.use('/api/resources', require('./routes/resources'));
+app.use('/api/profile', require('./routes/profile'));
+app.use('/api/admin', require('./routes/admin'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
