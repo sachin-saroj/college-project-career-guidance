@@ -57,4 +57,75 @@ router.post('/upload', authMiddleware, upload.single('resume'), async (req, res)
   }
 });
 
+router.put('/', authMiddleware, async (req, res) => {
+  try {
+    const resumeData = req.body;
+    if (!resumeData) {
+      return res.status(400).json({ error: 'Resume data is required' });
+    }
+
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    await User.update(req.userId, { resumeData });
+    res.json({ message: 'Resume saved successfully' });
+  } catch (error) {
+    console.error('Resume Save Error:', error);
+    res.status(500).json({ error: 'Failed to save resume' });
+  }
+});
+
+router.post('/analyze', authMiddleware, async (req, res) => {
+  try {
+    const resumeData = req.body;
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      generationConfig: { responseMimeType: "application/json" }
+    });
+
+    const prompt = `You are an ATS (Applicant Tracking System) expert. Analyze this resume JSON and return a strict JSON object with these fields:
+    - score (number between 0 and 100)
+    - missingSkills (array of strings)
+    - formattingIssues (array of strings)
+    - suggestions (array of strings)
+    
+    Resume JSON:
+    ${JSON.stringify(resumeData)}
+    `;
+
+    const result = await model.generateContent(prompt);
+    let reply = result.response.text();
+    const jsonMatch = reply.match(/\{[\s\S]*\}/);
+    const parsedData = JSON.parse(jsonMatch ? jsonMatch[0] : reply);
+
+    res.json(parsedData);
+  } catch (error) {
+    console.error('Resume Analyze Error:', error);
+    res.status(500).json({ error: 'Failed to analyze resume' });
+  }
+});
+
+router.post('/rewrite', authMiddleware, async (req, res) => {
+  try {
+    const { sectionType, content } = req.body;
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `You are an expert resume writer. Rewrite the following ${sectionType} content to make it more professional, ATS-friendly, and impactful. Return ONLY the rewritten text without any quotes or explanations.
+
+    Original content:
+    ${content}
+    `;
+
+    const result = await model.generateContent(prompt);
+    res.json({ result: result.response.text().trim() });
+  } catch (error) {
+    console.error('Resume Rewrite Error:', error);
+    res.status(500).json({ error: 'Failed to rewrite section' });
+  }
+});
+
 module.exports = router;

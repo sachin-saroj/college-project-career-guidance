@@ -30,9 +30,9 @@ router.get('/users', (req, res) => {
 // POST new resource
 router.post('/resources', (req, res) => {
   try {
-    const { title, description, url, category, tags } = req.body;
-    if (!title || !url || !category) {
-      return res.status(400).json({ error: 'Title, URL, and Category are required' });
+    const { title, description, type, provider, category, skills, difficulty, duration, isFree, amount, deadline, location, url, image, featured } = req.body;
+    if (!title || !url || !category || !type) {
+      return res.status(400).json({ error: 'Title, URL, Category, and Type are required' });
     }
 
     const db = readDB();
@@ -42,9 +42,20 @@ router.post('/resources', (req, res) => {
       id: Date.now(), // Generate a simple ID
       title,
       description: description || '',
-      url,
+      type,
+      provider: provider || '',
       category,
-      tags: tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []
+      skills: skills || [],
+      difficulty: difficulty || '',
+      duration: duration || '',
+      isFree: isFree !== undefined ? isFree : true,
+      amount: amount || '',
+      deadline: deadline || '',
+      location: location || '',
+      url,
+      image: image || '',
+      featured: featured || false,
+      createdAt: new Date().toISOString()
     };
 
     db.resources.push(newResource);
@@ -54,6 +65,30 @@ router.post('/resources', (req, res) => {
   } catch (error) {
     console.error('Admin Add Resource Error:', error);
     res.status(500).json({ error: 'Failed to add resource' });
+  }
+});
+
+// PUT update resource
+router.put('/resources/:id', (req, res) => {
+  try {
+    const resourceId = parseInt(req.params.id, 10);
+    const updates = req.body;
+    const db = readDB();
+    
+    if (!db.resources) db.resources = [];
+    
+    const index = db.resources.findIndex(r => r.id === resourceId);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+
+    db.resources[index] = { ...db.resources[index], ...updates };
+    writeDB(db);
+
+    res.json({ message: 'Resource updated successfully', resource: db.resources[index] });
+  } catch (error) {
+    console.error('Admin Update Resource Error:', error);
+    res.status(500).json({ error: 'Failed to update resource' });
   }
 });
 

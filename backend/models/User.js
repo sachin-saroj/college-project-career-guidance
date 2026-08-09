@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { readDB, writeDB } = require('../db');
 
 class User {
@@ -32,6 +32,7 @@ class User {
       role: userData.email === 'admin@careersathi.com' ? 'admin' : 'user',
       passwordHash: passwordHash,
       resumeText: userData.resumeText || '',
+      resumeData: null,
       education: '',
       skills: '',
       interests: '',
@@ -39,6 +40,7 @@ class User {
       familyIncome: '',
       assessmentCompleted: false,
       lastRecommendations: null,
+      bookmarkedResources: [],
       createdAt: new Date().toISOString()
     };
     
@@ -60,6 +62,47 @@ class User {
 
   static async comparePassword(candidatePassword, userPasswordHash) {
     return await bcrypt.compare(candidatePassword, userPasswordHash);
+  }
+
+  static async addBookmark(userId, resourceId) {
+    const db = readDB();
+    const userIndex = db.users.findIndex(u => u._id === userId);
+    if (userIndex !== -1) {
+      if (!db.users[userIndex].bookmarkedResources) {
+        db.users[userIndex].bookmarkedResources = [];
+      }
+      if (!db.users[userIndex].bookmarkedResources.includes(resourceId)) {
+        db.users[userIndex].bookmarkedResources.push(resourceId);
+        writeDB(db);
+      }
+      return db.users[userIndex].bookmarkedResources;
+    }
+    return null;
+  }
+
+  static async removeBookmark(userId, resourceId) {
+    const db = readDB();
+    const userIndex = db.users.findIndex(u => u._id === userId);
+    if (userIndex !== -1) {
+      if (!db.users[userIndex].bookmarkedResources) {
+        db.users[userIndex].bookmarkedResources = [];
+      }
+      db.users[userIndex].bookmarkedResources = db.users[userIndex].bookmarkedResources.filter(id => id !== resourceId);
+      writeDB(db);
+      return db.users[userIndex].bookmarkedResources;
+    }
+    return null;
+  }
+
+  static async delete(id) {
+    const db = readDB();
+    const index = db.users.findIndex(u => u._id === id);
+    if (index !== -1) {
+      db.users.splice(index, 1);
+      writeDB(db);
+      return true;
+    }
+    return false;
   }
 }
 

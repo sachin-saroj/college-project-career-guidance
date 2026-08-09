@@ -21,7 +21,10 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
+  login: (data: any) => Promise<void>;
+  register: (data: any) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,15 +58,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUser();
   }, []);
 
+  const refreshUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const response = await api.get("/auth/me");
+      setUser(response.data);
+    } catch (err) {
+      console.error("Auth verification failed during refresh", err);
+    }
+  };
+
+  const login = async (data: any) => {
+    const response = await api.post("/auth/login", data);
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+    setUser(response.data.user);
+  };
+
+  const register = async (data: any) => {
+    const response = await api.post("/auth/register", data);
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+    setUser(response.data.user);
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

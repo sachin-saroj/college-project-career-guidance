@@ -16,20 +16,9 @@ interface Task {
   status: "Pending" | "In Progress" | "Done";
 }
 
-const mockTasks: Task[] = [
-  { id: "1", name: "Complete Career Assessment", description: "Discover careers that match your interests", deadline: "May 20, 2025", priority: "High", status: "Pending" },
-  { id: "2", name: "Build Your Resume", description: "Create a professional resume with AI", deadline: "May 25, 2025", priority: "Medium", status: "In Progress" },
-  { id: "3", name: "Explore Scholarships", description: "Find scholarships suitable for you", deadline: "May 30, 2025", priority: "Low", status: "Pending" },
-  { id: "4", name: "Mock Interview Practice", description: "Practice behavioral questions", deadline: "Jun 02, 2025", priority: "Medium", status: "Pending" },
-  { id: "5", name: "Update LinkedIn Profile", description: "Add new skills and summary", deadline: "Jun 05, 2025", priority: "Low", status: "Done" },
-];
-
-const priorityOrder = { High: 3, Medium: 2, Low: 1 };
-const statusOrder = { "Done": 3, "In Progress": 2, "Pending": 1 };
-
-export const TaskTable = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export const TaskTable = ({ tasks = [] }: { tasks?: Task[] }) => {
+  const [localTasks, setLocalTasks] = useState<Task[]>(tasks);
+  const [isLoading] = useState(false);
   const [sortField, setSortField] = useState<keyof Task | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [filterStatus, setFilterStatus] = useState<string>("All");
@@ -37,13 +26,8 @@ export const TaskTable = () => {
   const itemsPerPage = 3;
 
   useEffect(() => {
-    // Simulate network fetch
-    const timer = setTimeout(() => {
-      setTasks(mockTasks);
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    setLocalTasks(tasks);
+  }, [tasks]);
 
   const handleSort = (field: keyof Task) => {
     if (sortField === field) {
@@ -55,7 +39,7 @@ export const TaskTable = () => {
   };
 
   const filteredTasks = useMemo(() => {
-    let result = [...tasks];
+    let result = [...localTasks];
     
     if (filterStatus !== "All") {
       result = result.filter(t => t.status === filterStatus);
@@ -67,12 +51,14 @@ export const TaskTable = () => {
         let valB: string | number = b[sortField];
         
         if (sortField === "priority") {
-          valA = priorityOrder[a.priority as keyof typeof priorityOrder];
-          valB = priorityOrder[b.priority as keyof typeof priorityOrder];
+          const pOrder = { High: 3, Medium: 2, Low: 1 };
+          valA = pOrder[a.priority as keyof typeof pOrder] || 0;
+          valB = pOrder[b.priority as keyof typeof pOrder] || 0;
         }
         if (sortField === "status") {
-          valA = statusOrder[a.status as keyof typeof statusOrder];
-          valB = statusOrder[b.status as keyof typeof statusOrder];
+          const sOrder = { "Done": 3, "In Progress": 2, "Pending": 1 };
+          valA = sOrder[a.status as keyof typeof sOrder] || 0;
+          valB = sOrder[b.status as keyof typeof sOrder] || 0;
         }
 
         if (valA < valB) return sortDir === "asc" ? -1 : 1;
@@ -82,13 +68,13 @@ export const TaskTable = () => {
     }
     
     return result;
-  }, [tasks, sortField, sortDir, filterStatus]);
+  }, [localTasks, sortField, sortDir, filterStatus]);
 
   const paginatedTasks = filteredTasks.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
 
   const toggleTaskStatus = (id: string) => {
-    setTasks(tasks.map(t => {
+    setLocalTasks(localTasks.map(t => {
       if (t.id === id) {
         return { ...t, status: t.status === "Done" ? "Pending" : "Done" };
       }
@@ -97,7 +83,7 @@ export const TaskTable = () => {
   };
 
   const deleteTask = (id: string) => {
-    setTasks(tasks.filter(t => t.id !== id));
+    setLocalTasks(localTasks.filter(t => t.id !== id));
   };
 
   return (
@@ -108,7 +94,7 @@ export const TaskTable = () => {
           <div className="flex items-center gap-12">
             <h2 className="text-[18px] font-bold text-text-main">My Tasks</h2>
             <Badge variant="default" className="bg-brand-light rounded-full w-24 h-24 p-0 shrink-0">
-              {tasks.length}
+              {localTasks.length}
             </Badge>
           </div>
           

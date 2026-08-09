@@ -2,22 +2,17 @@ import { Target, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "../ui/Card";
 import { cn } from "../../utils/cn";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const CareerMatchCard = () => {
-  const [isLoading, setIsLoading] = useState(true);
+export const CareerMatchCard = ({ recommendation }: { recommendation?: any }) => {
   const navigate = useNavigate();
+  const [isLoading] = useState(false);
   
-  const matches = [
-    { id: 1, name: "Data Analyst", match: 92 },
-    { id: 2, name: "UI/UX Designer", match: 85 },
-  ];
+  const matches = recommendation ? [
+    { id: 1, name: recommendation.topMatch, match: recommendation.matchScore }
+  ] : [];
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <Card hoverEffect className="h-full flex flex-col group">

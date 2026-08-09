@@ -5,6 +5,43 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+const questions = [
+  {
+    id: "q1",
+    type: "mcq",
+    text: "When working on a project, you prefer:",
+    options: ["Working alone", "Working in a small team", "Leading everyone", "Following clear instructions"]
+  },
+  {
+    id: "q2",
+    type: "likert",
+    text: "I enjoy solving complex mathematical or logical problems.",
+    options: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"]
+  },
+  {
+    id: "q3",
+    type: "mcq",
+    text: "Which of the following activities appeals to you the most?",
+    options: ["Designing a new product or application", "Analyzing data to find trends", "Writing stories or creating art", "Helping people with their personal problems"]
+  },
+  {
+    id: "q4",
+    type: "likert",
+    text: "I am comfortable speaking in front of large groups of people.",
+    options: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"]
+  },
+  {
+    id: "q5",
+    type: "mcq",
+    text: "When faced with a difficult decision, I usually:",
+    options: ["Rely on facts and data", "Trust my intuition", "Ask for others' opinions", "Consider the ethical implications first"]
+  }
+];
+
+router.get('/', authMiddleware, (req, res) => {
+  res.json({ questions });
+});
+
 router.post('/submit', authMiddleware, async (req, res) => {
   try {
     const { answers } = req.body;
@@ -26,6 +63,31 @@ router.post('/submit', authMiddleware, async (req, res) => {
       `;
     }
 
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_google_gemini_api_key_here') {
+      const parsedData = {
+        topMatch: "Software Engineer",
+        matchScore: 92,
+        skills: ["JavaScript", "Problem Solving", "React"],
+        salaryRange: "₹4L - ₹10L",
+        roadmap: ["Learn programming basics", "Build projects", "Apply for internships"],
+        radarData: [
+          { subject: "Logic", A: 90 },
+          { subject: "Creativity", A: 70 },
+          { subject: "Communication", A: 85 },
+          { subject: "Math", A: 80 },
+          { subject: "Teamwork", A: 95 }
+        ]
+      };
+      
+      if (user) {
+        await User.update(user._id, {
+          assessmentCompleted: true,
+          lastRecommendations: parsedData
+        });
+      }
+      return res.json(parsedData);
+    }
+
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     // Use gemini-1.5-pro for better JSON generation if possible, but 1.5-flash is fine and faster.
     const model = genAI.getGenerativeModel({ 
@@ -45,14 +107,17 @@ ${answers.map((ans, idx) => `Q${idx + 1}: ${ans}`).join('\n')}
 
 You must return ONLY a JSON object with this exact structure:
 {
-  "recommendations": [
-    {
-      "title": "Software Engineer",
-      "matchPercentage": 92,
-      "description": "Short explanation of the career and why it fits.",
-      "skills": ["JavaScript", "Problem Solving", "React"],
-      "roadmap": "1. Learn basics... 2. Build projects... 3. Apply for internships"
-    }
+  "topMatch": "Software Engineer",
+  "matchScore": 92,
+  "skills": ["JavaScript", "Problem Solving", "React"],
+  "salaryRange": "₹4L - ₹10L",
+  "roadmap": ["Learn programming basics", "Build projects", "Apply for internships"],
+  "radarData": [
+    { "subject": "Logic", "A": 90 },
+    { "subject": "Creativity", "A": 70 },
+    { "subject": "Communication", "A": 85 },
+    { "subject": "Math", "A": 80 },
+    { "subject": "Teamwork", "A": 95 }
   ]
 }`;
 
@@ -76,7 +141,7 @@ You must return ONLY a JSON object with this exact structure:
     if (user) {
       await User.update(user._id, {
         assessmentCompleted: true,
-        lastRecommendations: parsedData.recommendations
+        lastRecommendations: parsedData
       });
     }
 

@@ -23,7 +23,7 @@ router.get('/', authMiddleware, async (req, res) => {
 // PUT update user profile
 router.put('/', authMiddleware, async (req, res) => {
   try {
-    const { education, skills, interests, careerGoal, familyIncome } = req.body;
+    const { name, education, skills, interests, careerGoal, familyIncome } = req.body;
     
     const user = await User.findById(req.userId);
     if (!user) {
@@ -35,7 +35,8 @@ router.put('/', authMiddleware, async (req, res) => {
       skills: skills !== undefined ? skills : user.skills,
       interests: interests !== undefined ? interests : user.interests,
       careerGoal: careerGoal !== undefined ? careerGoal : user.careerGoal,
-      familyIncome: familyIncome !== undefined ? familyIncome : user.familyIncome
+      familyIncome: familyIncome !== undefined ? familyIncome : user.familyIncome,
+      name: name !== undefined ? name : user.name
     });
 
     const { passwordHash, ...safeUser } = updatedUser;
@@ -43,6 +44,20 @@ router.put('/', authMiddleware, async (req, res) => {
   } catch (error) {
     console.error('Profile Update Error:', error);
     res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+// DELETE user account
+router.delete('/', authMiddleware, async (req, res) => {
+  try {
+    const success = await User.delete(req.userId);
+    if (!success) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Account Deletion Error:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
   }
 });
 

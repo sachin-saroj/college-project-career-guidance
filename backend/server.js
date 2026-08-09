@@ -22,6 +22,7 @@ app.use('/api/assessment', require('./routes/assessment'));
 app.use('/api/resources', require('./routes/resources'));
 app.use('/api/profile', require('./routes/profile'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/dashboard', require('./routes/dashboard'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

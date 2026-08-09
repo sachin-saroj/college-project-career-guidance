@@ -2,14 +2,13 @@ import { NavLink } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUIStore } from "../../store/useUIStore";
+import { useAuth } from "../../context/AuthContext";
 import { 
   LayoutDashboard, 
   Target, 
   Bot, 
   FileText, 
   BookOpen, 
-  Award, 
-  Briefcase, 
   Map, 
   User, 
   Settings,
@@ -17,8 +16,6 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
-import { Button } from "../ui/Button";
-import { Card, CardContent } from "../ui/Card";
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, path: "/" },
@@ -26,8 +23,6 @@ const navItems = [
   { name: "AI Mentor", icon: Bot, path: "/mentor" },
   { name: "Resume Builder", icon: FileText, path: "/resume" },
   { name: "Resources", icon: BookOpen, path: "/resources" },
-  { name: "Scholarships", icon: Award, path: "/scholarships" },
-  { name: "Internships", icon: Briefcase, path: "/internships" },
   { name: "Roadmaps", icon: Map, path: "/roadmaps" },
 ];
 
@@ -38,6 +33,7 @@ const secondaryNavItems = [
 
 export const Sidebar = () => {
   const { isSidebarCollapsed, toggleSidebar } = useUIStore();
+  const { user } = useAuth();
 
   return (
     <motion.aside 
@@ -144,34 +140,50 @@ export const Sidebar = () => {
               )}
             </NavLink>
           ))}
+
+          {user?.role === "admin" && (
+            <>
+              <div className="pt-16 pb-4">
+                <div className="h-px w-full bg-border" />
+              </div>
+              <NavLink
+                to="/admin"
+                title={isSidebarCollapsed ? "Admin" : undefined}
+                className={({ isActive }) => cn(
+                  "flex items-center h-48 rounded-input text-body font-medium transition-all duration-250 relative group overflow-hidden",
+                  isSidebarCollapsed ? "justify-center px-0" : "px-16 gap-3",
+                  isActive 
+                    ? "bg-brand-light text-brand-primary" 
+                    : "text-text-muted hover:bg-gray-100/50 hover:text-text-main"
+                )}
+              >
+                <Settings size={20} className="shrink-0" />
+                <AnimatePresence>
+                  {!isSidebarCollapsed && (
+                    <motion.span
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "auto" }}
+                      exit={{ opacity: 0, width: 0 }}
+                      className="whitespace-nowrap"
+                    >
+                      Admin
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+
+                {isSidebarCollapsed && (
+                  <div className="absolute left-full ml-16 px-12 py-6 bg-text-main text-white text-xs rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none">
+                    Admin
+                  </div>
+                )}
+              </NavLink>
+            </>
+          )}
         </nav>
       </div>
 
-      {/* Upgrade Card / Toggle */}
+      {/* Toggle */}
       <div className="p-16 flex flex-col gap-16">
-        <AnimatePresence>
-          {!isSidebarCollapsed && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden"
-            >
-              <Card className="bg-brand-light/50 border-none shadow-none">
-                <CardContent className="p-16 text-center">
-                  <h4 className="font-semibold text-brand-primary mb-2 text-sm">Upgrade to Pro</h4>
-                  <p className="text-[11px] text-text-muted mb-12 leading-relaxed">
-                    Unlock premium AI insights, advanced reports & more.
-                  </p>
-                  <Button variant="primary" size="sm" className="w-full text-xs h-32">
-                    Upgrade Now
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         <button 
           onClick={toggleSidebar}
           className="flex items-center justify-center h-32 w-full text-text-muted hover:text-text-main transition-colors bg-gray-50 hover:bg-gray-100 rounded-md border border-border"

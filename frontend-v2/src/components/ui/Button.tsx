@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { Loader2 } from "lucide-react";
 import { cn } from "../../utils/cn";
 import { motion } from "framer-motion";
 import type { HTMLMotionProps } from "framer-motion";
@@ -7,10 +8,11 @@ export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "type"> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "light";
   size?: "sm" | "md" | "lg" | "icon";
   type?: "button" | "submit" | "reset";
+  isLoading?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", type = "button", ...props }, ref) => {
+  ({ className, variant = "primary", size = "md", type = "button", isLoading, children, ...props }, ref) => {
     const baseStyles = "inline-flex items-center justify-center rounded-button font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
     
     const variants = {
@@ -34,8 +36,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         whileTap={{ scale: 0.98 }}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
+        disabled={isLoading || props.disabled}
         {...props}
-      />
+      >
+        {isLoading && <Loader2 className="mr-8 h-16 w-16 animate-spin" />}
+        {children as any}
+      </motion.button>
     );
   }
 );
