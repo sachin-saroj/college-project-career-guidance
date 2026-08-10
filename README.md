@@ -1,452 +1,406 @@
-# CareerSathi - AI Career Guidance Portal
+<div align="center">
 
-A clean, minimal, and AI-powered career guidance portal designed specifically for underprivileged students.
+# 🎓 CareerSathi (करियर साथी) 
+### *Empowering Underprivileged Students with Next-Gen AI Career Guidance*
+
+[![React 19](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4+-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Google Gemini AI](https://img.shields.io/badge/Google_Gemini-1.5_Flash-8E75FF?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
+<br />
+
+> **CareerSathi** is an end-to-end, zero-cost, AI-powered career counseling and mentorship portal designed to bridge the opportunity gap for underprivileged and underrepresented students. Powered by Google Gemini 1.5 Flash, modern React 19, and a zero-setup Express architecture.
+
+</div>
 
 ---
 
-## Overview
+## 📋 Table of Contents
 
-- **What problem does this project solve?** Career counseling is often expensive, inaccessible, or generic. Underprivileged students frequently lack guidance on scholarships, modern career paths, and resume building. This platform democratizes career counseling by providing an intelligent, personalized AI mentor accessible for free.
-- **Who is it for?** High school and college students, specifically those from underprivileged or underrepresented backgrounds seeking career direction, financial aid (scholarships), and professional development.
-- **Why was it built?** To provide a zero-setup, highly accessible educational tool that leverages generative AI to bridge the career guidance gap. It was built as a structured college engineering project focused on rapid learning and zero complex dependencies.
-- **Key goals:** Provide accurate AI career assessments, automate resume reviews, and curate a dynamic hub of free educational resources and scholarships.
-- **Main workflow:** User registers $\rightarrow$ Completes Psychometric Quiz $\rightarrow$ AI generates personalized career matches $\rightarrow$ User builds/uploads Resume $\rightarrow$ AI reviews Resume $\rightarrow$ User interacts with AI Mentor for ongoing guidance.
+- [✨ Overview \& Problem Statement](#-overview--problem-statement)
+- [🚀 Key Features](#-key-features)
+- [🏗️ System Architecture](#️-system-architecture)
+  - [High-Level Data Flow](#high-level-data-flow)
+  - [Request Lifecycle Diagram](#request-lifecycle-diagram)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📂 Comprehensive Repository Structure](#-comprehensive-repository-structure)
+- [📥 Quick Start \& Local Setup](#-quick-start--local-setup)
+  - [Prerequisites](#prerequisites)
+  - [Backend Setup](#1-backend-setup)
+  - [Frontend v2 Setup](#2-frontend-v2-react--vite-setup)
+- [🔑 Environment Variables](#-environment-variables)
+- [📡 API Documentation](#-api-documentation)
+- [🎨 Design Aesthetics \& UI System](#-design-aesthetics--ui-system)
+- [🔒 Security \& Data Privacy](#-security--data-privacy)
+- [⚡ Performance Optimizations](#-performance-optimizations)
+- [🗺️ Future Roadmap](#️-future-roadmap)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
 
-## Architecture Overview
+## ✨ Overview & Problem Statement
 
-CareerSathi follows a monolithic Client-Server architecture utilizing a lightweight Node.js/Express backend and a Vanilla JS (or React in v2) frontend. It utilizes a **Zero-Setup Philosophy**, meaning it uses a local JSON file (`database.json`) for persistence instead of a heavy external database. 
+### The Problem
+Access to professional career counseling, resume optimization, and personalized skill roadmaps is often expensive, centralized in urban hubs, or out of reach for students from low-income or underprivileged backgrounds. As a result, millions of talented students miss out on scholarships, modern tech careers, and career growth opportunities.
 
-### High-Level Architecture
-- **Client (Frontend):** Handles UI, user interactions, and client-side routing.
-- **Server (Backend):** Express API that processes business logic, auth, and communicates with the AI engine.
-- **AI Engine:** Google Gemini API (`gemini-1.5-flash`) processes prompts injected with user profile context.
-- **Persistence Layer:** Native File System (`fs`) operations reading/writing to a local JSON structure.
+### The Solution: CareerSathi
+CareerSathi democratizes career counseling by providing an intelligent, personalized, and 100% free AI guidance ecosystem:
+1. **Psychometric AI Assessment**: Dynamically evaluates aptitude, soft skills, and personal background to generate tailored career trajectories.
+2. **Context-Aware AI Mentor**: A continuous conversational companion that remembers the student's profile, education level, and career aspirations.
+3. **Interactive Career Roadmaps**: Step-by-step visual learning paths for top modern professions (Software Engineering, Data Science, AI/ML, Cybersecurity, Cloud Architecture).
+4. **AI Resume Builder & ATS Reviewer**: Instant resume scoring, text extraction from PDFs, ATS keyword matching, and PDF generation.
+5. **Curated Free Resource Hub**: A centralized, searchable portal for scholarships, free courses, certifications, and mentorship initiatives.
+6. **Unified Admin Console**: Complete management interface for resource updates, platform analytics, user role moderation, and real-time logs.
+
+---
+
+## 🚀 Key Features
+
+| Feature Module | Capabilities |
+| :--- | :--- |
+| 📊 **Interactive Dashboard** | Real-time career match index, quick action shortcuts, active applications tracker, deadline countdowns, and skill progress widgets. |
+| 🎯 **AI Career Assessment** | Multi-phase question engine evaluating logical reasoning, interest areas, and background to output structured career match analytics. |
+| 🤖 **AI Mentor Chat Hub** | Real-time assistant powered by Gemini 1.5 Flash, equipped with preset prompts, context sidebar, syntax-highlighted responses, and model selection. |
+| 🗺️ **Interactive Roadmaps** | Visual node-based learning tracks complete with estimated timeframes, prerequisite topics, recommended free resources, and PDF exports. |
+| 📄 **Resume Builder & ATS** | PDF text extraction (`pdf-parse`), instant AI resume critique, skill keyword recommendations, live preview, and one-click PDF generation. |
+| 📚 **Scholarship & Course Hub** | Categorized list of verified scholarships and free courses with filter controls, search, and bookmarking functionality. |
+| 🛡️ **Admin Console** | System metrics, user management modal, resource editor, role management, and live activity log streams. |
+| 🌓 **Modern UI/UX** | Dark/Light mode, custom Tailwind color tokens, glassmorphism card surfaces, and accessible responsive layouts. |
+
+---
+
+## 🏗️ System Architecture
+
+CareerSathi utilizes a decoupled, modern client-server architecture:
+- **Frontend (v2)**: Built with React 19, TypeScript, Vite, Tailwind CSS, Zustand, and Framer Motion for high-performance Single Page Application (SPA) delivery.
+- **Frontend (v1)**: Lightweight Vanilla HTML5/JS client for low-bandwidth or legacy environments.
+- **Backend API**: Node.js & Express server handling JWT authentication, request validation, and AI prompt engineering.
+- **AI Core**: Google Gemini 1.5 Flash API wrapper for fast, context-driven natural language generation.
+- **Zero-Setup Database**: In-memory JSON file system abstraction (`database.json`) enabling zero-configuration setup for immediate deployment and evaluation.
+
+### High-Level Data Flow
+
+```mermaid
+graph TD
+    User([🎓 Student / User]) -->|HTTP / REST| FrontendV2[React 19 + Vite Frontend SPA]
+    Admin([🛡️ Admin]) -->|REST API| FrontendV2
+    
+    subgraph Client Layer
+        FrontendV2 -->|Auth State| Zustand[Zustand Store]
+        FrontendV2 -->|UI Routing| ReactRouter[React Router DOM v7]
+    end
+    
+    subgraph Express Backend Layer
+        FrontendV2 -->|Bearer JWT Header| ExpressServer[Express.js Server :5000]
+        ExpressServer --> AuthMiddleware{JWT Auth & RBAC}
+        AuthMiddleware -->|Validated| RouteHandlers[API Controllers]
+    end
+
+    subgraph Service & Persistence Layer
+        RouteHandlers -->|Prompt Context| GeminiSDK[Google Gemini 1.5 Flash SDK]
+        RouteHandlers -->|Read / Write| LocalDB[(Local JSON Database)]
+        GeminiSDK -->|Generative Output| RouteHandlers
+    end
+```
 
 ### Request Lifecycle Diagram
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant ExpressApp
-    participant AuthMiddleware
-    participant RouteHandler
-    participant GeminiAPI
-    participant LocalJSONDB
+    autonumber
+    participant Client as React 19 Frontend
+    participant Server as Express Server
+    participant Auth as Auth Middleware
+    participant Controller as Route Controller
+    participant DB as JSON DB Storage
+    participant Gemini as Google Gemini AI API
 
-    Client->>ExpressApp: HTTP Request (e.g., /api/chat)
-    ExpressApp->>AuthMiddleware: Verify JWT
-    AuthMiddleware-->>ExpressApp: Token Valid (User ID)
-    ExpressApp->>RouteHandler: Process Request Payload
-    RouteHandler->>LocalJSONDB: Fetch User Context (Profile/Resume)
-    LocalJSONDB-->>RouteHandler: User Data
-    RouteHandler->>GeminiAPI: Prompt + Context (generateContent)
-    GeminiAPI-->>RouteHandler: AI Response Text
-    RouteHandler->>Client: JSON Response (200 OK)
-```
-
-### Component Diagram
-
-```mermaid
-graph TD
-    A[Frontend Client] -->|REST API| B(Express Server)
-    B --> C{Auth Middleware}
-    C -->|Valid| D[Controllers / Routes]
-    D --> E[AI Service Wrapper]
-    D --> F[User Model / Resource Model]
-    E -->|API Call| G[Google Gemini AI]
-    F -->|Read/Write| H[(database.json)]
+    Client->>Server: POST /api/chat (Prompt + Auth Token)
+    Server->>Auth: Verify JWT Token
+    Auth-->>Server: Token Verified (Attach userId)
+    Server->>Controller: Route to Chat Controller
+    Controller->>DB: Fetch User Profile & Saved Resume
+    DB-->>Controller: Return User Context Data
+    Controller->>Gemini: Inject Context + Prompt into Gemini Model
+    Gemini-->>Controller: Return AI Generated Analysis / Advice
+    Controller->>Server: Package Clean JSON Response
+    Server-->>Client: HTTP 200 OK (Message Payload)
+    Client->>Client: Render Markdown & Update UI State
 ```
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
+
+### **Frontend (`frontend-v2`)**
+- **Framework**: React 19.0.0
+- **Language**: TypeScript 5.7+
+- **Build Tool**: Vite 6.0+
+- **Styling**: Tailwind CSS 3.4+, Vanilla CSS Variables
+- **Icons**: Lucide React
+- **State Management**: Zustand
+- **Animations**: Framer Motion
+- **Data Visualization**: Recharts
+- **PDF Generation**: jsPDF, html2canvas
+
+### **Backend (`backend`)**
+- **Runtime**: Node.js 18+ / 20+
+- **Framework**: Express.js 4.21+
+- **Authentication**: JSON Web Tokens (`jsonwebtoken`), `bcryptjs`
+- **File Parsing**: `multer`, `pdf-parse`
+- **AI Integration**: `@google/generative-ai` (Gemini 1.5 Flash)
+- **Security**: CORS, Environment variable isolation
+
+---
+
+## 📂 Comprehensive Repository Structure
 
 ```text
-project/
-├── backend/
-│   ├── middleware/      # Auth and Admin role verifications
-│   ├── models/          # Custom User.js logic for JSON DB interactions
-│   ├── routes/          # API endpoint controllers (auth, chat, assessment, etc.)
-│   ├── database.json    # Local persistent storage
-│   ├── db.js            # File system read/write wrappers
-│   └── server.js        # Main Express application entry point
-├── frontend/            # v1 Frontend (Vanilla JS + Bootstrap)
-│   ├── css/             # Custom stylesheets
-│   ├── js/              # Vanilla JS logic (auth.js, chat.js, assessment.js, etc.)
-│   └── *.html           # View templates
-├── frontend-v2/         # v2 Frontend (React + Vite + Tailwind)
+Online Career Guidance Portal for Underprivileged Students/
+├── backend/                              # Express Node.js API Server
+│   ├── middleware/                       # Authentication & Authorization middlewares
+│   │   ├── admin.js                      # RBAC check for admin endpoints
+│   │   └── auth.js                       # JWT verification middleware
+│   ├── models/                           # Data access abstraction
+│   │   └── User.js                       # Custom User model & JSON DB helper
+│   ├── routes/                           # API Route Controllers
+│   │   ├── admin.js                      # Admin console management API
+│   │   ├── assessment.js                 # Psychometric assessment API
+│   │   ├── auth.js                       # Register, Login, Me endpoints
+│   │   ├── chat.js                       # AI Mentor chat completion API
+│   │   ├── dashboard.js                  # User dashboard aggregation API
+│   │   ├── resources.js                  # Scholarship & course management API
+│   │   └── resume.js                     # PDF parse & resume critique API
+│   ├── .env.example                      # Template for backend environment variables
+│   ├── database.json                     # Local JSON database file
+│   ├── db.js                             # File System (fs) read/write utility
+│   ├── package.json                      # Backend dependencies & scripts
+│   └── server.js                         # Server entry point & CORS configuration
+│
+├── frontend-v2/                          # Modern React 19 + TypeScript SPA
+│   ├── public/                           # Static public assets & branding logos
 │   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── context/     # React Context (AuthContext)
-│   │   ├── pages/       # Route views (Dashboard, etc.)
-│   │   └── store/       # Zustand state management
-│   ├── tailwind.config.js
-│   └── vite.config.ts
-└── docs/                # Project documentation (API, Setup)
+│   │   ├── assets/                       # Images, icons, static graphic files
+│   │   ├── components/                   # UI Component Library
+│   │   │   ├── dashboard/                # AIMentorCard, CareerMatchCard, StatCard, TaskTable...
+│   │   │   ├── layout/                   # TopNavbar, Sidebar, CommandMenu, NotificationDrawer...
+│   │   │   └── ui/                       # Button, Card, Badge, Input, Switch, Logo...
+│   │   ├── context/                      # React Context providers (AuthContext)
+│   │   ├── pages/                        # Page View Containers
+│   │   │   ├── Admin/                    # Admin Dashboard & Console Modal
+│   │   │   ├── Assessment/               # Landing, Question Engine, Processing, Results
+│   │   │   ├── Auth/                     # Login & Signup screens
+│   │   │   ├── Dashboard/                # Main Student Overview Dashboard
+│   │   │   ├── Mentor/                   # AI Mentor Chat Area, Prompts, Context Panel
+│   │   │   ├── Profile/                  # User Profile settings & skill badges
+│   │   │   ├── Resources/                # Scholarship & Free Course Search Hub
+│   │   │   ├── ResumeBuilder/            # Resume Form Builder & PDF Analyzer
+│   │   │   ├── Roadmaps/                 # Interactive Career Skill Roadmaps
+│   │   │   └── Settings/                 # Preferences & Theme toggles
+│   │   ├── store/                        # Global state management via Zustand
+│   │   ├── App.tsx                       # App Router & Layout Shell
+│   │   ├── index.css                     # Design System CSS, Tailwind imports, themes
+│   │   └── main.tsx                      # React root rendering entry point
+│   ├── package.json                      # Frontend dependencies & scripts
+│   ├── tailwind.config.js                # Tailwind theme customization & tokens
+│   ├── tsconfig.json                     # TypeScript compiler configuration
+│   └── vite.config.ts                    # Vite build & plugin configurations
+│
+├── frontend/                             # Legacy Vanilla JS Frontend (v1 fallback)
+├── DESIGN-cohere.md                      # UI/UX Design System Specification
+└── README.md                             # Comprehensive Project Documentation
 ```
 
-### Folder Responsibilities
-- **`backend/routes/`**: Contains the core business logic handling HTTP requests, integrating with Gemini, and shaping responses.
-- **`backend/models/`**: Abstracts the database logic. `User.js` handles finding, creating, and updating users in the JSON file.
-- **`frontend/`**: The stable, zero-build step client. Serves static files directly via Express.
-- **`frontend-v2/`**: A modern rewrite of the frontend utilizing React ecosystem, designed for better state management and component reusability.
+---
+
+## 📥 Quick Start & Local Setup
+
+### Prerequisites
+- **Node.js**: v18.0.0 or higher ([Download Node.js](https://nodejs.org/))
+- **npm**: v9.0.0 or higher
+- **Google Gemini API Key**: Free key available from [Google AI Studio](https://aistudio.google.com/)
 
 ---
 
-## Tech Stack
+### 1. Backend Setup
 
-### Frontend (v1 & v2)
-- **HTML5/CSS3**
-- **Vanilla JavaScript** (v1)
-- **React.js 19** (v2)
-- **Vite** (v2 Build Tool)
+1. Open your terminal and navigate to the `backend` directory:
+   ```bash
+   cd backend
+   ```
 
-### Backend
-- **Node.js**
-- **Express.js**
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### Database
-- **Local JSON Database** (Zero-setup custom implementation using Node `fs`)
+3. Create your `.env` file in the `backend` directory:
+   ```bash
+   cp .env.example .env
+   ```
+   *Or create it manually with the following content:*
+   ```env
+   PORT=5000
+   JWT_SECRET=your_super_secret_jwt_key_careersathi_2026
+   GEMINI_API_KEY=your_actual_google_gemini_api_key_here
+   ```
 
-### AI
-- **Google Gemini API** (`@google/generative-ai` SDK, `gemini-1.5-flash` model)
-
-### Authentication
-- **JSON Web Tokens (JWT)**
-- **Bcrypt.js** (Password hashing)
-
-### UI Libraries
-- **Bootstrap 5** (v1)
-- **Tailwind CSS** (v2)
-- **Framer Motion** (v2 Animations)
-- **Lucide React** (v2 Icons)
-
----
-
-## Features
-
-**Core Features**
-- **AI Career Assessment:** A dynamic quiz that evaluates skills, interests, and background to recommend tailored career paths.
-- **AI Resume Builder & Analyzer:** Upload a PDF resume; the system extracts text via `pdf-parse` and uses AI to provide constructive feedback and ATS optimization suggestions.
-- **Smart AI Chat Mentor:** A conversational interface where students can ask career questions. The AI is context-aware, reading the student's saved profile and resume to provide personalized advice.
-- **Resource Hub:** Curated lists of scholarships, free courses, and study materials.
-
-**System Features**
-- **JWT Authentication:** Secure stateless session management.
-- **Role-Based Access Control (RBAC):** Dedicated Admin Dashboard to manage users and dynamically update platform resources.
-- **Dynamic Profiles:** Users can update their education, skills, career goals, and family income data, which the AI utilizes for better context.
+4. Start the backend server in development mode:
+   ```bash
+   npm run dev
+   ```
+   *The backend server will run on **`http://localhost:5000`**.*
 
 ---
 
-## Detailed Feature Explanation
+### 2. Frontend v2 (React + Vite) Setup
 
-### AI Career Assessment Workflow
-1. User submits an array of quiz answers to `/api/assessment/submit`.
-2. The backend retrieves the user's demographic and educational profile from the database.
-3. A strict prompt is constructed instructing Gemini to act as a counselor and return a strictly formatted JSON string containing 3 recommended careers.
-4. The backend parses the AI's JSON output, saves the recommendations to the user's profile, and sends it to the frontend.
+1. Open a new terminal window and navigate to `frontend-v2`:
+   ```bash
+   cd frontend-v2
+   ```
 
-### Resume Analyzer
-1. User uploads a PDF to `/api/resume/upload`.
-2. The endpoint uses `multer` (memory storage) to buffer the file.
-3. `pdf-parse` extracts raw text from the buffer.
-4. The text is saved to the user's profile and sent to Gemini with a prompt asking for 3-5 constructive improvements.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
----
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
 
-## System Design Decisions
-
-- **Local JSON Database:** Chosen to adhere to a strict "Zero-Setup" philosophy. It eliminates the need for MongoDB connection strings or Docker containers, making it incredibly easy for students to clone and run the project immediately.
-- **Google Gemini API:** Chosen over OpenAI due to Google's generous free tier for developers, faster response times (`flash` model), and large context window which is excellent for analyzing long resume texts.
-- **Dual Frontend Architecture:** Maintained v1 (Vanilla JS) for ultimate simplicity and beginners, while building v2 (React) to demonstrate modern component-based architecture and state management scalability.
-
----
-
-## Code Organization
-
-- **Modules:** Backend is modularized into Express Routers (e.g., `chat.js`, `auth.js`).
-- **Middleware:** `auth.js` verifies JWTs and attaches `req.userId`. `admin.js` verifies if the user role is 'admin'.
-- **Services/Models:** Database interaction is isolated in `db.js` and `User.js`, ensuring route handlers don't directly manipulate the JSON strings.
+4. Open your browser and navigate to:
+   ```text
+   http://localhost:5173
+   ```
 
 ---
 
-## Installation
+## 🔑 Environment Variables
 
-### Clone
-```bash
-git clone https://github.com/yourusername/careersathi.git
-cd careersathi
-```
+### Backend (`/backend/.env`)
 
-### Install Backend Dependencies
-```bash
-cd backend
-npm install
-```
-
-### Configure Environment
-Create a `.env` file in the `backend` folder:
-```bash
-GEMINI_API_KEY=your_google_gemini_api_key_here
-JWT_SECRET=your_super_secret_key
-PORT=5000
-```
-
-### Run (Development)
-```bash
-# Inside the backend folder
-npm run dev
-```
-The server will start on `http://localhost:5000` and serve the v1 Vanilla JS frontend automatically.
+| Variable | Required | Default | Description |
+| :--- | :---: | :---: | :--- |
+| `PORT` | ❌ No | `5000` | Port number on which the Express server listens. |
+| `JWT_SECRET` | ✅ Yes | - | Secret string used to sign and verify authentication JSON Web Tokens. |
+| `GEMINI_API_KEY` | ✅ Yes | - | API key obtained from Google AI Studio for Gemini 1.5 Flash SDK calls. |
 
 ---
 
-## Environment Variables
+## 📡 API Documentation
 
-| Variable | Required | Description |
-|---|---|---|
-| `GEMINI_API_KEY` | Yes | API key from Google AI Studio for generative AI features. |
-| `JWT_SECRET` | Yes | Secret string used to sign and verify JSON Web Tokens. |
-| `PORT` | No | Port for the Express server (defaults to 5000). |
+### 🔐 Authentication Endpoints (`/api/auth`)
 
----
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `POST` | `/api/auth/register` | Public | Registers a new user, hashes password, returns JWT token. |
+| `POST` | `/api/auth/login` | Public | Authenticates credentials, returns JWT token. |
+| `GET` | `/api/auth/me` | Protected | Fetches authenticated user's profile and progress metrics. |
 
-## Configuration
+### 🤖 AI Mentor & Assessment Endpoints
 
-- **`backend/package.json`**: Defines server scripts (`start`, `dev` using nodemon) and dependencies like `express`, `jsonwebtoken`, `bcryptjs`, `pdf-parse`.
-- **`frontend-v2/tailwind.config.js`**: Custom Tailwind theme defining brand colors (primary `#7C5CFF`), spacing, border radii, and soft box shadows.
-- **`frontend-v2/vite.config.ts`**: Vite configuration for the React build pipeline.
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `POST` | `/api/chat` | Protected | Sends user prompt + context to Gemini API, returns AI response. |
+| `POST` | `/api/assessment/submit` | Protected | Processes psychometric quiz responses and generates career matches. |
 
----
+### 📄 Resume Endpoints (`/api/resume`)
 
-## Database Design
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `POST` | `/api/resume/upload` | Protected | Accepts PDF upload (`multipart/form-data`), extracts text, returns AI feedback. |
 
-Since the project uses a custom local JSON database, there are no traditional relational tables or MongoDB collections. Data is stored in `backend/database.json`.
+### 📚 Resource & Dashboard Endpoints
 
-**Schema Structure:**
-```json
-{
-  "users": [
-    {
-      "_id": "1691234567890",
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "user",
-      "passwordHash": "$2b$10$...",
-      "resumeText": "Extracted text...",
-      "education": "High School",
-      "assessmentCompleted": true,
-      "lastRecommendations": [...]
-    }
-  ],
-  "resources": [
-    {
-      "id": 1,
-      "title": "Khan Academy",
-      "category": "Courses"
-    }
-  ]
-}
-```
-**Relationships:** 
-Data is largely denormalized. Users contain their own assessment results and resume text inline to simplify file I/O operations.
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `GET` | `/api/resources` | Public | Lists all curated scholarships, courses, and learning resources. |
+| `GET` | `/api/dashboard/stats` | Protected | Fetches aggregated user metrics, task deadlines, and progress statistics. |
+
+### 🛡️ Admin Endpoints (`/api/admin`)
+
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `GET` | `/api/admin/users` | Admin | Retrieves list of registered users and system usage analytics. |
+| `POST` | `/api/admin/resources` | Admin | Adds a new global scholarship or educational resource item. |
+| `DELETE` | `/api/admin/resources/:id` | Admin | Removes a resource item by ID. |
 
 ---
 
-## API Documentation
+## 🎨 Design Aesthetics & UI System
 
-### Auth
-- **POST `/api/auth/register`**: Registers user, hashes password, returns JWT.
-- **POST `/api/auth/login`**: Authenticates user, returns JWT.
-- **GET `/api/auth/me`**: Returns current authenticated user profile.
-
-### AI Chat & Assessment
-- **POST `/api/chat`**: (Auth Required) Sends prompt to Gemini, returns markdown response.
-- **POST `/api/assessment/submit`**: (Auth Required) Submits quiz answers, returns AI-generated career JSON array.
-
-### Resume
-- **POST `/api/resume/upload`**: (Auth Required) Accepts `multipart/form-data` PDF, extracts text, returns AI feedback.
-
-### Admin
-- **GET `/api/admin/users`**: (Admin Required) Returns list of all registered users.
-- **POST `/api/admin/resources`**: (Admin Required) Creates a new global resource.
-- **DELETE `/api/admin/resources/:id`**: (Admin Required) Deletes a global resource.
+CareerSathi follows strict, high-end web design principles designed to inspire confidence and ease of use:
+- **Palette**: Deep slate dark backgrounds (`#0B0F19`), vibrant primary indigo/purple accents (`#6366F1`, `#8B5CF6`), soft glassmorphism surface layers (`rgba(255, 255, 255, 0.05)`).
+- **Typography**: Clean, readable sans-serif layout powered by Inter / System fonts with balanced leading.
+- **Interactivity**: Micro-animations on hover, smooth transitions via Framer Motion, skeleton loaders during AI generation states.
+- **Accessibility**: High-contrast text ratios, clear focus indicators, full keyboard command menu (`Ctrl + K`).
 
 ---
 
-## Authentication
+## 🔒 Security & Data Privacy
 
-The platform uses stateless **JSON Web Tokens (JWT)**.
-1. **Login Flow:** User submits email/password $\rightarrow$ Server hashes password and compares via `bcrypt` $\rightarrow$ Server signs a JWT payload `{ userId }` with `JWT_SECRET` $\rightarrow$ Token sent to client.
-2. **Session:** The client stores the token in `localStorage` (v1) and attaches it to the `Authorization: Bearer <token>` header for subsequent requests.
-3. **Middleware:** `authMiddleware` intercepts protected routes, verifies the token signature, and attaches `req.userId` for the controller to use.
-
----
-
-## Security
-
-- **Encryption:** Passwords are never stored in plaintext; they are hashed using `bcryptjs` with a salt round of 10.
-- **Authorization:** Admin endpoints utilize an `adminMiddleware` that checks the user's `role` property before allowing DB modifications.
-- **Validation:** Basic payload validation exists in route controllers to ensure required fields (like emails, prompts, PDF mimetypes) are present before processing.
+1. **Password Safety**: Passwords are standardly hashed using `bcryptjs` with salt round factors before saving to database storage.
+2. **Stateless JWT Authorization**: Sensitive routes require a valid `Bearer <token>` HTTP header verified on every request.
+3. **Role-Based Protection**: Admin endpoints enforce strict role checks (`req.user.role === 'admin'`) returning `403 Forbidden` for non-authorized attempts.
+4. **Environment Isolation**: API keys and secrets are isolated inside `.env` and never exposed in client bundles.
 
 ---
 
-## Performance Optimizations
+## ⚡ Performance Optimizations
 
-- **In-Memory File Buffering:** The `/api/resume/upload` endpoint uses Multer's memory storage to buffer the PDF in RAM rather than writing to disk first, speeding up the parsing process.
-- **AI Prompt Truncation:** Extracted resume text is truncated using `.substring(0, 10000)` before being sent to Gemini to prevent exceeding token limits and reduce latency.
-
----
-
-## Error Handling
-
-- **Route Level:** `try/catch` blocks wrap all asynchronous DB and AI operations.
-- **Global Error Handler:** An Express middleware at the end of the stack catches unhandled errors, logs the stack trace to the console, and returns a generic `500 Internal Server Error` to prevent exposing stack traces to the client.
+- **Vite Code Splitting**: Frontend bundles are modularized using Vite's dynamic imports, keeping initial page load sizes light.
+- **In-Memory File Parsing**: PDF resume extractions parse directly from RAM buffers (`multer.memoryStorage()`) without writing temporary files to disk.
+- **Prompt Engineering Truncation**: Resume text content is normalized and capped at optimal token length to ensure rapid 1-2 second responses from Gemini 1.5 Flash.
 
 ---
 
-## Logging
+## 🗺️ Future Roadmap
 
-Standard Node.js `console.error` and `console.log` are used for debugging and tracking server initialization, AI API failures, and request errors.
-
----
-
-## Testing
-
-Currently relies on manual testing. 
-- API testing can be conducted using Postman or cURL against `localhost:5000`.
-- Frontend flows are tested manually in the browser.
+- [x] Complete React 19 + TypeScript + Vite modern migration (`frontend-v2`).
+- [x] Interactive step-by-step career roadmaps with downloadable guides.
+- [x] Full-stack Admin Console with user role management.
+- [ ] MongoDB Atlas / PostgreSQL database driver connection layer.
+- [ ] Multi-language support (Hindi, Marathi, Tamil, Bengali) for regional accessibility.
+- [ ] Direct Mentor-Student video integration and scheduling system.
 
 ---
 
-## Deployment
+## 🤝 Contributing
 
-Because the application relies on a local file system (`database.json`) for persistent storage, deploying to serverless platforms like Vercel (which have ephemeral/read-only file systems) will result in data loss on every function restart.
+We welcome contributions from students, developers, and educators!
 
-**Recommended Platforms:**
-- **Railway / Render:** Deploy as a standard Node.js Web Service with a persistent Disk attached to the `/backend` directory.
-- **VPS / EC2:** Clone the repo, run `npm install`, and use `PM2` to keep the server alive.
-
----
-
-## Scalability
-
-**Current Bottleneck:** The custom `db.js` wrapper reads and parses the entire `database.json` file synchronously for every request. Under high concurrent load, this will block the Node.js event loop and cause severe performance degradation.
-
-**Suggestions for Improvement:**
-1. Migrate the data layer to **MongoDB (Mongoose)** or **PostgreSQL (Prisma)**.
-2. Implement caching for the `/api/resources` endpoint using Redis.
-3. Add rate limiting (`express-rate-limit`) to AI endpoints to prevent abuse of the Gemini API quota.
-
----
-
-## Future Roadmap
-
-- [ ] Complete the React/Vite/Tailwind (frontend-v2) migration.
-- [ ] Migrate `database.json` to MongoDB Atlas.
-- [ ] Add Email Verification and Password Reset flows.
-- [ ] Implement OAuth2 (Google Login).
-- [ ] Add a visual roadmap generator (nodes/edges) based on AI output.
+1. **Fork** the repository.
+2. **Create** your feature branch:
+   ```bash
+   git checkout -b feature/AwesomeFeature
+   ```
+3. **Commit** your changes:
+   ```bash
+   git commit -m "feat: Add AwesomeFeature"
+   ```
+4. **Push** to the branch:
+   ```bash
+   git push origin feature/AwesomeFeature
+   ```
+5. **Open** a Pull Request.
 
 ---
 
-## Screenshots
+## 📄 License
 
-*(Placeholders - replace with actual images of the platform)*
-![Dashboard Placeholder](https://via.placeholder.com/800x400?text=Dashboard+View)
-![Assessment Placeholder](https://via.placeholder.com/800x400?text=AI+Assessment+View)
+Distributed under the **MIT License**. See `LICENSE` for more details.
 
----
+<br />
 
-## Demo
-
-[Link to Live Demo Placeholder] - *Coming soon*
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Contributing
-
-We welcome contributions! 
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
-
----
-
-## Maintainer
-
-Built and maintained by **Antigravity**. 
-*Passionate about building scalable software and AI-driven educational tools.*
-
----
-
-## Acknowledgements
-
-- Google for providing the generous Gemini API tier.
-- The open-source community for Express, React, and Tailwind.
-
----
-
-## Badges
-
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)
-![Node](https://img.shields.io/badge/Node.js-16%2B-brightgreen.svg)
-![AI](https://img.shields.io/badge/Powered_by-Gemini_AI-orange.svg)
-
----
-
-## SEO Description
-
-CareerSathi is a free, AI-powered career guidance portal utilizing Google Gemini to provide personalized career assessments, resume reviews, and tailored educational roadmaps for underprivileged students.
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/yourusername/careersathi.git
-cd careersathi/backend
-npm install
-echo "GEMINI_API_KEY=your_key_here\nJWT_SECRET=secret" > .env
-npm start
-```
-Open `http://localhost:5000`
-
----
-
-## FAQ
-
-**Q: Do I need MongoDB to run this?**
-A: No! The project uses a local JSON file for zero-setup ease of use.
-
-**Q: How do I access the Admin Panel?**
-A: Register a user with the email `admin@careersathi.com`.
-
-**Q: Why is my AI Mentor failing to respond?**
-A: Ensure your `GEMINI_API_KEY` is correctly set in the backend `.env` file and that you haven't exceeded Google's rate limits.
-
----
-
-## Troubleshooting
-
-- **Error: `Failed to fetch resources` or empty dashboard data**
-  - **Solution:** Ensure `database.json` has read/write permissions on your OS.
-- **Error: `Only PDF files are allowed` during resume upload**
-  - **Solution:** Ensure you are uploading a valid `.pdf` extension file, as Word documents (`.docx`) are not supported by the current parser.
-
----
-
-## Architecture Summary
-
-CareerSathi is an elegantly simple, monolithic Node.js web application that serves a Vanilla HTML/JS frontend and exposes a RESTful API. Its defining characteristic is the absence of a heavy database layer, relying instead on local JSON persistence to ensure absolute ease of setup. By tightly integrating the Google Gemini Generative AI SDK, the lightweight application delivers powerful, context-aware business logic (resume parsing, dynamic quiz evaluation, conversational mentoring) usually reserved for complex, distributed enterprise systems.
+<div align="center">
+  <b>CareerSathi — Bridging the Gap in Education with Generative AI</b><br />
+  <i>Built with ❤️ for Underprivileged Students Worldwide</i>
+</div>
