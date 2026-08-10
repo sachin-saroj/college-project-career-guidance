@@ -1,9 +1,8 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PlaceholderPage } from "./pages/PlaceholderPage";
 
 // Route-level Code Splitting (React.lazy) for Optimal Bundle Optimization
 const Dashboard = lazy(() => import("./pages/Dashboard").then(m => ({ default: m.Dashboard })));
@@ -56,7 +55,7 @@ function App() {
                 <Route path="/admin" element={<AdminDashboard />} />
               </Route>
               
-              <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
         </Router>
