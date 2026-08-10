@@ -67,6 +67,11 @@ app.use('/api/assessment/submit', aiLimiter);
 // Serve frontend-v2 static files in production
 app.use(express.static(path.join(__dirname, '../frontend-v2/dist')));
 
+// Interactive Swagger OpenAPI Documentation
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./swagger');
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 // Mount Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/chat', require('./routes/chat'));
