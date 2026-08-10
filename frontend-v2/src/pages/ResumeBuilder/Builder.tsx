@@ -14,13 +14,12 @@ export const ResumeBuilderLayout = () => {
   const activeResume = resumes.find(r => r.id === activeResumeId);
   const previewContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-fit preview on mount and window resize
   useEffect(() => {
     const autoFit = () => {
       if (previewContainerRef.current) {
         const containerWidth = previewContainerRef.current.clientWidth;
-        const A4_WIDTH = 794; // approx pixels at 96dpi
-        const padding = 64; // 32px each side
+        const A4_WIDTH = 794;
+        const padding = 64;
         const availableWidth = containerWidth - padding;
         
         if (availableWidth < A4_WIDTH) {
@@ -59,80 +58,80 @@ export const ResumeBuilderLayout = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background">
+    <div className="flex flex-col h-screen overflow-hidden bg-white">
       {/* Builder Toolbar */}
-      <div className="h-64 shrink-0 border-b bg-white flex items-center justify-between px-16 z-20 print:hidden">
-        <div className="flex items-center gap-16">
-          <Button variant="outline" size="sm" onClick={() => setActiveResume(null)} className="gap-8">
-            <ChevronLeft size={16} />
-            Dashboard
+      <div className="h-14 shrink-0 border-b border-[#e5e7eb] bg-white flex items-center justify-between px-6 z-20 print:hidden">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm" onClick={() => setActiveResume(null)} className="gap-1.5 text-xs font-mono">
+            <ChevronLeft size={14} />
+            BACK TO WORKSPACE
           </Button>
-          <div className="h-24 w-px bg-border" />
-          <h2 className="font-semibold text-text-main truncate max-w-[200px] md:max-w-md">
+          <div className="h-4 w-px bg-[#e5e7eb]" />
+          <h2 className="font-display text-sm font-normal text-ink truncate max-w-[200px] md:max-w-md">
             {activeResume.title}
           </h2>
         </div>
 
-        <div className="flex items-center gap-8">
-          <div className="hidden md:flex items-center gap-8 mr-16">
-            <button onClick={() => setZoom(z => Math.max(0.5, z - 0.1))} className="p-8 hover:bg-black/5 rounded text-text-muted">
-              <ZoomOut size={16} />
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2 mr-4">
+            <button onClick={() => setZoom(z => Math.max(0.5, z - 0.1))} className="p-1 hover:bg-black/5 rounded text-slate">
+              <ZoomOut size={14} />
             </button>
-            <span className="text-small text-text-muted w-48 text-center">{Math.round(zoom * 100)}%</span>
-            <button onClick={() => setZoom(z => Math.min(2, z + 0.1))} className="p-8 hover:bg-black/5 rounded text-text-muted">
-              <ZoomIn size={16} />
+            <span className="font-mono text-xs text-slate w-12 text-center">{Math.round(zoom * 100)}%</span>
+            <button onClick={() => setZoom(z => Math.min(2, z + 0.1))} className="p-1 hover:bg-black/5 rounded text-slate">
+              <ZoomIn size={14} />
             </button>
           </div>
-          <Button variant="outline" size="sm" onClick={handleAtsCheck} disabled={atsLoading} className="gap-8 hidden md:flex">
-            {atsLoading ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} className="text-brand-primary" />}
-            {atsLoading ? "Checking..." : "ATS Check"}
+          <Button variant="outline" size="sm" onClick={handleAtsCheck} disabled={atsLoading} className="gap-1.5 hidden md:flex text-xs font-mono">
+            {atsLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} className="text-[#003c33]" />}
+            {atsLoading ? "ANALYZING..." : "ATS AUDIT"}
           </Button>
-          <Button size="sm" onClick={handlePrint} className="gap-8">
-            <Download size={16} />
-            <span className="hidden sm:inline">Export PDF</span>
+          <Button size="sm" onClick={handlePrint} className="gap-1.5 text-xs font-mono">
+            <Download size={14} />
+            <span className="hidden sm:inline">EXPORT PDF</span>
           </Button>
         </div>
       </div>
 
-      {/* ATS Score Panel — slides in below toolbar */}
+      {/* ATS Score Panel */}
       {showAtsPanel && atsScore && !atsLoading && (
-        <div className="shrink-0 border-b bg-white px-24 py-16 print:hidden">
+        <div className="shrink-0 border-b border-[#d9d9dd] bg-[#eeece7] px-6 py-4 print:hidden">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-              <div className="flex items-center gap-12">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
                 {atsScore.score >= 70 
-                  ? <CheckCircle size={20} className="text-status-success" /> 
-                  : <AlertTriangle size={20} className="text-status-warning" />
+                  ? <CheckCircle size={18} className="text-[#003c33]" /> 
+                  : <AlertTriangle size={18} className="text-amber-600" />
                 }
-                <span className="text-h4 font-bold text-text-main">ATS Score: {atsScore.score}/100</span>
+                <span className="font-display text-lg text-ink">ATS Compatibility Score: <strong className="font-mono">{atsScore.score}/100</strong></span>
               </div>
-              <button onClick={() => setShowAtsPanel(false)} className="p-8 hover:bg-black/5 rounded text-text-muted">
+              <button onClick={() => setShowAtsPanel(false)} className="p-1 hover:bg-black/5 rounded text-slate">
                 <X size={16} />
               </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-small">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               {atsScore.suggestions.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-text-main mb-8">💡 Suggestions</h4>
-                  <ul className="space-y-4 text-text-muted">
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-ink font-semibold mb-2">SUGGESTIONS</h4>
+                  <ul className="space-y-1 text-slate">
                     {atsScore.suggestions.map((s, i) => <li key={i}>• {s}</li>)}
                   </ul>
                 </div>
               )}
               {atsScore.missingSkills.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-text-main mb-8">🔧 Missing Skills</h4>
-                  <div className="flex flex-wrap gap-8">
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-ink font-semibold mb-2">MISSING SKILLS</h4>
+                  <div className="flex flex-wrap gap-1">
                     {atsScore.missingSkills.map((s, i) => (
-                      <span key={i} className="px-8 py-4 bg-status-warning/10 text-status-warning rounded text-xs">{s}</span>
+                      <span key={i} className="px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-mono text-[11px]">{s}</span>
                     ))}
                   </div>
                 </div>
               )}
               {atsScore.formattingIssues.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-text-main mb-8">⚠️ Issues</h4>
-                  <ul className="space-y-4 text-text-muted">
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-ink font-semibold mb-2">FORMATTING ISSUES</h4>
+                  <ul className="space-y-1 text-slate">
                     {atsScore.formattingIssues.map((s, i) => <li key={i}>• {s}</li>)}
                   </ul>
                 </div>
@@ -145,22 +144,21 @@ export const ResumeBuilderLayout = () => {
       {/* Split Screen Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar - Forms */}
-        <div className="w-full md:w-[450px] lg:w-[500px] shrink-0 border-r bg-white overflow-y-auto print:hidden">
+        <div className="w-full md:w-[450px] lg:w-[500px] shrink-0 border-r border-[#e5e7eb] bg-white overflow-y-auto print:hidden">
           <SidebarForms />
         </div>
 
         {/* Right Area - Live Preview */}
         <div 
           ref={previewContainerRef}
-          className="hidden md:flex flex-1 bg-[#F3F4F6] overflow-auto items-start justify-center p-32 print:p-0 print:block print:bg-white print:overflow-visible"
+          className="hidden md:flex flex-1 bg-[#eeece7]/40 overflow-auto items-start justify-center p-8 print:p-0 print:block print:bg-white print:overflow-visible"
         >
-          {/* A4 Paper Container */}
           <div 
             style={{ 
               transform: `scale(${zoom})`, 
               transformOrigin: "top center" 
             }}
-            className="print:transform-none print:m-0"
+            className="print:transform-none print:m-0 shadow-lg border border-[#e5e7eb]"
           >
             <LivePreview />
           </div>
@@ -169,3 +167,4 @@ export const ResumeBuilderLayout = () => {
     </div>
   );
 };
+

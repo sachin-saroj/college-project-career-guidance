@@ -1,4 +1,5 @@
 @import url('https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,33 +7,188 @@
 
 @layer base {
   :root {
-    --bg-color: #FAFAFC;
-    --text-main: #1A1A1A;
+    --bg-color: #ffffff;
+    --text-main: #212121;
+    --text-muted: #75758a;
   }
   
+  html.dark {
+    color-scheme: dark;
+    --bg-color: #090a0c;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+  }
+
   html, body {
-    @apply bg-background text-text-main font-sans antialiased overflow-x-hidden;
+    @apply bg-canvas text-ink font-sans antialiased overflow-x-hidden transition-colors duration-200;
     background-color: var(--bg-color);
   }
-  
-  /* Custom scrollbar for a premium feel */
+
+  html.dark body {
+    background-color: #090a0c !important;
+    color: #f3f4f6 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-ink;
+  }
+
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    color: #f9fafb !important;
+  }
+
+  /* Precision clean scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-200 rounded-full;
+    background: #d9d9dd;
+    border-radius: 9999px;
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #272730;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-300;
+    background: #93939f;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  .hairline-b {
+    border-bottom: 1px solid #e5e7eb;
   }
+  .hairline-r {
+    border-right: 1px solid #e5e7eb;
+  }
+  .hairline-t {
+    border-top: 1px solid #e5e7eb;
+  }
+  .hairline-l {
+    border-left: 1px solid #e5e7eb;
+  }
+  .mono-label {
+    @apply font-mono text-[12px] tracking-[0.05em] uppercase text-slate;
+  }
+  
+  .glass-header {
+    @apply bg-white/80 backdrop-blur-md dark:bg-[#101114]/80;
+  }
+
+  .hover-card-lift {
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-black/40;
+  }
+}
+
+/* ===================================================
+   COHERE-GRADE ULTRA-PREMIUM DARK THEME ENGINE
+=================================================== */
+
+/* Root & Page Canvas Containers */
+html.dark .bg-canvas,
+html.dark .bg-background,
+html.dark .min-h-screen,
+html.dark main {
+  background-color: #090a0c !important;
+  color: #f3f4f6 !important;
+}
+
+/* Cards & Surface Containers */
+html.dark .bg-white,
+html.dark .bg-card {
+  background-color: #121316 !important;
+  color: #f3f4f6 !important;
+  border-color: #22242b !important;
+}
+
+/* Secondary Backgrounds (Sub-cards, Inputs, Headers, Buttons) */
+html.dark .bg-\[\#f7f7f6\],
+html.dark .bg-gray-50,
+html.dark .bg-gray-100 {
+  background-color: #18191e !important;
+  color: #e5e7eb !important;
+}
+
+html.dark .bg-\[\#eeece7\] {
+  background-color: #22242c !important;
+  color: #ffffff !important;
+}
+
+html.dark .bg-\[\#eeece7\]\/40 {
+  background-color: rgba(34, 36, 44, 0.5) !important;
+}
+
+/* Text Overrides for High Contrast & Crisp Legibility */
+html.dark .text-ink,
+html.dark .text-text-main {
+  color: #f3f4f6 !important;
+}
+
+html.dark .text-slate,
+html.dark .text-text-muted,
+html.dark .text-body-muted {
+  color: #9ca3af !important;
+}
+
+/* Section Subtitle & Small Labels */
+html.dark .text-slate\/80,
+html.dark p.text-slate {
+  color: #a1a1aa !important;
+}
+
+/* Borders & Dividers */
+html.dark .border-\[\#e5e7eb\], 
+html.dark .border-\[\#d9d9dd\],
+html.dark .border-\[\#f2f2f2\],
+html.dark .border-border,
+html.dark .hairline-b,
+html.dark .hairline-r,
+html.dark .hairline-t,
+html.dark .hairline-l,
+html.dark .divide-\[\#e5e7eb\] > * + * {
+  border-color: #22242b !important;
+}
+
+/* Mint Badges & Green Accents in Dark Mode */
+html.dark .bg-\[\#edfce9\] {
+  background-color: #062b21 !important;
+  border-color: #055038 !important;
+}
+
+html.dark .text-\[\#003c33\] {
+  color: #6ee7b7 !important;
+}
+
+/* Top Navbar & Sidebar Dark Override */
+html.dark header,
+html.dark aside,
+html.dark nav {
+  background-color: #101114 !important;
+  border-color: #22242b !important;
+}
+
+/* Form Controls & Inputs */
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+  background-color: #18191e !important;
+  color: #ffffff !important;
+  border-color: #2a2c35 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Dark Mode Button Overrides */
+html.dark .hover\:bg-\[\#eeece7\]:hover {
+  background-color: #272932 !important;
+}
+
+html.dark .hover\:bg-\[\#f7f7f6\]:hover {
+  background-color: #1f2128 !important;
 }

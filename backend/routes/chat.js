@@ -22,10 +22,20 @@ router.post('/', authMiddleware, async (req, res) => {
 
     const user = await User.findById(req.userId);
     
-    // Provide some context about the user if they have a resume
     let systemContext = "You are CareerSathi, a helpful career guidance AI mentor for underprivileged students. Provide practical, empathetic, and actionable advice.";
-    if (user && user.resumeText) {
-      systemContext += `\n\nContext about the user from their resume: ${user.resumeText}`;
+    if (user) {
+      systemContext += `\n\nStudent Profile Context:
+      - Name: ${user.name || 'Student'}
+      - Education: ${user.education || 'Not provided'}
+      - Skills: ${user.skills || 'Not provided'}
+      - Interests: ${user.interests || 'Not provided'}
+      - Career Goal: ${user.careerGoal || 'Not provided'}`;
+      if (user.lastRecommendations) {
+        systemContext += `\n- Top Career Match: ${user.lastRecommendations.topMatch} (${user.lastRecommendations.matchScore}% compatibility score)`;
+      }
+      if (user.resumeText) {
+        systemContext += `\n- Resume Context: ${user.resumeText.substring(0, 1000)}`;
+      }
     }
 
     const fullPrompt = `${systemContext}\n\nUser Question: ${prompt}`;

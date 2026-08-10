@@ -5,6 +5,7 @@ import { Assessment } from "./pages/Assessment";
 import { Mentor } from "./pages/Mentor";
 import { ResumeBuilder } from "./pages/ResumeBuilder";
 import { ResourcesHub } from "./pages/Resources/ResourcesHub";
+import { RoadmapsPage } from "./pages/Roadmaps/RoadmapsPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { AdminDashboard } from "./pages/Admin";
 import Profile from "./pages/Profile";
@@ -34,7 +35,7 @@ function App() {
             <Route path="/resources" element={<ResourcesHub defaultCategory="All" />} />
             <Route path="/scholarships" element={<ResourcesHub defaultCategory="Scholarships" />} />
             <Route path="/internships" element={<ResourcesHub defaultCategory="Internships" />} />
-            <Route path="/roadmaps" element={<ResourcesHub defaultCategory="Roadmaps" />} />
+            <Route path="/roadmaps" element={<RoadmapsPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

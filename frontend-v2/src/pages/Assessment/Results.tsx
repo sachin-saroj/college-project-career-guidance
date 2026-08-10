@@ -5,10 +5,17 @@ import { motion } from "framer-motion";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 import { CheckCircle2, ChevronRight, Download, RefreshCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useEffect } from "react";
 
 export const Results = () => {
   const { resetAssessment, result } = useAssessmentStore();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   const handleRetake = () => {
     resetAssessment();
@@ -20,71 +27,80 @@ export const Results = () => {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto py-24"
+      className="max-w-5xl mx-auto py-6"
     >
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-40 gap-16">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4 border-b border-[#e5e7eb] pb-6">
         <div>
-          <h1 className="text-h2 font-bold text-text-main mb-8">Your Results Are Ready</h1>
-          <p className="text-body text-text-muted">Based on your responses, we've found your optimal career path.</p>
+          <span className="font-mono text-[11px] uppercase tracking-widest text-[#003c33] bg-[#edfce9] px-2.5 py-0.5 rounded border border-[#003c33]/15 block mb-2 w-fit">
+            CAREER DIAGNOSTIC REPORT
+          </span>
+          <h1 className="font-display text-3xl md:text-4xl font-normal text-ink tracking-tight">
+            Your Diagnostic Results
+          </h1>
+          <p className="text-slate text-sm mt-1">Based on your evaluation profile, here is your optimal career match.</p>
         </div>
-        <div className="flex gap-16">
-          <Button variant="outline" onClick={handleRetake} className="px-24">
-            <RefreshCcw size={16} className="mr-8" /> Retake
+        <div className="flex gap-3">
+          <Button variant="outline" size="sm" onClick={handleRetake} className="text-xs">
+            <RefreshCcw size={14} className="mr-1.5" /> Retake
           </Button>
-          <Button className="px-24" onClick={handleDashboard}>
-            Save to Dashboard
+          <Button size="sm" className="text-xs" onClick={handleDashboard}>
+            Save to Console →
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-24">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Recommendation Column */}
-        <div className="lg:col-span-2 space-y-24">
-          <Card className="bg-gradient-to-br from-brand-primary/5 to-brand-accent/5 border-brand-primary/20">
-            <CardContent className="p-32">
-              <p className="text-small font-semibold text-brand-primary uppercase tracking-wider mb-8">Top Match</p>
-              <div className="flex items-end justify-between mb-24">
-                <h2 className="text-[32px] font-bold text-text-main leading-none">{result?.topMatch}</h2>
-                <div className="text-h3 font-bold text-brand-primary">{result?.matchScore}%</div>
+        <div className="lg:col-span-2 space-y-6">
+          <Card variant="dark" className="p-6">
+            <CardContent className="p-0">
+              <span className="font-mono text-[11px] text-white/80 uppercase tracking-widest block mb-2">
+                TOP CAREER RECOMMENDATION
+              </span>
+              <div className="flex items-end justify-between mb-6">
+                <h2 className="font-display text-3xl md:text-4xl font-normal text-white">{result?.topMatch}</h2>
+                <div className="font-mono text-2xl font-semibold bg-white/10 text-white px-3 py-1 rounded border border-white/20">
+                  {result?.matchScore}%
+                </div>
               </div>
               
-              <div className="w-full h-px bg-border my-24" />
+              <div className="h-px bg-white/10 my-6" />
               
-              <div className="grid grid-cols-2 gap-24">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-small text-text-muted mb-12">Core Skills</p>
-                  <div className="flex flex-wrap gap-8">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-white/70 block mb-2">Core Competencies</span>
+                  <div className="flex flex-wrap gap-2">
                     {result?.skills?.map((skill: string, idx: number) => (
-                      <span key={idx} className="inline-flex items-center px-12 py-4 rounded-full bg-white border text-small font-medium text-text-main">
-                        <CheckCircle2 size={12} className="text-status-success mr-4" /> {skill}
+                      <span key={idx} className="font-mono text-[11px] inline-flex items-center px-2.5 py-1 rounded bg-white/10 text-white border border-white/20">
+                        <CheckCircle2 size={12} className="text-coral mr-1.5" /> {skill}
                       </span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <p className="text-small text-text-muted mb-12">Expected Salary</p>
-                  <p className="text-h4 font-bold text-text-main">{result?.salaryRange}</p>
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-white/70 block mb-2">Estimated Salary Band</span>
+                  <p className="font-display text-2xl text-white font-normal">{result?.salaryRange}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Recommended Roadmap</CardTitle>
+          <Card variant="canvas" className="p-6">
+            <CardHeader className="p-0 pb-4 border-b border-[#e5e7eb]">
+              <CardTitle>Recommended Milestone Roadmap</CardTitle>
             </CardHeader>
-            <CardContent className="p-24 pt-0">
-              <div className="space-y-16">
+            <CardContent className="p-0 pt-4">
+              <div className="space-y-3">
                 {result?.roadmap?.map((step: string, idx: number) => (
-                  <div key={idx} className="flex items-center">
-                    <div className="w-32 h-32 rounded-full bg-brand-light text-brand-primary flex items-center justify-center font-bold text-small mr-16 shrink-0">
-                      {idx + 1}
+                  <div key={idx} className="flex items-center py-2.5 border-b border-[#e5e7eb] last:border-b-0">
+                    <div className="font-mono text-xs font-semibold w-7 h-7 rounded bg-[#eeece7] text-ink flex items-center justify-center mr-3 shrink-0">
+                      0{idx + 1}
                     </div>
-                    <p className="text-body font-medium text-text-main flex-1">{step}</p>
+                    <p className="text-sm text-ink flex-1 font-medium">{step}</p>
                     {idx < result.roadmap.length - 1 && (
-                      <ChevronRight size={16} className="text-text-muted/50 hidden sm:block" />
+                      <ChevronRight size={14} className="text-slate hidden sm:block" />
                     )}
                   </div>
                 ))}
@@ -94,30 +110,30 @@ export const Results = () => {
         </div>
 
         {/* Sidebar / Chart Column */}
-        <div className="space-y-24">
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle>Personality Traits</CardTitle>
+        <div className="space-y-6">
+          <Card variant="stone" className="h-full p-6 flex flex-col justify-between">
+            <CardHeader className="p-0 pb-3 border-b border-[#d9d9dd]">
+              <CardTitle>Trait Analysis Radar</CardTitle>
             </CardHeader>
-            <CardContent className="p-24 pt-0 flex flex-col items-center">
-              <div className="w-full h-[300px]">
+            <CardContent className="p-0 pt-4 flex flex-col items-center flex-1 justify-between">
+              <div className="w-full h-[260px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={result?.radarData || []}>
-                    <PolarGrid stroke="#E5E7EB" />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#6B7280', fontSize: 12 }} />
+                  <RadarChart cx="50%" cy="50%" outerRadius="65%" data={result?.radarData || []}>
+                    <PolarGrid stroke="#d9d9dd" />
+                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#212121', fontSize: 11, fontFamily: 'monospace' }} />
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                     <Radar
                       name="Traits"
                       dataKey="A"
-                      stroke="#6366F1"
-                      fill="#6366F1"
-                      fillOpacity={0.3}
+                      stroke="#003c33"
+                      fill="#003c33"
+                      fillOpacity={0.25}
                     />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
-              <Button variant="outline" className="w-full mt-24">
-                <Download size={16} className="mr-8" /> Download PDF Report
+              <Button variant="outline" className="w-full mt-4 text-xs font-mono">
+                <Download size={14} className="mr-2" /> DOWNLOAD PDF REPORT
               </Button>
             </CardContent>
           </Card>
@@ -126,3 +142,4 @@ export const Results = () => {
     </motion.div>
   );
 };
+

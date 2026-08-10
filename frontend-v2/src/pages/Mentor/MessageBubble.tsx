@@ -1,5 +1,4 @@
 import type { Message } from "../../store/useChatStore";
-// Cache bust
 import { Brain, User, Copy, RefreshCcw, ThumbsUp, ThumbsDown } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -15,51 +14,58 @@ export const MessageBubble = ({ message }: { message: Message }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "group flex gap-16 py-24 px-16 md:px-32 w-full",
-        isAi ? "bg-background-alt/50" : "bg-white"
+        "group flex gap-4 py-4 px-6 md:px-8 w-full border-b border-white/5 text-white",
+        isAi ? "bg-[#17171c]" : "bg-white/5"
       )}
     >
       <div
         className={cn(
-          "w-32 h-32 rounded-full flex items-center justify-center shrink-0 mt-4",
-          isAi ? "bg-brand-primary text-white" : "bg-black/10 text-text-main"
+          "w-7 h-7 rounded flex items-center justify-center shrink-0 mt-1 border text-xs font-mono",
+          isAi ? "bg-[#003c33] text-white border border-[#003c33]" : "bg-white/10 text-white border-white/20"
         )}
       >
-        {isAi ? <Brain size={18} /> : <User size={18} />}
+        {isAi ? <Brain size={14} /> : <User size={14} />}
       </div>
       
       <div className="flex-1 overflow-hidden min-w-0">
-        <div className="prose prose-sm md:prose-base prose-slate max-w-none break-words">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-white/50">
+            {isAi ? "CAREERSATHI AI MENTOR" : "STUDENT"}
+          </span>
+          <span className="font-mono text-[10px] text-white/30">• {new Date((message as any).timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+
+        <div className="prose prose-invert prose-sm max-w-none text-white/90 leading-relaxed font-sans">
           {message.content ? (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {message.content}
             </ReactMarkdown>
           ) : (
-            <div className="flex items-center gap-4 h-24">
-              <span className="w-8 h-8 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-              <span className="w-8 h-8 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-              <span className="w-8 h-8 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+            <div className="flex items-center gap-1.5 h-6 font-mono text-xs text-white/50">
+              <span className="w-1.5 h-1.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="w-1.5 h-1.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="w-1.5 h-1.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
             </div>
           )}
         </div>
 
         {isAi && message.content && (
-          <div className="flex items-center gap-8 mt-16 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onClick={handleCopy} className="p-6 rounded hover:bg-black/5 text-text-muted transition-colors" title="Copy">
-              <Copy size={16} />
+          <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button onClick={handleCopy} className="p-1 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors" title="Copy">
+              <Copy size={13} />
             </button>
-            <button className="p-6 rounded hover:bg-black/5 text-text-muted transition-colors" title="Regenerate">
-              <RefreshCcw size={16} />
+            <button className="p-1 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors" title="Regenerate">
+              <RefreshCcw size={13} />
             </button>
-            <div className="w-px h-16 bg-border mx-4" />
-            <button className="p-6 rounded hover:bg-black/5 text-text-muted transition-colors" title="Helpful">
-              <ThumbsUp size={16} />
+            <div className="w-px h-3 bg-white/20 mx-1" />
+            <button className="p-1 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors" title="Helpful">
+              <ThumbsUp size={13} />
             </button>
-            <button className="p-6 rounded hover:bg-black/5 text-text-muted transition-colors" title="Not Helpful">
-              <ThumbsDown size={16} />
+            <button className="p-1 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors" title="Not Helpful">
+              <ThumbsDown size={13} />
             </button>
           </div>
         )}
@@ -67,3 +73,4 @@ export const MessageBubble = ({ message }: { message: Message }) => {
     </motion.div>
   );
 };
+

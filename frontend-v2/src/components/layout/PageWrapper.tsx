@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export const PageWrapper = ({ children }: { children: ReactNode }) => {
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-canvas dark:bg-[#090a0c] text-ink dark:text-[#f3f4f6] flex">
       <Sidebar />
       <motion.div 
         layout

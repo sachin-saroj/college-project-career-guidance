@@ -13,100 +13,84 @@ export const CareerMatchCard = ({ recommendation }: { recommendation?: any }) =>
     { id: 1, name: recommendation.topMatch, match: recommendation.matchScore }
   ] : [];
 
-
   return (
-    <Card hoverEffect className="h-full flex flex-col group">
-      <CardContent className="p-24 pb-32 flex flex-col h-full z-10">
-        <div className="flex items-center justify-between mb-24">
-          <div className="flex items-center gap-8">
-            <div className="text-brand-primary">
-              <Target size={18} />
+    <Card variant="stone" hoverEffect className="h-full flex flex-col p-6">
+      <CardContent className="p-0 flex flex-col h-full z-10">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="text-ink">
+              <Target size={16} />
             </div>
-            <h3 className="font-bold text-[18px] text-text-main">Top Career Matches</h3>
+            <h3 className="font-display text-lg font-normal text-ink">Career Match Insight</h3>
           </div>
           <button 
             onClick={() => navigate('/assessment')}
-            className="text-small font-semibold text-brand-primary hover:text-brand-accent transition-colors flex items-center group-hover:underline"
+            className="font-mono text-xs text-ink hover:underline flex items-center gap-1"
           >
-            View All <ChevronRight size={14} className="ml-2 group-hover:translate-x-4 transition-transform" />
+            All matches <ChevronRight size={12} />
           </button>
         </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-16">
+        <div className="flex flex-col justify-between flex-1 gap-4">
           <AnimatePresence mode="wait">
             {isLoading ? (
-              <motion.div 
-                key="skeleton"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col gap-16 w-full"
-              >
-                {[1, 2].map((i) => (
-                  <div key={i} className="w-full flex flex-col gap-8">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-12">
-                        <div className="h-24 w-24 rounded-full bg-gray-100 animate-pulse" />
-                        <div className="h-16 w-32 bg-gray-100 animate-pulse rounded" />
-                      </div>
-                      <div className="h-16 w-16 bg-gray-100 animate-pulse rounded" />
-                    </div>
-                    <div className="w-full h-[6px] bg-gray-100 animate-pulse rounded-full" />
-                  </div>
-                ))}
-              </motion.div>
+              <div className="flex flex-col gap-3 w-full">
+                <div className="h-4 w-3/4 bg-[#d9d9dd] animate-pulse rounded" />
+                <div className="h-2 w-full bg-[#d9d9dd] animate-pulse rounded-full" />
+              </div>
             ) : matches.length > 0 ? (
-              <motion.div 
-                key="content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex flex-col gap-16 w-full"
-              >
+              <div className="flex flex-col gap-4 w-full">
                 {matches.map((match) => (
-                  <motion.div 
+                  <div 
                     key={match.id} 
-                    className="w-full group/row cursor-pointer"
-                    whileHover={{ scale: 1.02 }}
+                    className="w-full cursor-pointer bg-white border border-[#d9d9dd] rounded-lg p-4"
                     onClick={() => navigate('/roadmaps')}
                   >
-                    <div className="flex items-center justify-between mb-12">
-                      <div className="flex items-center gap-12">
-                        <div className="h-24 w-24 rounded-full bg-brand-light flex items-center justify-center text-[11px] font-bold text-brand-primary group-hover/row:bg-brand-primary group-hover/row:text-white transition-colors">
-                          {match.id}
-                        </div>
-                        <span className="text-body font-medium text-text-main group-hover/row:text-brand-primary transition-colors">{match.name}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-slate block mb-1">
+                          RECOMMENDED CAREER
+                        </span>
+                        <span className="font-display text-xl font-normal text-ink">{match.name}</span>
                       </div>
-                      <span className="text-small font-semibold text-status-success">{match.match}% Match</span>
+                      <span className="font-mono text-xs bg-[#edfce9] text-[#003c33] px-2.5 py-1 rounded border border-[#003c33]/15">
+                        {match.match}% Compatibility
+                      </span>
                     </div>
-                    <div className="w-full h-[6px] bg-brand-light rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-[#eeece7] rounded-full overflow-hidden">
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${match.match}%` }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className={cn(
-                          "h-full rounded-full",
-                          match.match >= 90 ? "bg-status-success" : "bg-status-success/70"
-                        )} 
+                        className={cn("h-full bg-[#003c33] rounded-full")} 
                       />
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             ) : (
-              <motion.div 
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex-1 flex flex-col items-center justify-center text-center px-16"
-              >
-                <div className="h-48 w-48 bg-brand-light/50 rounded-full flex items-center justify-center mb-12">
-                  <Target size={20} className="text-brand-primary/50" />
-                </div>
-                <p className="text-small text-text-muted mb-12">Take an assessment to see your career matches.</p>
-                <button onClick={() => navigate('/assessment')} className="text-xs font-semibold text-brand-primary hover:underline">Start Assessment</button>
-              </motion.div>
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-4 bg-white border border-[#d9d9dd] rounded-lg">
+                <Target size={24} className="text-slate mb-2" />
+                <h4 className="font-display text-sm font-medium text-ink mb-1">No Assessment Taken</h4>
+                <p className="text-xs text-slate mb-3">Take the career assessment to unlock AI match scoring.</p>
+                <button 
+                  onClick={() => navigate('/assessment')}
+                  className="font-mono text-xs bg-[#17171c] text-white px-3 py-1.5 rounded-full hover:bg-black"
+                >
+                  Start Assessment
+                </button>
+              </div>
             )}
           </AnimatePresence>
+
+          {matches.length > 0 && (
+            <button 
+              onClick={() => navigate('/roadmaps')}
+              className="w-full font-mono text-xs text-slate hover:text-ink text-center pt-2 border-t border-[#d9d9dd]"
+            >
+              EXPLORE CAREER ROADMAP & SKILLS →
+            </button>
+          )}
         </div>
       </CardContent>
     </Card>

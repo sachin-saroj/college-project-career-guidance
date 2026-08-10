@@ -119,18 +119,17 @@ export default function Profile() {
     }
   };
 
-  // Calculate completion percentage
+  // Calculate completion percentage (matching single source of truth)
   const calculateCompletion = () => {
     if (!profileData) return 0;
-    const fields = ['name', 'education', 'skills', 'interests', 'careerGoal', 'familyIncome'];
-    let filled = 0;
-    fields.forEach(field => {
-      // @ts-ignore
-      if (profileData[field] && profileData[field].trim() !== "") {
-        filled++;
-      }
-    });
-    return Math.round((filled / fields.length) * 100);
+    let score = 0;
+    if (profileData.name && profileData.name.trim()) score += 20;
+    if (profileData.education && profileData.education.trim()) score += 16;
+    if (profileData.skills && profileData.skills.trim()) score += 16;
+    if ((profileData.interests && profileData.interests.trim()) || (profileData.careerGoal && profileData.careerGoal.trim())) score += 16;
+    if (profileData.assessmentCompleted) score += 16;
+    if (profileData.resumeData || (profileData.resumeText && profileData.resumeText.trim())) score += 16;
+    return score;
   };
 
   const completionPercentage = calculateCompletion();
@@ -197,61 +196,64 @@ export default function Profile() {
 
         {/* Profile Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.3 }}
         >
-          <Card className="overflow-hidden">
-            <div className="h-120 bg-gradient-to-r from-brand-primary to-brand-secondary" />
-            <CardContent className="px-32 pt-0 pb-32 relative">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-24">
-                <div className="flex flex-col md:flex-row items-start md:items-end gap-24 -mt-40 md:-mt-48 relative z-10">
-                  <div className="ring-4 ring-white rounded-full bg-white">
-                    <Avatar initials={(profileData?.name || "S").split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase()} size="lg" className="w-96 h-96 md:w-120 md:h-120 text-3xl" />
+          <Card variant="stone" className="overflow-hidden border border-[#d9d9dd]">
+            <div className="h-28 bg-[#17171c]" />
+            <CardContent className="px-8 pt-0 pb-6 relative">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="flex flex-col md:flex-row items-start md:items-end gap-6 relative z-10">
+                  <div className="ring-4 ring-white rounded-full bg-white -mt-10">
+                    <Avatar initials={(profileData?.name || "S").split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase()} size="lg" className="w-24 h-24 text-xl bg-[#003c33] text-white" />
                   </div>
-                  <div className="mb-8">
-                    <h1 className="text-h2 font-bold text-text-main leading-tight">{profileData?.name}</h1>
-                    <div className="flex items-center gap-16 mt-4">
-                      <span className="flex items-center text-text-muted text-small">
-                        <Mail size={16} className="mr-6" />
+                  <div className="mb-2 mt-2">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded border border-[#003c33]/15 block mb-1 w-fit">
+                      STUDENT CONTEXT PROFILE
+                    </span>
+                    <h1 className="font-display text-2xl md:text-3xl font-normal text-ink leading-tight">{profileData?.name}</h1>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="font-mono text-xs text-slate flex items-center">
+                        <Mail size={14} className="mr-1.5" />
                         {profileData?.email}
                       </span>
-                      <Badge variant="default" className="capitalize">
+                      <Badge variant="outline" className="capitalize font-mono text-[10px] border-[#d9d9dd]">
                         {profileData?.role}
                       </Badge>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-end gap-12 w-full md:w-auto">
+                <div className="flex flex-col items-end gap-3 w-full md:w-auto">
                   {!isEditing && (
-                    <Button onClick={() => setIsEditing(true)} variant="secondary" className="w-full md:w-auto">
-                      <Edit2 size={16} className="mr-8" />
-                      Edit Profile
+                    <Button onClick={() => setIsEditing(true)} variant="outline" size="sm" className="w-full md:w-auto text-xs font-mono">
+                      <Edit2 size={14} className="mr-1.5" />
+                      EDIT PROFILE
                     </Button>
                   )}
                 </div>
               </div>
 
               {/* Completion Bar */}
-              <div className="mt-32 p-24 bg-gray-50 rounded-xl border border-border">
-                <div className="flex justify-between items-end mb-12">
+              <div className="mt-6 p-4 bg-white rounded-lg border border-[#d9d9dd]">
+                <div className="flex justify-between items-end mb-2">
                   <div>
-                    <h3 className="font-semibold text-text-main">Profile Completion</h3>
-                    <p className="text-small text-text-muted mt-4">
+                    <h3 className="font-display text-sm font-normal text-ink">Profile Completion Index</h3>
+                    <p className="font-mono text-xs text-slate mt-0.5">
                       {completionPercentage === 100 
-                        ? "Your profile is complete! You will receive better career recommendations." 
-                        : "Complete your profile to receive more personalized career recommendations."}
+                        ? "Your profile is 100% complete — optimal AI matching active." 
+                        : "Complete all fields to increase career & scholarship recommendation precision."}
                     </p>
                   </div>
-                  <span className="text-h3 font-bold text-brand-primary">{completionPercentage}%</span>
+                  <span className="font-mono text-lg font-semibold text-[#003c33]">{completionPercentage}%</span>
                 </div>
-                <div className="h-8 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-[#eeece7] rounded-full overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${completionPercentage}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="h-full bg-brand-primary"
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="h-full bg-[#003c33]"
                   />
                 </div>
               </div>
@@ -260,36 +262,36 @@ export default function Profile() {
         </motion.div>
 
         {/* Form Sections */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-24">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <Card>
-              <CardHeader className="border-b border-border">
-                <CardTitle className="flex items-center text-h4">
-                  <User size={20} className="mr-12 text-brand-primary" />
-                  Personal Information
+            <Card variant="canvas" className="border border-[#e5e7eb]">
+              <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+                <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                  <User size={18} className="mr-2 text-[#003c33]" />
+                  Personal Details
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-24 space-y-24">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main">Full Name</label>
+              <CardContent className="p-6 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate">Full Name</label>
                     <Input 
                       {...register("name")} 
                       disabled={!isEditing}
-                      className={!isEditing ? "bg-gray-50" : ""}
+                      className={!isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.name && <p className="text-xs text-error-main mt-4">{errors.name.message}</p>}
+                    {errors.name && <p className="font-mono text-xs text-red-600 mt-1">{errors.name.message}</p>}
                   </div>
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main">Email (Read Only)</label>
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate">Email Address</label>
                     <Input 
                       value={profileData?.email || ""}
                       disabled
-                      className="bg-gray-50"
+                      className="bg-[#f7f7f6] border-[#d9d9dd]"
                     />
                   </div>
                 </div>
@@ -298,125 +300,123 @@ export default function Profile() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-24"
+            transition={{ duration: 0.3, delay: 0.15 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
           >
             {/* Education & Financial */}
-            <div className="space-y-24">
-              <Card>
-                <CardHeader className="border-b border-border">
-                  <CardTitle className="flex items-center text-h4">
-                    <GraduationCap size={20} className="mr-12 text-brand-primary" />
-                    Education
+            <div className="space-y-6">
+              <Card variant="canvas" className="border border-[#e5e7eb]">
+                <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+                  <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                    <GraduationCap size={18} className="mr-2 text-[#003c33]" />
+                    Academic Context
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-24 space-y-24">
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main">Highest Education / Current School</label>
+                <CardContent className="p-6 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate">Highest Education / Institution</label>
                     <Input 
                       {...register("education")} 
                       disabled={!isEditing}
                       placeholder={isEditing ? "e.g., B.Tech in Computer Science, Year 2" : "Not provided"}
-                      className={!isEditing && !profileData?.education ? "italic text-text-muted bg-gray-50" : !isEditing ? "bg-gray-50" : ""}
+                      className={!isEditing && !profileData?.education ? "italic text-slate bg-[#f7f7f6] border-[#d9d9dd]" : !isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.education && <p className="text-xs text-error-main mt-4">{errors.education.message}</p>}
+                    {errors.education && <p className="font-mono text-xs text-red-600 mt-1">{errors.education.message}</p>}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader className="border-b border-border">
-                  <CardTitle className="flex items-center text-h4">
-                    <Wallet size={20} className="mr-12 text-brand-primary" />
-                    Financial Information
+              <Card variant="canvas" className="border border-[#e5e7eb]">
+                <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+                  <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                    <Wallet size={18} className="mr-2 text-[#003c33]" />
+                    Socioeconomic Indicator
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-24 space-y-24">
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main">Family Income (For Scholarships)</label>
+                <CardContent className="p-6 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate">Family Income Bracket (For Scholarships)</label>
                     <Input 
                       {...register("familyIncome")} 
                       disabled={!isEditing}
                       placeholder={isEditing ? "e.g., Less than 2 LPA" : "Not provided"}
-                      className={!isEditing && !profileData?.familyIncome ? "italic text-text-muted bg-gray-50" : !isEditing ? "bg-gray-50" : ""}
+                      className={!isEditing && !profileData?.familyIncome ? "italic text-slate bg-[#f7f7f6] border-[#d9d9dd]" : !isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.familyIncome && <p className="text-xs text-error-main mt-4">{errors.familyIncome.message}</p>}
+                    {errors.familyIncome && <p className="font-mono text-xs text-red-600 mt-1">{errors.familyIncome.message}</p>}
                   </div>
                 </CardContent>
               </Card>
             </div>
 
             {/* Career Profile */}
-            <div className="space-y-24">
-              <Card className="h-full">
-                <CardHeader className="border-b border-border">
-                  <CardTitle className="flex items-center text-h4">
-                    <Target size={20} className="mr-12 text-brand-primary" />
-                    Career Profile
+            <div className="space-y-6">
+              <Card variant="canvas" className="h-full border border-[#e5e7eb]">
+                <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+                  <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                    <Target size={18} className="mr-2 text-[#003c33]" />
+                    Career Parameters
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-24 space-y-24">
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main flex items-center">
-                      <Briefcase size={14} className="mr-6 text-text-muted" />
-                      Career Goal
+                <CardContent className="p-6 space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate flex items-center">
+                      <Briefcase size={12} className="mr-1.5 text-slate" />
+                      Target Career Role
                     </label>
                     <Input 
                       {...register("careerGoal")} 
                       disabled={!isEditing}
                       placeholder={isEditing ? "e.g., Software Engineer" : "Not provided"}
-                      className={!isEditing && !profileData?.careerGoal ? "italic text-text-muted bg-gray-50" : !isEditing ? "bg-gray-50" : ""}
+                      className={!isEditing && !profileData?.careerGoal ? "italic text-slate bg-[#f7f7f6] border-[#d9d9dd]" : !isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.careerGoal && <p className="text-xs text-error-main mt-4">{errors.careerGoal.message}</p>}
+                    {errors.careerGoal && <p className="font-mono text-xs text-red-600 mt-1">{errors.careerGoal.message}</p>}
                   </div>
 
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main flex items-center">
-                      <Target size={14} className="mr-6 text-text-muted" />
-                      Skills (Comma separated)
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate flex items-center">
+                      <Target size={12} className="mr-1.5 text-slate" />
+                      Assessed Skills
                     </label>
                     <Input 
                       {...register("skills")} 
                       disabled={!isEditing}
-                      placeholder={isEditing ? "e.g., Python, Communication, Design" : "Not provided"}
-                      className={!isEditing && !profileData?.skills ? "italic text-text-muted bg-gray-50" : !isEditing ? "bg-gray-50" : ""}
+                      placeholder={isEditing ? "e.g., Python, Communication, Logic" : "Not provided"}
+                      className={!isEditing && !profileData?.skills ? "italic text-slate bg-[#f7f7f6] border-[#d9d9dd]" : !isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.skills && <p className="text-xs text-error-main mt-4">{errors.skills.message}</p>}
+                    {errors.skills && <p className="font-mono text-xs text-red-600 mt-1">{errors.skills.message}</p>}
                     
-                    {/* Render Skills as chips when not editing and they exist */}
                     {!isEditing && profileData?.skills && (
-                      <div className="flex flex-wrap gap-8 mt-12">
+                      <div className="flex flex-wrap gap-1.5 mt-2">
                         {profileData.skills.split(',').map((skill, idx) => (
-                          <Badge key={idx} variant="default" className="bg-gray-50">
+                          <span key={idx} className="font-mono text-[10px] uppercase px-2 py-0.5 bg-[#eeece7] text-ink rounded border border-[#d9d9dd]">
                             {skill.trim()}
-                          </Badge>
+                          </span>
                         ))}
                       </div>
                     )}
                   </div>
 
-                  <div className="space-y-8">
-                    <label className="text-small font-medium text-text-main flex items-center">
-                      <Heart size={14} className="mr-6 text-text-muted" />
-                      Interests (Comma separated)
+                  <div className="space-y-1.5">
+                    <label className="font-mono text-xs uppercase tracking-wider text-slate flex items-center">
+                      <Heart size={12} className="mr-1.5 text-slate" />
+                      Stated Interests
                     </label>
                     <Input 
                       {...register("interests")} 
                       disabled={!isEditing}
-                      placeholder={isEditing ? "e.g., Artificial Intelligence, Art, Reading" : "Not provided"}
-                      className={!isEditing && !profileData?.interests ? "italic text-text-muted bg-gray-50" : !isEditing ? "bg-gray-50" : ""}
+                      placeholder={isEditing ? "e.g., AI, Art, Technology" : "Not provided"}
+                      className={!isEditing && !profileData?.interests ? "italic text-slate bg-[#f7f7f6] border-[#d9d9dd]" : !isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}
                     />
-                    {errors.interests && <p className="text-xs text-error-main mt-4">{errors.interests.message}</p>}
+                    {errors.interests && <p className="font-mono text-xs text-red-600 mt-1">{errors.interests.message}</p>}
 
-                    {/* Render Interests as chips when not editing and they exist */}
                     {!isEditing && profileData?.interests && (
-                      <div className="flex flex-wrap gap-8 mt-12">
+                      <div className="flex flex-wrap gap-1.5 mt-2">
                         {profileData.interests.split(',').map((interest, idx) => (
-                          <Badge key={idx} variant="default">
+                          <span key={idx} className="font-mono text-[10px] uppercase px-2 py-0.5 bg-white text-ink rounded border border-[#d9d9dd]">
                             {interest.trim()}
-                          </Badge>
+                          </span>
                         ))}
                       </div>
                     )}
@@ -426,33 +426,37 @@ export default function Profile() {
             </div>
           </motion.div>
 
-          {/* Action Buttons (Sticky Bottom) */}
+          {/* Sticky Bottom Actions */}
           <AnimatePresence>
             {isEditing && (
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                className="fixed bottom-0 left-0 right-0 md:left-80 z-40 p-16 md:p-24 bg-white border-t border-border shadow-[0_-10px_40px_rgba(0,0,0,0.05)] flex justify-end gap-16"
+                exit={{ opacity: 0, y: 30 }}
+                className="fixed bottom-0 left-0 right-0 md:left-64 z-40 p-4 bg-white border-t border-[#e5e7eb] shadow-lg flex justify-end gap-3"
               >
-                <div className="max-w-4xl mx-auto w-full flex justify-end gap-16">
+                <div className="max-w-4xl mx-auto w-full flex justify-end gap-3">
                   <Button 
                     type="button" 
                     variant="outline" 
+                    size="sm"
                     onClick={handleCancel}
                     disabled={updateMutation.isPending}
+                    className="text-xs font-mono"
                   >
-                    <X size={16} className="mr-8" />
-                    Cancel
+                    <X size={14} className="mr-1.5" />
+                    CANCEL
                   </Button>
                   <Button 
                     type="submit" 
                     variant="primary"
+                    size="sm"
                     isLoading={updateMutation.isPending}
                     disabled={!isDirty || updateMutation.isPending}
+                    className="text-xs font-mono"
                   >
-                    <Check size={16} className="mr-8" />
-                    Save Changes
+                    <Check size={14} className="mr-1.5" />
+                    SAVE CHANGES
                   </Button>
                 </div>
               </motion.div>
@@ -463,3 +467,4 @@ export default function Profile() {
     </PageWrapper>
   );
 }
+

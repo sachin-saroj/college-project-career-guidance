@@ -3,7 +3,7 @@ import { useChatStore } from "../../store/useChatStore";
 import { ChatInput } from "./ChatInput";
 import { MessageBubble } from "./MessageBubble";
 import { SuggestedPrompts } from "./SuggestedPrompts";
-import { Menu, PanelRightClose, PanelRightOpen } from "lucide-react";
+import { Menu, PanelRightClose, PanelRightOpen, Cpu } from "lucide-react";
 
 export const ChatArea = ({ onMenuClick }: { onMenuClick: () => void }) => {
   const { chats, activeChatId, isContextPanelOpen, toggleContextPanel } = useChatStore();
@@ -15,30 +15,36 @@ export const ChatArea = ({ onMenuClick }: { onMenuClick: () => void }) => {
   }, [activeChat?.messages]);
 
   return (
-    <div className="flex-1 flex flex-col h-full relative bg-[#F9FAFB]">
-      {/* Header (Mobile menu & Panel toggle) */}
-      <div className="absolute top-0 left-0 right-0 h-64 px-16 flex items-center justify-between bg-white/80 backdrop-blur-md border-b z-10">
-        <button onClick={onMenuClick} className="p-8 md:hidden text-text-muted hover:bg-black/5 rounded-md">
-          <Menu size={20} />
+    <div className="flex-1 flex flex-col h-full relative bg-[#17171c]">
+      {/* Console Header */}
+      <div className="absolute top-0 left-0 right-0 h-14 px-6 flex items-center justify-between bg-[#17171c] border-b border-white/10 z-10">
+        <button onClick={onMenuClick} className="p-2 md:hidden text-white/70 hover:bg-white/10 rounded-md">
+          <Menu size={18} />
         </button>
-        <div className="flex-1 text-center font-medium text-text-main md:text-left md:pl-16 truncate">
-          {activeChat?.title || "New Conversation"}
+
+        <div className="flex items-center gap-3 font-mono text-xs text-white/80 truncate">
+          <Cpu size={14} className="text-coral shrink-0" />
+          <span className="truncate">{activeChat?.title || "New AI Session"}</span>
+          <span className="hidden sm:inline-block text-[10px] text-white/40 border-l border-white/20 pl-2">
+            MODEL: GEMINI 1.5 FLASH
+          </span>
         </div>
+
         <button 
           onClick={toggleContextPanel} 
-          className="p-8 text-text-muted hover:bg-black/5 rounded-md transition-colors hidden lg:block"
+          className="p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-md transition-colors hidden lg:block"
           title="Toggle Context Panel"
         >
-          {isContextPanelOpen ? <PanelRightClose size={20} /> : <PanelRightOpen size={20} />}
+          {isContextPanelOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
         </button>
       </div>
 
       {/* Message Feed */}
-      <div className="flex-1 overflow-y-auto pt-64">
+      <div className="flex-1 overflow-y-auto pt-14">
         {(!activeChat || activeChat.messages.length === 0) ? (
           <SuggestedPrompts />
         ) : (
-          <div className="pb-32">
+          <div className="pb-8">
             {activeChat.messages.map((msg) => (
               <MessageBubble key={msg.id} message={msg} />
             ))}
@@ -48,9 +54,10 @@ export const ChatArea = ({ onMenuClick }: { onMenuClick: () => void }) => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-gradient-to-t from-[#F9FAFB] to-transparent pt-32 shrink-0">
+      <div className="bg-[#17171c] pt-2 shrink-0 border-t border-white/10">
         <ChatInput />
       </div>
     </div>
   );
 };
+

@@ -11,15 +11,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative flex items-center w-full">
         {icon && (
-          <div className="absolute left-16 text-text-muted">
+          <div className="absolute left-3.5 text-slate flex items-center justify-center">
             {icon}
           </div>
         )}
         <input
           ref={ref}
           className={cn(
-            "flex h-48 w-full rounded-input border border-border bg-white px-16 text-body text-text-main transition-colors file:border-0 file:bg-transparent file:text-body file:font-medium placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50",
-            icon && "pl-48",
+            "flex h-10 w-full rounded-md border border-[#d9d9dd] bg-white px-3.5 text-[14px] text-ink transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50",
+            icon && "pl-10",
             className
           )}
           {...props}
@@ -30,3 +30,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = "Input";
+

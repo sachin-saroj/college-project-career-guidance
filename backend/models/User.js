@@ -94,7 +94,7 @@ class User {
     return null;
   }
 
-  static async delete(id) {
+  static delete(id) {
     const db = readDB();
     const index = db.users.findIndex(u => u._id === id);
     if (index !== -1) {
@@ -103,6 +103,18 @@ class User {
       return true;
     }
     return false;
+  }
+
+  static getProfileCompletion(user) {
+    if (!user) return 0;
+    let score = 0;
+    if (user.name && user.name.trim()) score += 20;
+    if (user.education && user.education.trim()) score += 16;
+    if (user.skills && user.skills.trim()) score += 16;
+    if ((user.interests && user.interests.trim()) || (user.careerGoal && user.careerGoal.trim())) score += 16;
+    if (user.assessmentCompleted) score += 16;
+    if (user.resumeData || (user.resumeText && user.resumeText.trim())) score += 16;
+    return score;
   }
 }
 

@@ -14,7 +14,9 @@ export interface User {
   interests?: string;
   careerGoal?: string;
   familyIncome?: string;
-  lastRecommendations?: any[];
+  resumeText?: string;
+  resumeData?: any;
+  lastRecommendations?: any;
 }
 
 interface AuthContextType {

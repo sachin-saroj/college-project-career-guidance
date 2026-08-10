@@ -11,8 +11,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve frontend-v2 static files in production
+app.use(express.static(path.join(__dirname, '../frontend-v2/dist')));
 
 // Mount Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -23,6 +23,15 @@ app.use('/api/resources', require('./routes/resources'));
 app.use('/api/profile', require('./routes/profile'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/dashboard', require('./routes/dashboard'));
+
+// Wildcard SPA route fallback for non-API requests
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../frontend-v2/dist/index.html'));
+  } else {
+    res.status(404).json({ error: 'API route not found' });
+  }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

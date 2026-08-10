@@ -27,31 +27,35 @@ export const ChatSidebar = () => {
   };
 
   return (
-    <div className="w-full md:w-[280px] h-full border-r bg-background-alt flex flex-col hidden md:flex shrink-0">
-      <div className="p-16">
+    <div className="w-full md:w-[260px] h-full border-r border-white/10 bg-[#17171c] text-white flex flex-col hidden md:flex shrink-0">
+      <div className="p-4 border-b border-white/10">
         <Button
           onClick={createChat}
-          className="w-full justify-start py-24 text-body shadow-sm"
-          variant="primary"
+          className="w-full justify-center py-2 text-xs font-mono"
+          variant="dark-pill"
         >
-          <Plus size={20} className="mr-8" /> New Chat
+          <Plus size={14} className="mr-1.5" /> NEW CONVERSATION
         </Button>
       </div>
 
-      <div className="px-16 pb-16">
+      <div className="px-4 py-3 border-b border-white/10">
         <div className="relative">
-          <Search size={16} className="absolute left-12 top-1/2 -translate-y-1/2 text-text-muted" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
           <input
             type="text"
-            placeholder="Search history..."
+            placeholder="Search sessions..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-36 pr-16 py-8 rounded-lg border bg-white focus:outline-none focus:ring-2 focus:ring-brand-primary/20 text-small"
+            className="w-full pl-8 pr-3 py-1.5 rounded-md border border-white/10 bg-white/5 focus:outline-none focus:border-white/30 font-mono text-xs text-white placeholder:text-white/40"
           />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-12 space-y-4">
+      <div className="px-4 pt-3 pb-1">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/40">PAST SESSIONS</span>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-2 space-y-1">
         {filteredChats.map((chat) => (
           <div
             key={chat.id}
@@ -59,13 +63,13 @@ export const ChatSidebar = () => {
               if (editingId !== chat.id) setActiveChat(chat.id);
             }}
             className={cn(
-              "group relative flex items-center w-full p-12 rounded-lg cursor-pointer transition-colors",
+              "group relative flex items-center w-full px-3 py-2 rounded-md cursor-pointer transition-colors text-xs font-mono",
               activeChatId === chat.id
-                ? "bg-brand-primary/10 text-brand-primary font-medium"
-                : "hover:bg-black/5 text-text-main"
+                ? "bg-white/15 text-white font-medium border border-white/20"
+                : "hover:bg-white/5 text-white/70 hover:text-white"
             )}
           >
-            <MessageSquare size={16} className="mr-12 shrink-0 opacity-70" />
+            <MessageSquare size={14} className="mr-2.5 shrink-0 opacity-60" />
             
             {editingId === chat.id ? (
               <input
@@ -74,42 +78,43 @@ export const ChatSidebar = () => {
                 onChange={(e) => setEditTitle(e.target.value)}
                 onBlur={saveEdit}
                 onKeyDown={(e) => e.key === "Enter" && saveEdit()}
-                className="flex-1 bg-white border rounded px-8 py-4 text-small focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                className="flex-1 bg-black/40 border border-white/30 rounded px-2 py-1 text-xs text-white focus:outline-none"
               />
             ) : (
-              <span className="flex-1 truncate text-small">{chat.title}</span>
+              <span className="flex-1 truncate">{chat.title}</span>
             )}
 
             {editingId !== chat.id && (
-              <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleEdit(chat.id, chat.title);
                   }}
-                  className="p-4 rounded-md hover:bg-black/10 text-text-muted"
+                  className="p-1 rounded hover:bg-white/10 text-white/70"
                 >
-                  <Edit2 size={14} />
+                  <Edit2 size={12} />
                 </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteChat(chat.id);
                   }}
-                  className="p-4 rounded-md hover:bg-status-error/10 text-status-error"
+                  className="p-1 rounded hover:bg-red-500/20 text-red-400"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={12} />
                 </button>
               </div>
             )}
           </div>
         ))}
         {filteredChats.length === 0 && (
-          <div className="text-center p-24 text-text-muted text-small">
-            No chats found.
+          <div className="text-center p-4 font-mono text-xs text-white/40">
+            No active sessions.
           </div>
         )}
       </div>
     </div>
   );
 };
+

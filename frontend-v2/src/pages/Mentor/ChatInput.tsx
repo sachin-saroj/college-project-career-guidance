@@ -9,20 +9,17 @@ export const ChatInput = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { activeChatId, createChat } = useChatStore();
 
-  // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
     }
   }, [input]);
 
   const handleSubmit = async () => {
     if ((!input.trim() && !file) || !activeChatId) {
-      // If no active chat, create one first, then send
       if (input.trim() || file) {
         const newChatId = createChat();
-        // Allow state to settle before sending (simple timeout or just call service directly)
         setTimeout(() => handleSendToChat(newChatId), 0);
       }
       return;
@@ -57,25 +54,25 @@ export const ChatInput = () => {
   };
 
   return (
-    <div className="relative max-w-4xl mx-auto w-full px-16 pb-24">
+    <div className="relative max-w-4xl mx-auto w-full px-4 pb-4">
       {file && (
-        <div className="absolute -top-40 left-16 flex items-center bg-white border shadow-sm rounded-lg px-12 py-8 gap-8">
-          <Paperclip size={14} className="text-brand-primary" />
-          <span className="text-small text-text-main truncate max-w-[200px]">
+        <div className="absolute -top-10 left-4 flex items-center bg-[#17171c] border border-white/20 rounded-md px-3 py-1.5 gap-2 text-white font-mono text-xs">
+          <Paperclip size={12} className="text-coral" />
+          <span className="truncate max-w-[200px]">
             {file.name}
           </span>
           <button
             onClick={() => setFile(null)}
-            className="p-2 hover:bg-black/5 rounded-full text-text-muted"
+            className="p-1 hover:bg-white/10 rounded-full text-white/70"
           >
-            <X size={14} />
+            <X size={12} />
           </button>
         </div>
       )}
 
-      <div className="flex items-end gap-8 bg-white border shadow-sm rounded-2xl p-8 focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
-        <label className="p-12 hover:bg-black/5 rounded-xl cursor-pointer text-text-muted shrink-0 transition-colors">
-          <Paperclip size={20} />
+      <div className="flex items-end gap-2 bg-white/5 border border-white/15 rounded-lg p-2.5 focus-within:border-white/40 transition-all">
+        <label className="p-2 hover:bg-white/10 rounded-md cursor-pointer text-white/60 hover:text-white shrink-0 transition-colors">
+          <Paperclip size={18} />
           <input
             type="file"
             className="hidden"
@@ -89,24 +86,25 @@ export const ChatInput = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask CareerSathi anything..."
-          className="flex-1 max-h-[200px] min-h-[44px] py-12 bg-transparent resize-none focus:outline-none text-body text-text-main placeholder:text-text-muted/60"
+          placeholder="Ask AI Mentor for guidance, roadmaps, resume feedback..."
+          className="flex-1 max-h-[180px] min-h-[38px] py-2 bg-transparent resize-none focus:outline-none text-sm text-white placeholder:text-white/40 font-sans"
           rows={1}
         />
 
         <button
           onClick={handleSubmit}
           disabled={!input.trim() && !file}
-          className="p-12 rounded-xl bg-brand-primary text-white hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 transition-colors"
+          className="p-2.5 rounded-full bg-white text-[#17171c] hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed shrink-0 transition-colors font-medium"
         >
-          <Send size={20} className={input.trim() || file ? "translate-x-1" : ""} />
+          <Send size={16} />
         </button>
       </div>
-      <div className="text-center mt-8">
-        <span className="text-[11px] text-text-muted">
-          CareerSathi AI can make mistakes. Consider verifying important information.
+      <div className="text-center mt-2">
+        <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">
+          GEMINI 1.5 PRO INFRASTRUCTURE • VERIFY CRITICAL ADVICE
         </span>
       </div>
     </div>
   );
 };
+

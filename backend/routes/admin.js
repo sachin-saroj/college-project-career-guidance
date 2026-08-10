@@ -115,4 +115,81 @@ router.delete('/resources/:id', (req, res) => {
   }
 });
 
+// GET export full database JSON
+router.get('/export', (req, res) => {
+  try {
+    const db = readDB();
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename=careersathi_database_${Date.now()}.json`);
+    res.send(JSON.stringify(db, null, 2));
+  } catch (error) {
+    console.error('Admin Export Error:', error);
+    res.status(500).json({ error: 'Failed to export database' });
+  }
+});
+
+// POST import full database JSON
+router.post('/import', (req, res) => {
+  try {
+    const newDbData = req.body;
+    if (!newDbData || typeof newDbData !== 'object') {
+      return res.status(400).json({ error: 'Invalid database payload' });
+    }
+    if (!Array.isArray(newDbData.users) || !Array.isArray(newDbData.resources)) {
+      return res.status(400).json({ error: 'Payload must contain users and resources arrays' });
+    }
+
+    writeDB(newDbData);
+    res.json({ message: 'Database imported and restored successfully' });
+  } catch (error) {
+    console.error('Admin Import Error:', error);
+    res.status(500).json({ error: 'Failed to import database' });
+  }
+});
+
+// PUT update user role
+router.put('/users/:id/role', (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { role } = req.body;
+    if (!['user', 'admin'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role specified' });
+    }
+
+    const db = readDB();
+    const userObj = db.users.find(u => u._id === userId || u.id === userId);
+    if (!userObj) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    userObj.role = role;
+    writeDB(db);
+
+    res.json({ message: 'User role updated successfully', user: { id: userObj._id, name: userObj.name, role: userObj.role } });
+  } catch (error) {
+    console.error('Admin Role Update Error:', error);
+    res.status(500).json({ error: 'Failed to update user role' });
+  }
+});
+
+// DELETE user
+router.delete('/users/:id', (req, res) => {
+  try {
+    const userId = req.params.id;
+    const db = readDB();
+    const initialLength = db.users.length;
+    db.users = db.users.filter(u => u._id !== userId && u.id !== userId);
+
+    if (db.users.length === initialLength) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    writeDB(db);
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Admin Delete User Error:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
 module.exports = router;

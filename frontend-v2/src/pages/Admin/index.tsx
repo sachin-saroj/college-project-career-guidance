@@ -44,6 +44,7 @@ export const AdminDashboard = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["adminResources"] });
+      queryClient.invalidateQueries({ queryKey: ["resources"] });
       setTitle("");
       setUrl("");
       setProvider("");
@@ -57,6 +58,7 @@ export const AdminDashboard = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["adminResources"] });
+      queryClient.invalidateQueries({ queryKey: ["resources"] });
     },
   });
 
@@ -72,50 +74,55 @@ export const AdminDashboard = () => {
   return (
     <PageWrapper>
       <DashboardHeader />
-      <div className="flex flex-col gap-32 max-w-6xl mx-auto py-16">
-        <div>
-          <h1 className="text-h2 font-bold text-text-main mb-8">Admin Dashboard</h1>
-          <p className="text-body text-text-muted">Manage registered users and educational resources.</p>
+      <div className="flex flex-col gap-6 max-w-6xl mx-auto py-4">
+        <div className="border-b border-[#e5e7eb] pb-6">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-[#003c33] bg-[#edfce9] px-2.5 py-0.5 rounded border border-[#003c33]/15 block mb-2 w-fit">
+            ADMINISTRATION CONSOLE • AUDIT & CONTENT MANAGEMENT
+          </span>
+          <h1 className="font-display text-3xl md:text-4xl font-normal text-ink tracking-tight">System Admin Console</h1>
+          <p className="text-slate text-sm mt-1">Audit registered student accounts and publish ecosystem resources.</p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card 
-            className={`cursor-pointer transition-all ${activeTab === "users" ? "ring-2 ring-brand-primary" : ""}`}
+            variant="stone"
+            className={`cursor-pointer transition-all border ${activeTab === "users" ? "border-[#17171c] shadow-sm" : "border-[#d9d9dd]"}`}
             onClick={() => setActiveTab("users")}
           >
-            <CardContent className="p-24 flex items-center justify-between">
-              <div className="flex items-center gap-16">
-                <div className="w-48 h-48 rounded-full bg-brand-light flex items-center justify-center text-brand-primary">
-                  <Users size={24} />
+            <CardContent className="p-6 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#17171c] flex items-center justify-center text-white">
+                  <Users size={18} />
                 </div>
                 <div>
-                  <p className="text-small text-text-muted mb-4">Total Users</p>
-                  <p className="text-h3 font-bold text-text-main">{loadingUsers ? "..." : users.length}</p>
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-slate block">REGISTERED USERS</span>
+                  <p className="font-display text-3xl font-normal text-ink">{loadingUsers ? "..." : users.length}</p>
                 </div>
               </div>
-              <Button variant={activeTab === "users" ? "primary" : "outline"} size="sm">
-                View Users
+              <Button variant={activeTab === "users" ? "primary" : "outline"} size="sm" className="text-xs font-mono">
+                VIEW ACCOUNTS →
               </Button>
             </CardContent>
           </Card>
 
           <Card 
-            className={`cursor-pointer transition-all ${activeTab === "resources" ? "ring-2 ring-brand-primary" : ""}`}
+            variant="stone"
+            className={`cursor-pointer transition-all border ${activeTab === "resources" ? "border-[#17171c] shadow-sm" : "border-[#d9d9dd]"}`}
             onClick={() => setActiveTab("resources")}
           >
-            <CardContent className="p-24 flex items-center justify-between">
-              <div className="flex items-center gap-16">
-                <div className="w-48 h-48 rounded-full bg-status-success/10 flex items-center justify-center text-status-success">
-                  <BookOpen size={24} />
+            <CardContent className="p-6 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#003c33] flex items-center justify-center text-white">
+                  <BookOpen size={18} />
                 </div>
                 <div>
-                  <p className="text-small text-text-muted mb-4">Total Resources</p>
-                  <p className="text-h3 font-bold text-text-main">{loadingResources ? "..." : resources.length}</p>
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-slate block">PUBLISHED RESOURCES</span>
+                  <p className="font-display text-3xl font-normal text-ink">{loadingResources ? "..." : resources.length}</p>
                 </div>
               </div>
-              <Button variant={activeTab === "resources" ? "primary" : "outline"} size="sm">
-                Manage Resources
+              <Button variant={activeTab === "resources" ? "primary" : "outline"} size="sm" className="text-xs font-mono">
+                MANAGE CATALOG →
               </Button>
             </CardContent>
           </Card>
@@ -123,21 +130,22 @@ export const AdminDashboard = () => {
 
         {/* Users Tab */}
         {activeTab === "users" && (
-          <Card>
-            <CardHeader className="border-b border-border">
-              <CardTitle className="text-h4 font-bold">Registered Users ({users.length})</CardTitle>
+          <Card variant="canvas" className="border border-[#e5e7eb]">
+            <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+              <CardTitle className="font-display text-lg font-normal text-ink">Registered Accounts ({users.length})</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               {loadingUsers ? (
-                <div className="p-40 text-center text-text-muted"><Loader2 className="animate-spin inline mr-8" /> Loading users...</div>
+                <div className="py-12 text-center font-mono text-xs text-slate"><Loader2 className="animate-spin inline mr-2" /> FETCHING ACCOUNTS...</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-border bg-gray-50/50 text-small text-text-muted font-medium">
-                        <th className="p-16">Name</th>
-                        <th className="p-16">Email</th>
-                        <th className="p-16">Role</th>
+                      <tr className="border-b border-[#e5e7eb] bg-[#f7f7f6] font-mono text-[11px] uppercase tracking-wider text-slate">
+                        <th className="py-3 px-6">Name</th>
+                        <th className="py-3 px-6">Email</th>
+                        <th className="py-3 px-6">Role</th>
+
                         <th className="p-16">Joined</th>
                       </tr>
                     </thead>

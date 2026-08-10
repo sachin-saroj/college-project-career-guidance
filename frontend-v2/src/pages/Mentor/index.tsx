@@ -8,7 +8,6 @@ import { useEffect } from "react";
 export const Mentor = () => {
   const { isSidebarCollapsed, toggleSidebar } = useUIStore();
 
-  // Close the main app sidebar on desktop for maximum chat space
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024 && !isSidebarCollapsed) {
@@ -16,14 +15,14 @@ export const Mentor = () => {
       }
     };
     
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isSidebarCollapsed, toggleSidebar]);
 
   return (
     <PageWrapper>
-      <div className="flex h-full w-full overflow-hidden rounded-xl border shadow-sm bg-white">
+      <div className="flex h-[calc(100vh-100px)] w-full overflow-hidden rounded-[22px] border border-[#d9d9dd] shadow-sm bg-[#17171c]">
         <ChatSidebar />
         <ChatArea onMenuClick={toggleSidebar} />
         <ContextPanel />
@@ -31,3 +30,4 @@ export const Mentor = () => {
     </PageWrapper>
   );
 };
+

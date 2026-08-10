@@ -7,8 +7,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const QUICK_PROMPTS = [
-  "Suggest tech careers",
-  "Review my resume",
+  "Commerce CA / Banking Strategy",
+  "UPSC / Govt Exams Roadmap",
+  "Top Scholarships for Underprivileged",
+  "Tech & Skilled Trade Pathways",
 ];
 
 export const AIMentorCard = () => {
@@ -17,38 +19,38 @@ export const AIMentorCard = () => {
   const [isTyping, setIsTyping] = useState(true);
   const [message, setMessage] = useState("");
   
-  const firstName = user ? user.name.split(" ")[0] : "Guest";
+  const firstName = user ? user.name.split(" ")[0] : "Student";
 
   useEffect(() => {
-    // Simulate AI "thinking" then typing out a response
     const timer = setTimeout(() => {
       setIsTyping(false);
-      setMessage(`Hi ${firstName}! I'm here to help you choose the right career path.`);
-    }, 1500);
+      setMessage(`Hi ${firstName}! I'm your dedicated CareerSathi AI Advisor. Tap any goal prompt or open the console to start.`);
+    }, 600);
     return () => clearTimeout(timer);
   }, [firstName]);
 
+  const handlePromptClick = (promptText: string) => {
+    navigate('/mentor', { state: { initialPrompt: promptText } });
+  };
+
   return (
-    <Card hoverEffect className="relative overflow-hidden bg-white h-full flex flex-col justify-between group">
-      <CardContent className="p-24 flex flex-col h-full z-10">
-        <div className="flex items-center justify-between mb-16">
-          <div className="flex items-center gap-8">
-            <div className="h-32 w-32 rounded-full bg-brand-light text-brand-primary flex items-center justify-center relative">
-              <Bot size={18} />
-              {isTyping && (
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-primary"></span>
-                </span>
-              )}
+    <Card variant="dark" hoverEffect className="relative overflow-hidden h-full flex flex-col justify-between p-6">
+      <CardContent className="p-0 flex flex-col h-full z-10">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded bg-white/10 text-white flex items-center justify-center border border-white/20">
+              <Bot size={16} />
             </div>
-            <h3 className="font-bold text-[18px] text-text-main flex items-center gap-2">
-              AI Mentor <Sparkles size={14} className="text-status-warning" />
+            <h3 className="font-display text-lg font-normal text-white flex items-center gap-1.5">
+              AI Mentor Console <Sparkles size={14} className="text-coral" />
             </h3>
           </div>
+          <span className="font-mono text-[10px] uppercase tracking-wider bg-white/10 text-white px-2 py-0.5 rounded border border-white/10">
+            {isTyping ? "ANALYZING..." : "ONLINE"}
+          </span>
         </div>
         
-        <div className="flex-1 min-h-[60px] flex items-start mb-16">
+        <div className="flex-1 min-h-[56px] flex items-start mb-4">
           <AnimatePresence mode="wait">
             {isTyping ? (
               <motion.div 
@@ -56,17 +58,17 @@ export const AIMentorCard = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex items-center gap-1 text-text-muted text-sm font-medium bg-gray-50 px-12 py-8 rounded-lg rounded-tl-none w-fit border border-border"
+                className="flex items-center gap-2 text-white/80 font-mono text-xs bg-white/10 px-3 py-2 rounded-md border border-white/10"
               >
-                <Loader2 size={14} className="animate-spin mr-2" />
-                Thinking...
+                <Loader2 size={14} className="animate-spin text-coral" />
+                Initializing Gemini session...
               </motion.div>
             ) : (
               <motion.p 
                 key="message"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-body text-text-main leading-relaxed font-medium bg-brand-light/30 px-16 py-12 rounded-lg rounded-tl-none w-[85%] border border-brand-primary/10"
+                className="text-[13px] text-white/90 leading-relaxed font-normal bg-white/10 px-3.5 py-3 rounded-md border border-white/10"
               >
                 {message}
               </motion.p>
@@ -74,44 +76,32 @@ export const AIMentorCard = () => {
           </AnimatePresence>
         </div>
 
-        <div className="flex flex-col gap-8 mt-auto">
+        <div className="flex flex-col gap-3 mt-auto">
           {!isTyping && (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-8"
-            >
+            <div className="flex flex-wrap gap-1.5">
               {QUICK_PROMPTS.map(prompt => (
                 <button 
                   key={prompt}
-                  onClick={() => navigate('/mentor')}
-                  className="text-xs bg-gray-50 hover:bg-gray-100 text-text-muted hover:text-text-main border border-border px-10 py-6 rounded-full transition-colors whitespace-nowrap"
+                  onClick={() => handlePromptClick(prompt)}
+                  className="font-mono text-[10px] bg-white/10 hover:bg-white/20 text-white/90 border border-white/20 px-2.5 py-1 rounded-full transition-all hover:scale-105"
                 >
                   {prompt}
                 </button>
               ))}
-            </motion.div>
+            </div>
           )}
 
           <Button 
             onClick={() => navigate('/mentor')}
-            variant="outline" 
+            variant="dark-pill" 
             size="sm" 
-            className="w-full mt-4 gap-8 rounded-full border-brand-primary/20 hover:bg-brand-light text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all"
+            className="w-full justify-between mt-1 text-xs font-mono"
           >
-            Open Chat
-            <ArrowRight size={16} />
+            <span>START CONVERSATION →</span>
+            <ArrowRight size={14} />
           </Button>
         </div>
-
       </CardContent>
-
-      {/* Decorative Background */}
-      <div className="absolute right-0 bottom-0 w-[45%] h-[80%] pointer-events-none flex items-end justify-end p-8 overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/5 rounded-tl-full opacity-80 scale-150 transform translate-x-1/4 translate-y-1/4 group-hover:scale-[1.75] transition-transform duration-700 ease-out" />
-          <Bot size={120} className="absolute -bottom-8 -right-8 text-brand-primary opacity-[0.03] group-hover:opacity-[0.05] group-hover:-translate-y-4 group-hover:-translate-x-4 transition-all duration-700 ease-out" />
-      </div>
     </Card>
   );
 };

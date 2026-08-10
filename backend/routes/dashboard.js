@@ -30,15 +30,7 @@ router.get('/', authMiddleware, async (req, res) => {
       tasks.push({ id: "t3", name: "Explore Resources", description: "Save scholarships or internships", deadline: "Optional", priority: "Low", status: "Pending", route: "/resources" });
     }
 
-    // Determine completion percentage
-    let completedSteps = 1; // registration
-    let totalSteps = 4;
-    
-    if (user.assessmentCompleted) completedSteps++;
-    if (user.resumeData) completedSteps++;
-    if (user.skills && user.interests) completedSteps++; // basic profile
-
-    const profileCompletion = Math.round((completedSteps / totalSteps) * 100);
+    const profileCompletion = User.getProfileCompletion(user);
 
     res.json({
       profileCompletion,

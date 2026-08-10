@@ -1,35 +1,27 @@
-import { Lightbulb, Code, BookOpen, Briefcase } from "lucide-react";
+import { Lightbulb, Code, Briefcase, GraduationCap, Award } from "lucide-react";
 import { sendMessage } from "../../services/aiService";
 import { useChatStore } from "../../store/useChatStore";
 
 const prompts = [
   {
-    icon: Lightbulb,
-    title: "Career Exploration",
-    text: "What careers fit someone who loves math and art?",
-    color: "text-amber-500",
-    bg: "bg-amber-50",
+    icon: GraduationCap,
+    title: "CHARTERED ACCOUNTANT (CA)",
+    text: "What is the step-by-step roadmap, exam stages (Foundation, Intermediate, Final), and articleship stipend for CA?",
   },
   {
-    icon: Code,
-    title: "Skill Building",
-    text: "Create a 3-month roadmap to learn Python for Data Science.",
-    color: "text-blue-500",
-    bg: "bg-blue-50",
+    icon: Award,
+    title: "UPSC CIVIL SERVICES",
+    text: "How can a student prepare for UPSC Civil Services IAS/IPS without expensive coaching using free resources?",
   },
   {
     icon: Briefcase,
-    title: "Resume & Interviews",
-    text: "How should I structure my resume with no work experience?",
-    color: "text-emerald-500",
-    bg: "bg-emerald-50",
+    title: "SCHOLARSHIPS & FINANCIAL AID",
+    text: "List top undergraduate government and private scholarships (Reliance, NSP, HDFC) for underprivileged students.",
   },
   {
-    icon: BookOpen,
-    title: "Scholarships",
-    text: "Find scholarships for engineering students in India.",
-    color: "text-purple-500",
-    bg: "bg-purple-50",
+    icon: Code,
+    title: "TECH & DATA SCIENCE",
+    text: "Create a 3-month structured roadmap to build entry-level skills in Web Development or Data Analytics.",
   },
 ];
 
@@ -41,36 +33,37 @@ export const SuggestedPrompts = () => {
     if (!chatId) {
       chatId = createChat();
     }
-    // Timeout to allow state to settle
     setTimeout(() => {
       sendMessage(chatId, prompt);
     }, 0);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full max-w-3xl mx-auto px-16 py-32">
-      <div className="w-64 h-64 bg-brand-light text-brand-primary rounded-full flex items-center justify-center mb-24">
-        <Lightbulb size={32} />
+    <div className="flex flex-col items-center justify-center h-full max-w-2xl mx-auto px-6 py-12 text-white">
+      <div className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center mb-4 text-coral">
+        <Lightbulb size={24} />
       </div>
-      <h2 className="text-h3 font-bold text-text-main mb-8 text-center">
-        How can I help you today?
+      <h2 className="font-display text-2xl font-normal text-white mb-2 text-center">
+        AI Career Console & Multi-Stream Mentor
       </h2>
-      <p className="text-body text-text-muted mb-40 text-center">
-        I'm your personal AI Career Mentor. Ask me anything.
+      <p className="text-xs text-white/70 mb-8 text-center max-w-md font-sans">
+        Get instant personalized guidance for Commerce, Civil Services, Nursing, Trades, and Tech pathways.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
         {prompts.map((p, i) => (
           <button
             key={i}
             onClick={() => handlePromptClick(p.text)}
-            className="flex flex-col text-left p-24 bg-white border shadow-sm rounded-xl hover:border-brand-primary/50 hover:shadow-md transition-all group"
+            className="flex flex-col text-left p-4 bg-white/5 border border-white/10 rounded-xl hover:border-white/40 hover:bg-white/10 transition-all group cursor-pointer"
           >
-            <div className={`w-32 h-32 rounded-lg ${p.bg} ${p.color} flex items-center justify-center mb-16 group-hover:scale-110 transition-transform`}>
-              <p.icon size={16} />
+            <div className="flex items-center gap-2 mb-2">
+              <p.icon size={16} className="text-coral group-hover:scale-110 transition-transform" />
+              <span className="font-mono text-[10px] tracking-wider uppercase text-white/70">{p.title}</span>
             </div>
-            <h3 className="text-small font-semibold text-text-main mb-4">{p.title}</h3>
-            <p className="text-small text-text-muted line-clamp-2">{p.text}</p>
+            <p className="text-xs text-white/90 font-normal leading-relaxed">
+              {p.text}
+            </p>
           </button>
         ))}
       </div>

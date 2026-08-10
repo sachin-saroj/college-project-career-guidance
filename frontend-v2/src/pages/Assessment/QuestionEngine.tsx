@@ -24,7 +24,6 @@ export const QuestionEngine = () => {
     }
   }, [questions.length, fetchQuestions]);
 
-  // Optional simple timer (15 mins)
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
   useEffect(() => {
@@ -35,25 +34,23 @@ export const QuestionEngine = () => {
   }, []);
 
   if (questions.length === 0) {
-    return <div className="p-40 text-center">Loading questions...</div>;
+    return <div className="py-20 text-center font-mono text-sm text-slate">Loading diagnostic questions...</div>;
   }
   
   const question = questions[currentQuestionIndex];
 
   if (!question) {
     return (
-      <div className="p-40 text-center flex flex-col items-center gap-16">
-        <p>Something went wrong with your assessment state.</p>
-        <Button onClick={resetAssessment}>Restart Assessment</Button>
+      <div className="py-20 text-center flex flex-col items-center gap-4">
+        <p className="font-mono text-sm text-slate">Assessment session state invalid.</p>
+        <Button onClick={resetAssessment} variant="outline">Restart Assessment</Button>
       </div>
     );
   }
   const totalQuestions = questions.length;
-  const progress = ((currentQuestionIndex) / totalQuestions) * 100;
+  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
   
   const currentAnswer = answers[question.id];
-
-
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -70,26 +67,26 @@ export const QuestionEngine = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-4xl mx-auto h-full min-h-[600px]">
+    <div className="flex flex-col max-w-3xl mx-auto h-full min-h-[540px] py-4">
       {/* Header & Progress */}
-      <div className="mb-40">
-        <div className="flex justify-between items-end mb-16">
+      <div className="mb-6">
+        <div className="flex justify-between items-end mb-3">
           <div>
-            <h2 className="text-h4 font-bold text-text-main">
-              Question {currentQuestionIndex + 1} <span className="text-text-muted font-normal">/ {totalQuestions}</span>
-            </h2>
+            <span className="font-mono text-xs uppercase tracking-wider text-slate">
+              QUESTION {currentQuestionIndex + 1} OF {totalQuestions}
+            </span>
           </div>
-          <div className="text-small font-medium text-text-muted">
-            {formatTime(timeLeft)} remaining
+          <div className="font-mono text-xs text-slate">
+            TIME REMAINING: {formatTime(timeLeft)}
           </div>
         </div>
         
-        <div className="w-full h-8 bg-brand-light rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-[#eeece7] rounded-full overflow-hidden">
           <motion.div 
-            className="h-full bg-brand-primary rounded-full"
+            className="h-full bg-[#17171c] rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           />
         </div>
       </div>
@@ -99,20 +96,20 @@ export const QuestionEngine = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentQuestionIndex}
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, x: -15 }}
+            transition={{ duration: 0.2 }}
           >
-            <Card className="border-none shadow-sm bg-white">
-              <CardContent className="p-32 md:p-48">
-                <h3 className="text-h3 font-medium text-text-main mb-40 leading-snug">
+            <Card variant="canvas" className="border border-[#e5e7eb] p-6 md:p-8">
+              <CardContent className="p-0">
+                <h3 className="font-display text-2xl md:text-3xl font-normal text-ink mb-8 leading-snug tracking-tight">
                   {question.text}
                 </h3>
 
                 <div className={cn(
-                  "grid gap-16",
-                  question.type === "likert" ? "grid-cols-1 md:grid-cols-5" : "grid-cols-1"
+                  "grid gap-3",
+                  question.type === "likert" ? "grid-cols-1 sm:grid-cols-5" : "grid-cols-1"
                 )}>
                   {question.options.map((option: string, idx: number) => {
                     const isSelected = currentAnswer === option;
@@ -121,24 +118,18 @@ export const QuestionEngine = () => {
                         key={idx}
                         onClick={() => setAnswer(question.id, option)}
                         className={cn(
-                          "p-24 rounded-xl border text-left transition-all duration-200",
+                          "p-4 rounded-md border text-left transition-all duration-150 flex items-center justify-between",
                           isSelected 
-                            ? "border-brand-primary bg-brand-primary/5 ring-2 ring-brand-primary/20" 
-                            : "border-border hover:border-brand-primary/50 hover:bg-background-alt",
-                          question.type === "likert" ? "text-center md:flex md:flex-col md:items-center md:justify-center md:h-full" : "w-full"
+                            ? "border-[#17171c] bg-[#17171c] text-white font-medium shadow-none" 
+                            : "border-[#d9d9dd] bg-white text-ink hover:border-[#17171c] hover:bg-[#f7f7f6]"
                         )}
                       >
-                        <div className={cn(
-                          "w-24 h-24 rounded-full border mb-16 mx-auto transition-colors",
-                          isSelected ? "border-8 border-brand-primary" : "border-border",
-                          question.type !== "likert" && "hidden"
-                        )} />
-                        <span className={cn(
-                          "text-body",
-                          isSelected ? "font-semibold text-brand-primary" : "text-text-main"
-                        )}>
+                        <span className="text-[14px]">
                           {option}
                         </span>
+                        {isSelected && (
+                          <span className="font-mono text-xs text-white">✓</span>
+                        )}
                       </button>
                     );
                   })}
@@ -150,23 +141,24 @@ export const QuestionEngine = () => {
       </div>
 
       {/* Footer Navigation */}
-      <div className="flex items-center justify-between mt-40">
+      <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#e5e7eb]">
         <Button 
           variant="outline" 
           onClick={prevQuestion}
           disabled={currentQuestionIndex === 0}
-          className="px-32"
+          className="px-6 text-xs"
         >
           Previous
         </Button>
         <Button 
           onClick={handleNext}
           disabled={!currentAnswer}
-          className="px-40"
+          className="px-8 text-xs"
         >
-          {currentQuestionIndex === totalQuestions - 1 ? "Submit" : "Next"}
+          {currentQuestionIndex === totalQuestions - 1 ? "Submit Assessment →" : "Next Question →"}
         </Button>
       </div>
     </div>
   );
 };
+
