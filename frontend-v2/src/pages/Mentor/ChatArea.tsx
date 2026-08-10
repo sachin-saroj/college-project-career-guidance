@@ -15,24 +15,24 @@ export const ChatArea = ({ onMenuClick }: { onMenuClick: () => void }) => {
   }, [activeChat?.messages]);
 
   return (
-    <div className="flex-1 flex flex-col h-full relative bg-[#17171c]">
+    <div className="flex-1 flex flex-col h-full relative bg-white">
       {/* Console Header */}
-      <div className="absolute top-0 left-0 right-0 h-14 px-6 flex items-center justify-between bg-[#17171c] border-b border-white/10 z-10">
-        <button onClick={onMenuClick} className="p-2 md:hidden text-white/70 hover:bg-white/10 rounded-md">
+      <div className="absolute top-0 left-0 right-0 h-14 px-6 flex items-center justify-between bg-white border-b border-[#e5e7eb] z-10">
+        <button onClick={onMenuClick} className="p-2 md:hidden text-slate hover:bg-[#eeece7] rounded-md">
           <Menu size={18} />
         </button>
 
-        <div className="flex items-center gap-3 font-mono text-xs text-white/80 truncate">
-          <Cpu size={14} className="text-coral shrink-0" />
+        <div className="flex items-center gap-3 font-mono text-xs text-ink truncate">
+          <Cpu size={14} className="text-[#003c33] shrink-0" />
           <span className="truncate">{activeChat?.title || "New AI Session"}</span>
-          <span className="hidden sm:inline-block text-[10px] text-white/40 border-l border-white/20 pl-2">
+          <span className="hidden sm:inline-block text-[10px] text-slate border-l border-[#d9d9dd] pl-2">
             MODEL: GEMINI 1.5 FLASH
           </span>
         </div>
 
         <button 
           onClick={toggleContextPanel} 
-          className="p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-md transition-colors hidden lg:block"
+          className="p-1.5 text-slate hover:text-ink hover:bg-[#eeece7] rounded-md transition-colors hidden lg:block"
           title="Toggle Context Panel"
         >
           {isContextPanelOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
@@ -54,10 +54,9 @@ export const ChatArea = ({ onMenuClick }: { onMenuClick: () => void }) => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-[#17171c] pt-2 shrink-0 border-t border-white/10">
+      <div className="bg-white pt-2 shrink-0 border-t border-[#e5e7eb]">
         <ChatInput />
       </div>
     </div>
   );
 };
-

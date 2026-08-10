@@ -39,14 +39,14 @@ export const SuggestedPrompts = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full max-w-2xl mx-auto px-6 py-12 text-white">
-      <div className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center mb-4 text-coral">
+    <div className="flex flex-col items-center justify-center h-full max-w-2xl mx-auto px-6 py-12 text-ink">
+      <div className="w-12 h-12 bg-[#eeece7] border border-[#d9d9dd] rounded-full flex items-center justify-center mb-4 text-[#003c33]">
         <Lightbulb size={24} />
       </div>
-      <h2 className="font-display text-2xl font-normal text-white mb-2 text-center">
+      <h2 className="font-display text-2xl font-normal text-ink mb-2 text-center">
         AI Career Console & Multi-Stream Mentor
       </h2>
-      <p className="text-xs text-white/70 mb-8 text-center max-w-md font-sans">
+      <p className="text-xs text-slate mb-8 text-center max-w-md font-sans">
         Get instant personalized guidance for Commerce, Civil Services, Nursing, Trades, and Tech pathways.
       </p>
 
@@ -55,13 +55,13 @@ export const SuggestedPrompts = () => {
           <button
             key={i}
             onClick={() => handlePromptClick(p.text)}
-            className="flex flex-col text-left p-4 bg-white/5 border border-white/10 rounded-xl hover:border-white/40 hover:bg-white/10 transition-all group cursor-pointer"
+            className="flex flex-col text-left p-4 bg-white border border-[#d9d9dd] rounded-xl hover:border-[#17171c] hover:bg-[#f7f7f6] transition-all group cursor-pointer shadow-xs"
           >
             <div className="flex items-center gap-2 mb-2">
-              <p.icon size={16} className="text-coral group-hover:scale-110 transition-transform" />
-              <span className="font-mono text-[10px] tracking-wider uppercase text-white/70">{p.title}</span>
+              <p.icon size={16} className="text-[#003c33] group-hover:scale-110 transition-transform" />
+              <span className="font-mono text-[10px] tracking-wider uppercase text-slate">{p.title}</span>
             </div>
-            <p className="text-xs text-white/90 font-normal leading-relaxed">
+            <p className="text-xs text-ink font-normal leading-relaxed">
               {p.text}
             </p>
           </button>

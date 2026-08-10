@@ -204,16 +204,16 @@ export default function Profile() {
             <div className="h-28 bg-[#17171c]" />
             <CardContent className="px-8 pt-0 pb-6 relative">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div className="flex flex-col md:flex-row items-start md:items-end gap-6 relative z-10">
-                  <div className="ring-4 ring-white rounded-full bg-white -mt-10">
-                    <Avatar initials={(profileData?.name || "S").split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase()} size="lg" className="w-24 h-24 text-xl bg-[#003c33] text-white" />
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
+                  <div className="ring-4 ring-white rounded-full bg-white -mt-12 shrink-0 shadow-sm">
+                    <Avatar initials={(profileData?.name || "S").split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase()} size="lg" className="w-20 h-20 md:w-24 md:h-24 text-xl bg-[#003c33] text-white" />
                   </div>
-                  <div className="mb-2 mt-2">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded border border-[#003c33]/15 block mb-1 w-fit">
+                  <div className="pt-2 md:pt-4">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded border border-[#003c33]/15 block mb-1.5 w-fit">
                       STUDENT CONTEXT PROFILE
                     </span>
                     <h1 className="font-display text-2xl md:text-3xl font-normal text-ink leading-tight">{profileData?.name}</h1>
-                    <div className="flex items-center gap-3 mt-1">
+                    <div className="flex flex-wrap items-center gap-3 mt-1.5">
                       <span className="font-mono text-xs text-slate flex items-center">
                         <Mail size={14} className="mr-1.5" />
                         {profileData?.email}

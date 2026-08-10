@@ -41,16 +41,37 @@ export const ResumeDashboard = () => {
           <motion.div 
             initial={{ opacity: 0, y: 15 }} 
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-[#d9d9dd] rounded-[22px] bg-[#eeece7]/40"
+            className="flex flex-col items-center justify-center py-16 px-6 text-center border border-dashed border-[#d9d9dd] rounded-[22px] bg-[#eeece7]/40 max-w-3xl mx-auto"
           >
-            <div className="w-12 h-12 bg-[#17171c] text-white rounded-full flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-[#003c33] text-white rounded-full flex items-center justify-center mb-4 border border-[#003c33]/20">
               <FileText size={20} />
             </div>
-            <h2 className="font-display text-xl font-normal text-ink mb-2">No resumes found in workspace</h2>
-            <p className="text-slate text-sm max-w-md mb-6">
-              Create an ATS-compliant resume engineered for modern recruitment AI filters.
+            <h2 className="font-display text-2xl font-normal text-ink mb-2">No resumes found in your workspace</h2>
+            <p className="text-slate text-sm max-w-md mb-8 leading-relaxed">
+              Build an ATS-optimized, high-impact resume structured specifically to pass automated recruitment filters and land interviews.
             </p>
-            <Button onClick={handleCreateNew} size="sm">Create Resume →</Button>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mb-8 text-left">
+              <div className="bg-white p-4 rounded-xl border border-[#d9d9dd]">
+                <span className="font-mono text-[10px] uppercase text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded block w-fit mb-2">STEP 01</span>
+                <h4 className="font-display text-sm text-ink mb-1">Structured Builder</h4>
+                <p className="text-xs text-slate">Input education, experience, and projects in an intuitive form.</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-[#d9d9dd]">
+                <span className="font-mono text-[10px] uppercase text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded block w-fit mb-2">STEP 02</span>
+                <h4 className="font-display text-sm text-ink mb-1">AI ATS Critique</h4>
+                <p className="text-xs text-slate">Extract PDF text and generate constructive AI feedback scores.</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-[#d9d9dd]">
+                <span className="font-mono text-[10px] uppercase text-[#003c33] bg-[#edfce9] px-2 py-0.5 rounded block w-fit mb-2">STEP 03</span>
+                <h4 className="font-display text-sm text-ink mb-1">Instant Export</h4>
+                <p className="text-xs text-slate">Download clean, formatted PDFs ready for job applications.</p>
+              </div>
+            </div>
+
+            <Button onClick={handleCreateNew} size="md" className="gap-2 font-mono text-xs">
+              <Plus size={14} /> CREATE FIRST RESUME →
+            </Button>
           </motion.div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

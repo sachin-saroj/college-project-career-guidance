@@ -150,15 +150,15 @@ export default function Settings() {
 
         {/* Appearance Section */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
-          <Card>
-            <CardHeader className="border-b border-border">
-              <CardTitle className="flex items-center text-h4">
-                <Palette size={20} className="mr-12 text-brand-primary" />
+          <Card variant="canvas" className="border border-[#e5e7eb]">
+            <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+              <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                <Palette size={18} className="mr-2 text-[#003c33]" />
                 Appearance
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-24">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-16">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <button 
                   onClick={() => settings.setTheme('light')}
                   className={`p-4 border-2 rounded-xl text-left transition-all ${
@@ -199,40 +199,40 @@ export default function Settings() {
 
         {/* Notifications Section */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
-          <Card>
-            <CardHeader className="border-b border-border">
-              <CardTitle className="flex items-center text-h4">
-                <Bell size={20} className="mr-12 text-brand-primary" />
+          <Card variant="canvas" className="border border-[#e5e7eb]">
+            <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+              <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                <Bell size={18} className="mr-2 text-[#003c33]" />
                 Notifications
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-border">
-                <div className="p-24 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
+              <div className="divide-y divide-[#e5e7eb]">
+                <div className="p-6 flex items-center justify-between hover:bg-[#f7f7f6] transition-colors">
                   <div>
-                    <h5 className="font-medium text-text-main text-body">Email notifications</h5>
-                    <p className="text-small text-text-muted mt-4">Receive important updates and announcements via email.</p>
+                    <h5 className="font-display text-base font-normal text-ink">Email notifications</h5>
+                    <p className="text-xs text-slate mt-1">Receive important updates and announcements via email.</p>
                   </div>
                   <Switch checked={settings.emailNotifications} onCheckedChange={settings.toggleEmailNotifications} />
                 </div>
-                <div className="p-24 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
+                <div className="p-6 flex items-center justify-between hover:bg-[#f7f7f6] transition-colors">
                   <div>
-                    <h5 className="font-medium text-text-main text-body">Career recommendations</h5>
-                    <p className="text-small text-text-muted mt-4">Get personalized career paths based on your profile.</p>
+                    <h5 className="font-display text-base font-normal text-ink">Career recommendations</h5>
+                    <p className="text-xs text-slate mt-1">Get personalized career paths based on your profile.</p>
                   </div>
                   <Switch checked={settings.careerRecommendations} onCheckedChange={settings.toggleCareerRecommendations} />
                 </div>
-                <div className="p-24 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
+                <div className="p-6 flex items-center justify-between hover:bg-[#f7f7f6] transition-colors">
                   <div>
-                    <h5 className="font-medium text-text-main text-body">New resource alerts</h5>
-                    <p className="text-small text-text-muted mt-4">Be notified when new scholarships or internships are added.</p>
+                    <h5 className="font-display text-base font-normal text-ink">New resource alerts</h5>
+                    <p className="text-xs text-slate mt-1">Be notified when new scholarships or internships are added.</p>
                   </div>
                   <Switch checked={settings.newResourceAlerts} onCheckedChange={settings.toggleNewResourceAlerts} />
                 </div>
-                <div className="p-24 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
+                <div className="p-6 flex items-center justify-between hover:bg-[#f7f7f6] transition-colors">
                   <div>
-                    <h5 className="font-medium text-text-main text-body">Assessment reminders</h5>
-                    <p className="text-small text-text-muted mt-4">Get reminders to complete your career assessment.</p>
+                    <h5 className="font-display text-base font-normal text-ink">Assessment reminders</h5>
+                    <p className="text-xs text-slate mt-1">Get reminders to complete your career assessment.</p>
                   </div>
                   <Switch checked={settings.assessmentReminders} onCheckedChange={settings.toggleAssessmentReminders} />
                 </div>
@@ -243,21 +243,21 @@ export default function Settings() {
 
         {/* Security Section */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
-          <Card>
-            <CardHeader className="border-b border-border">
-              <CardTitle className="flex items-center text-h4">
-                <Shield size={20} className="mr-12 text-brand-primary" />
+          <Card variant="canvas" className="border border-[#e5e7eb]">
+            <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+              <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                <Shield size={18} className="mr-2 text-[#003c33]" />
                 Account Security
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-24">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-16">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                  <h5 className="font-medium text-text-main text-body">Change Password</h5>
-                  <p className="text-small text-text-muted mt-4">Ensure your account is using a long, random password to stay secure.</p>
+                  <h5 className="font-display text-base font-normal text-ink">Change Password</h5>
+                  <p className="text-xs text-slate mt-1">Ensure your account is using a long, random password to stay secure.</p>
                 </div>
-                <Button variant="outline" onClick={() => setIsPasswordModalOpen(true)}>
-                  Change Password
+                <Button variant="outline" size="sm" onClick={() => setIsPasswordModalOpen(true)} className="text-xs font-mono">
+                  CHANGE PASSWORD →
                 </Button>
               </div>
             </CardContent>
@@ -266,20 +266,20 @@ export default function Settings() {
 
         {/* Session Section */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.4 }}>
-          <Card>
-            <CardHeader className="border-b border-border">
-              <CardTitle className="flex items-center text-h4">
-                <LogOut size={20} className="mr-12 text-brand-primary" />
+          <Card variant="canvas" className="border border-[#e5e7eb]">
+            <CardHeader className="border-b border-[#e5e7eb] px-6 py-4">
+              <CardTitle className="flex items-center font-display text-base font-normal text-ink">
+                <LogOut size={18} className="mr-2 text-[#003c33]" />
                 Session
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-24 flex flex-col md:flex-row justify-between items-start md:items-center gap-16">
+            <CardContent className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h5 className="font-medium text-text-main text-body">Sign Out</h5>
-                <p className="text-small text-text-muted mt-4">Log out of your account on this device.</p>
+                <h5 className="font-display text-base font-normal text-ink">Sign Out</h5>
+                <p className="text-xs text-slate mt-1">Log out of your account on this device.</p>
               </div>
-              <Button variant="outline" onClick={logout}>
-                Sign Out
+              <Button variant="outline" size="sm" onClick={logout} className="text-xs font-mono">
+                SIGN OUT
               </Button>
             </CardContent>
           </Card>
@@ -287,24 +287,25 @@ export default function Settings() {
 
         {/* Danger Zone */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.5 }}>
-          <Card className="border-error-main/20 shadow-none overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-4 h-full bg-error-main" />
-            <CardHeader className="border-b border-error-main/10 bg-error-light/30">
-              <CardTitle className="flex items-center text-h4 text-error-main">
-                <AlertTriangle size={20} className="mr-12" />
+          <Card variant="canvas" className="border border-red-200 overflow-hidden relative shadow-xs">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600" />
+            <CardHeader className="border-b border-red-100 bg-red-50/50 px-6 py-4">
+              <CardTitle className="flex items-center font-display text-base font-normal text-red-700">
+                <AlertTriangle size={18} className="mr-2" />
                 Danger Zone
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-24 flex flex-col md:flex-row justify-between items-start md:items-center gap-16 bg-error-light/10">
+            <CardContent className="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-red-50/10">
               <div>
-                <h5 className="font-medium text-text-main text-body">Delete Account</h5>
-                <p className="text-small text-text-muted mt-4">Permanently delete your account and all of your data.</p>
+                <h5 className="font-display text-base font-normal text-ink">Delete Account</h5>
+                <p className="text-xs text-slate mt-1">Permanently delete your account and all of your data.</p>
               </div>
               <Button 
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="bg-error-main hover:bg-error-main/90 text-white shadow-soft"
+                size="sm"
+                className="bg-red-600 hover:bg-red-700 text-white font-mono text-xs"
               >
-                Delete Account
+                DELETE ACCOUNT
               </Button>
             </CardContent>
           </Card>

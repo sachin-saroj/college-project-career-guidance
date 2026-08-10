@@ -22,7 +22,7 @@ export const Mentor = () => {
 
   return (
     <PageWrapper>
-      <div className="flex h-[calc(100vh-100px)] w-full overflow-hidden rounded-[22px] border border-[#d9d9dd] shadow-sm bg-[#17171c]">
+      <div className="flex h-[calc(100vh-100px)] w-full overflow-hidden rounded-[22px] border border-[#d9d9dd] shadow-sm bg-white">
         <ChatSidebar />
         <ChatArea onMenuClick={toggleSidebar} />
         <ContextPanel />

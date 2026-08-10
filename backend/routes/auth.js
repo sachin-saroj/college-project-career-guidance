@@ -20,9 +20,14 @@ router.post('/register', async (req, res) => {
       passwordHash: password
     });
 
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'fallback_secret',
+      secret,
       { expiresIn: '7d' }
     );
 
@@ -48,9 +53,14 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'fallback_secret',
+      secret,
       { expiresIn: '7d' }
     );
 

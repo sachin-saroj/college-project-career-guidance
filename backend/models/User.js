@@ -29,7 +29,7 @@ class User {
       _id: Date.now().toString(), // Simple unique ID
       name: userData.name,
       email: userData.email,
-      role: userData.email === 'admin@careersathi.com' ? 'admin' : 'user',
+      role: userData.role || 'user',
       passwordHash: passwordHash,
       resumeText: userData.resumeText || '',
       resumeData: null,

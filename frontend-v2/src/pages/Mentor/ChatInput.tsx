@@ -56,22 +56,22 @@ export const ChatInput = () => {
   return (
     <div className="relative max-w-4xl mx-auto w-full px-4 pb-4">
       {file && (
-        <div className="absolute -top-10 left-4 flex items-center bg-[#17171c] border border-white/20 rounded-md px-3 py-1.5 gap-2 text-white font-mono text-xs">
-          <Paperclip size={12} className="text-coral" />
+        <div className="absolute -top-10 left-4 flex items-center bg-white border border-[#d9d9dd] rounded-md px-3 py-1.5 gap-2 text-ink font-mono text-xs shadow-sm">
+          <Paperclip size={12} className="text-[#003c33]" />
           <span className="truncate max-w-[200px]">
             {file.name}
           </span>
           <button
             onClick={() => setFile(null)}
-            className="p-1 hover:bg-white/10 rounded-full text-white/70"
+            className="p-1 hover:bg-[#eeece7] rounded-full text-slate"
           >
             <X size={12} />
           </button>
         </div>
       )}
 
-      <div className="flex items-end gap-2 bg-white/5 border border-white/15 rounded-lg p-2.5 focus-within:border-white/40 transition-all">
-        <label className="p-2 hover:bg-white/10 rounded-md cursor-pointer text-white/60 hover:text-white shrink-0 transition-colors">
+      <div className="flex items-end gap-2 bg-[#f7f7f6] border border-[#d9d9dd] rounded-lg p-2.5 focus-within:border-[#17171c] transition-all">
+        <label className="p-2 hover:bg-[#eeece7] rounded-md cursor-pointer text-slate hover:text-ink shrink-0 transition-colors">
           <Paperclip size={18} />
           <input
             type="file"
@@ -87,24 +87,23 @@ export const ChatInput = () => {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask AI Mentor for guidance, roadmaps, resume feedback..."
-          className="flex-1 max-h-[180px] min-h-[38px] py-2 bg-transparent resize-none focus:outline-none text-sm text-white placeholder:text-white/40 font-sans"
+          className="flex-1 max-h-[180px] min-h-[38px] py-2 bg-transparent resize-none focus:outline-none text-sm text-ink placeholder:text-slate font-sans"
           rows={1}
         />
 
         <button
           onClick={handleSubmit}
           disabled={!input.trim() && !file}
-          className="p-2.5 rounded-full bg-white text-[#17171c] hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed shrink-0 transition-colors font-medium"
+          className="p-2.5 rounded-full bg-[#17171c] text-white hover:bg-black disabled:opacity-30 disabled:cursor-not-allowed shrink-0 transition-colors font-medium"
         >
           <Send size={16} />
         </button>
       </div>
       <div className="text-center mt-2">
-        <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">
-          GEMINI 1.5 PRO INFRASTRUCTURE • VERIFY CRITICAL ADVICE
+        <span className="font-mono text-[10px] text-slate uppercase tracking-wider">
+          GEMINI 1.5 FLASH INFRASTRUCTURE • VERIFY CRITICAL ADVICE
         </span>
       </div>
     </div>
   );
 };
-
