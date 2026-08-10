@@ -1,8 +1,19 @@
 const express = require('express');
+const { z } = require('zod');
 const authMiddleware = require('../middleware/auth');
+const validate = require('../middleware/validate');
 const User = require('../models/User');
 
 const router = express.Router();
+
+const profileUpdateSchema = z.object({
+  name: z.string().min(1).max(100).optional(),
+  education: z.string().max(500).optional(),
+  skills: z.string().max(1000).optional(),
+  interests: z.string().max(1000).optional(),
+  careerGoal: z.string().max(500).optional(),
+  familyIncome: z.string().max(100).optional()
+});
 
 // GET current user profile
 router.get('/', authMiddleware, async (req, res) => {
@@ -21,7 +32,7 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // PUT update user profile
-router.put('/', authMiddleware, async (req, res) => {
+router.put('/', authMiddleware, validate(profileUpdateSchema), async (req, res) => {
   try {
     const { name, education, skills, interests, careerGoal, familyIncome } = req.body;
     

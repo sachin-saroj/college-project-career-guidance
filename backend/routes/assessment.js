@@ -38,17 +38,20 @@ const questions = [
   }
 ];
 
+const { z } = require('zod');
+const validate = require('../middleware/validate');
+
+const assessmentSubmitSchema = z.object({
+  answers: z.array(z.string()).min(1, "At least one answer is required")
+});
+
 router.get('/', authMiddleware, (req, res) => {
   res.json({ questions });
 });
 
-router.post('/submit', authMiddleware, async (req, res) => {
+router.post('/submit', authMiddleware, validate(assessmentSubmitSchema), async (req, res) => {
   try {
     const { answers } = req.body;
-    
-    if (!answers || !Array.isArray(answers) || answers.length === 0) {
-      return res.status(400).json({ error: 'Answers are required' });
-    }
 
     const user = await User.findById(req.userId);
     let profileContext = '';

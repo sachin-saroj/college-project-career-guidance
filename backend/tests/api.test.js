@@ -1,5 +1,6 @@
 const { describe, it, expect, beforeAll } = await import('vitest');
 const jwt = require('jsonwebtoken');
+const { z } = require('zod');
 
 describe('CareerSathi Core Integration & Auth Tests', () => {
   const testSecret = 'test_jwt_secret_careersathi_2026';
@@ -31,5 +32,19 @@ describe('CareerSathi Core Integration & Auth Tests', () => {
     expect(() => {
       jwt.verify(fallbackToken, process.env.JWT_SECRET);
     }).toThrow();
+  });
+
+  it('should validate registration payloads with Zod schema rules', () => {
+    const registerSchema = z.object({
+      name: z.string().min(2),
+      email: z.string().email(),
+      password: z.string().min(6)
+    });
+
+    const validPayload = { name: 'John Doe', email: 'john@example.com', password: 'securepassword123' };
+    expect(() => registerSchema.parse(validPayload)).not.toThrow();
+
+    const invalidEmailPayload = { name: 'John', email: 'not-an-email', password: '123' };
+    expect(() => registerSchema.parse(invalidEmailPayload)).toThrow();
   });
 });
