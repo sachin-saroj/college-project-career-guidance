@@ -1,70 +1,27 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const dbPath = path.join(__dirname, 'database.json');
-const tempPath = path.join(__dirname, 'database.json.tmp');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Initialize DB file safely if it doesn't exist
-const initDB = () => {
+const DB_PATH = path.join(__dirname, 'database.json');
+const TEMP_PATH = path.join(__dirname, 'database.json.tmp');
+
+export async function getUsers() {
   try {
-    if (!fs.existsSync(dbPath)) {
-      fs.writeFileSync(dbPath, JSON.stringify({ users: [], resources: [] }, null, 2), 'utf-8');
-    } else {
-      const dataStr = fs.readFileSync(dbPath, 'utf-8');
-      const data = JSON.parse(dataStr);
-      if (!data.resources) {
-        data.resources = [];
-        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf-8');
-      }
-    }
+    const data = await fs.readFile(DB_PATH, 'utf-8');
+    const parsed = JSON.parse(data);
+    if (!parsed.resources) parsed.resources = [];
+    if (!parsed.users) parsed.users = [];
+    return parsed;
   } catch (err) {
-    console.error("Error initializing database.json:", err);
-  }
-};
-
-initDB();
-
-// Synchronous fallback read for synchronous callers
-const readDB = () => {
-  try {
-    const data = fs.readFileSync(dbPath, 'utf-8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error("Error reading database.json:", err);
     return { users: [], resources: [] };
   }
-};
+}
 
-// Atomic write strategy to prevent database corruption during writes
-const writeDB = (data) => {
-  try {
-    const dataStr = JSON.stringify(data, null, 2);
-    fs.writeFileSync(tempPath, dataStr, 'utf-8');
-    fs.renameSync(tempPath, dbPath);
-  } catch (err) {
-    console.error("Error writing atomically to database.json:", err);
-  }
-};
-
-// Async non-blocking equivalents
-const readDBAsync = async () => {
-  try {
-    const data = await fs.promises.readFile(dbPath, 'utf-8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error("Error reading database.json asynchronously:", err);
-    return { users: [], resources: [] };
-  }
-};
-
-const writeDBAsync = async (data) => {
-  try {
-    const dataStr = JSON.stringify(data, null, 2);
-    await fs.promises.writeFile(tempPath, dataStr, 'utf-8');
-    await fs.promises.rename(tempPath, dbPath);
-  } catch (err) {
-    console.error("Error writing database.json asynchronously:", err);
-  }
-};
-
-module.exports = { readDB, writeDB, readDBAsync, writeDBAsync };
+export async function saveUsers(data) {
+  const dataStr = JSON.stringify(data, null, 2);
+  await fs.writeFile(TEMP_PATH, dataStr, 'utf-8');
+  await fs.rename(TEMP_PATH, DB_PATH);
+}

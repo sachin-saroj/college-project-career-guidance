@@ -1,6 +1,6 @@
-const { describe, it, expect, beforeAll } = await import('vitest');
-const jwt = require('jsonwebtoken');
-const { z } = require('zod');
+import { describe, it, expect, beforeAll } from 'vitest';
+import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 
 describe('CareerSathi Core Integration & Auth Tests', () => {
   const testSecret = 'test_jwt_secret_careersathi_2026';

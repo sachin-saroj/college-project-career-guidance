@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const validate = (schema) => (req, res, next) => {
   try {
@@ -15,4 +15,4 @@ const validate = (schema) => (req, res, next) => {
   }
 };
 
-module.exports = validate;
+export default validate;

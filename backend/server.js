@@ -1,8 +1,15 @@
-const express = require('express');
-const cors = require('cors');
-const rateLimit = require('express-rate-limit');
-const dotenv = require('dotenv');
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from './swagger.js';
+import routes from './routes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -16,16 +23,16 @@ const app = express();
 
 // Rate Limiters
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // Limit each IP to 200 requests per 15 minutes
+  windowMs: 15 * 60 * 1000,
+  max: 200,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests, please try again later.' }
 });
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // 20 login/register attempts per IP per 15 mins
+  windowMs: 15 * 60 * 1000,
+  max: 20,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many authentication attempts, please try again later.' }
@@ -33,7 +40,7 @@ const authLimiter = rateLimit({
 
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30, // 30 AI generations per IP per 15 mins
+  max: 30,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'AI rate limit exceeded, please wait a few minutes.' }
@@ -68,19 +75,10 @@ app.use('/api/assessment/submit', aiLimiter);
 app.use(express.static(path.join(__dirname, '../frontend-v2/dist')));
 
 // Interactive Swagger OpenAPI Documentation
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('./swagger');
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-// Mount Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chat', require('./routes/chat'));
-app.use('/api/resume', require('./routes/resume'));
-app.use('/api/assessment', require('./routes/assessment'));
-app.use('/api/resources', require('./routes/resources'));
-app.use('/api/profile', require('./routes/profile'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/dashboard', require('./routes/dashboard'));
+// Mount Unified API Routes
+app.use('/api', routes);
 
 // Wildcard SPA route fallback for non-API requests
 app.get('*', (req, res) => {
@@ -101,3 +99,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default app;

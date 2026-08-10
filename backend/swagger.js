@@ -1,4 +1,4 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const options = {
   definition: {
@@ -33,9 +33,9 @@ const options = {
       }
     ]
   },
-  apis: ['./routes/*.js', './server.js']
+  apis: ['./routes.js', './server.js']
 };
 
 const specs = swaggerJsdoc(options);
 
-module.exports = specs;
+export default specs;
