@@ -22,110 +22,80 @@
 
 ## 📸 Application Screenshots
 
-<div align="center">
+<p align="center">
+  <b>🔐 Authentication (Login Page)</b><br>
+  <img src="docs/screenshots/login.png" alt="CareerSathi Login Page" width="100%">
+</p>
 
-### 🔐 Authentication
-<table>
-<tr>
-<td align="center"><b>Login Page</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/login.png" alt="CareerSathi Login Page" width="800"/></td>
-</tr>
-</table>
+<br>
 
-### 📊 Student Dashboard
-<table>
-<tr>
-<td align="center"><b>Dashboard — Student Console</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/dashboard.png" alt="CareerSathi Dashboard" width="800"/></td>
-</tr>
-</table>
+<p align="center">
+  <b>📊 Student Overview Dashboard</b><br>
+  <img src="docs/screenshots/dashboard.png" alt="CareerSathi Dashboard" width="100%">
+</p>
 
-### 🤖 AI Mentor Chat
-<table>
-<tr>
-<td align="center"><b>AI Mentor — Conversational Career Guidance</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/mentor.png" alt="CareerSathi AI Mentor" width="800"/></td>
-</tr>
-</table>
+<br>
 
-### 🎯 Career Assessment
-<table>
-<tr>
-<td align="center"><b>Psychometric Career Assessment Engine</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/assessment.png" alt="CareerSathi Assessment" width="800"/></td>
-</tr>
-</table>
+<p align="center">
+  <b>🤖 AI Mentor Chat Hub</b><br>
+  <img src="docs/screenshots/mentor.png" alt="CareerSathi AI Mentor" width="100%">
+</p>
 
-### 📚 Resources Hub
-<table>
-<tr>
-<td align="center"><b>Scholarships, Courses & Internships Hub</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/resources.png" alt="CareerSathi Resources" width="800"/></td>
-</tr>
-</table>
+<br>
 
-### 📄 Resume Builder
-<table>
-<tr>
-<td align="center"><b>AI Resume Builder & ATS Analyzer</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/resume.png" alt="CareerSathi Resume Builder" width="800"/></td>
-</tr>
-</table>
+<p align="center">
+  <b>🎯 Psychometric Career Assessment Engine</b><br>
+  <img src="docs/screenshots/assessment.png" alt="CareerSathi Assessment" width="100%">
+</p>
 
-### 👤 Profile Management
-<table>
-<tr>
-<td align="center"><b>Student Profile & Skill Badges</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/profile.png" alt="CareerSathi Profile" width="800"/></td>
-</tr>
-</table>
+<br>
 
-### ⚙️ Settings
-<table>
-<tr>
-<td align="center"><b>Preferences & Theme Configuration</b></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/settings.png" alt="CareerSathi Settings" width="800"/></td>
-</tr>
-</table>
+<p align="center">
+  <b>📚 Scholarships, Courses & Internships Hub</b><br>
+  <img src="docs/screenshots/resources.png" alt="CareerSathi Resources" width="100%">
+</p>
 
-</div>
+<br>
+
+<p align="center">
+  <b>📄 AI Resume Builder & ATS Reviewer</b><br>
+  <img src="docs/screenshots/resume.png" alt="CareerSathi Resume Builder" width="100%">
+</p>
+
+<br>
+
+<p align="center">
+  <b>👤 Student Profile & Skill Badges</b><br>
+  <img src="docs/screenshots/profile.png" alt="CareerSathi Profile" width="100%">
+</p>
+
+<br>
+
+<p align="center">
+  <b>⚙️ User Preferences & Settings</b><br>
+  <img src="docs/screenshots/settings.png" alt="CareerSathi Settings" width="100%">
+</p>
 
 ---
 
 ## 📋 Table of Contents
 
 - [📸 Application Screenshots](#-application-screenshots)
-- [✨ Overview \& Problem Statement](#-overview--problem-statement)
+- [✨ Overview & Problem Statement](#-overview--problem-statement)
 - [🚀 Key Features](#-key-features)
 - [🏗️ System Architecture](#️-system-architecture)
   - [High-Level Data Flow](#high-level-data-flow)
   - [Request Lifecycle Diagram](#request-lifecycle-diagram)
 - [🛠️ Tech Stack](#️-tech-stack)
 - [📂 Repository Structure](#-repository-structure)
-- [📥 Quick Start \& Local Setup](#-quick-start--local-setup)
+- [📥 Quick Start & Local Setup](#-quick-start--local-setup)
   - [Prerequisites](#prerequisites)
   - [Backend Setup](#1-backend-setup)
   - [Frontend v2 Setup](#2-frontend-v2-react--vite-setup)
 - [🔑 Environment Variables](#-environment-variables)
 - [📡 API Documentation](#-api-documentation)
-- [🎨 Design Aesthetics \& UI System](#-design-aesthetics--ui-system)
-- [🔒 Security \& Data Privacy](#-security--data-privacy)
+- [🎨 Design Aesthetics & UI System](#-design-aesthetics--ui-system)
+- [🔒 Security & Data Privacy](#-security--data-privacy)
 - [⚡ Performance Optimizations](#-performance-optimizations)
 - [🗺️ Future Roadmap](#️-future-roadmap)
 - [🤝 Contributing](#-contributing)
@@ -177,23 +147,23 @@ CareerSathi utilizes a decoupled, modern client-server architecture:
 
 ```mermaid
 graph TD
-    User([🎓 Student / User]) -->|HTTP / REST| FrontendV2[React 19 + Vite Frontend SPA]
-    Admin([🛡️ Admin]) -->|REST API| FrontendV2
+    User(["🎓 Student / User"]) -->|HTTP / REST| FrontendV2["React 19 + Vite Frontend SPA"]
+    Admin(["🛡️ Admin"]) -->|REST API| FrontendV2
     
     subgraph Client Layer
-        FrontendV2 -->|Auth State| Zustand[Zustand Store]
-        FrontendV2 -->|UI Routing| ReactRouter[React Router DOM v7]
+        FrontendV2 -->|Auth State| Zustand["Zustand Store"]
+        FrontendV2 -->|UI Routing| ReactRouter["React Router DOM v7"]
     end
     
     subgraph Express Backend Layer
-        FrontendV2 -->|Bearer JWT Header| ExpressServer[Express.js Server :5000]
-        ExpressServer --> AuthMiddleware{JWT Auth & RBAC}
-        AuthMiddleware -->|Validated| RouteHandlers[Unified API Router]
+        FrontendV2 -->|Bearer JWT Header| ExpressServer["Express.js Server :5000"]
+        ExpressServer --> AuthMiddleware{"JWT Auth & RBAC"}
+        AuthMiddleware -->|Validated| RouteHandlers["Unified API Router"]
     end
 
-    subgraph Service & Persistence Layer
-        RouteHandlers -->|Prompt Context| GeminiSDK[Google Gemini 1.5 Flash SDK]
-        RouteHandlers -->|Read / Write| LocalDB[(Local JSON Database)]
+    subgraph "Service & Persistence Layer"
+        RouteHandlers -->|Prompt Context| GeminiSDK["Google Gemini 1.5 Flash SDK"]
+        RouteHandlers -->|Read / Write| LocalDB[("Local JSON Database")]
         GeminiSDK -->|Generative Output| RouteHandlers
     end
 ```
