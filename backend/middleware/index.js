@@ -34,3 +34,6 @@ export const admin = async (req, res, next) => {
     res.status(500).json({ error: 'Server error in admin authorization' });
   }
 };
+
+export { asyncHandler } from './asyncHandler.js';
+

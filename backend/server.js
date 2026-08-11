@@ -89,11 +89,25 @@ app.get('*', (req, res) => {
   }
 });
 
-// Error handling middleware
+// Global error handler (must be last middleware)
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!', details: err.message });
+  // Log error with stack (for debugging)
+  console.error('🔥 Error:', err.stack || err);
+
+  // Determine status code
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+
+  // In production, don't expose stack traces
+  const response = {
+    error: message,
+    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+  };
+
+  res.status(status).json(response);
 });
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
