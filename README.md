@@ -20,15 +20,104 @@
 
 ---
 
+## 📸 Application Screenshots
+
+<div align="center">
+
+### 🔐 Authentication
+<table>
+<tr>
+<td align="center"><b>Login Page</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/login.png" alt="CareerSathi Login Page" width="800"/></td>
+</tr>
+</table>
+
+### 📊 Student Dashboard
+<table>
+<tr>
+<td align="center"><b>Dashboard — Student Console</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/dashboard.png" alt="CareerSathi Dashboard" width="800"/></td>
+</tr>
+</table>
+
+### 🤖 AI Mentor Chat
+<table>
+<tr>
+<td align="center"><b>AI Mentor — Conversational Career Guidance</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/mentor.png" alt="CareerSathi AI Mentor" width="800"/></td>
+</tr>
+</table>
+
+### 🎯 Career Assessment
+<table>
+<tr>
+<td align="center"><b>Psychometric Career Assessment Engine</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/assessment.png" alt="CareerSathi Assessment" width="800"/></td>
+</tr>
+</table>
+
+### 📚 Resources Hub
+<table>
+<tr>
+<td align="center"><b>Scholarships, Courses & Internships Hub</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/resources.png" alt="CareerSathi Resources" width="800"/></td>
+</tr>
+</table>
+
+### 📄 Resume Builder
+<table>
+<tr>
+<td align="center"><b>AI Resume Builder & ATS Analyzer</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/resume.png" alt="CareerSathi Resume Builder" width="800"/></td>
+</tr>
+</table>
+
+### 👤 Profile Management
+<table>
+<tr>
+<td align="center"><b>Student Profile & Skill Badges</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/profile.png" alt="CareerSathi Profile" width="800"/></td>
+</tr>
+</table>
+
+### ⚙️ Settings
+<table>
+<tr>
+<td align="center"><b>Preferences & Theme Configuration</b></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/settings.png" alt="CareerSathi Settings" width="800"/></td>
+</tr>
+</table>
+
+</div>
+
+---
+
 ## 📋 Table of Contents
 
+- [📸 Application Screenshots](#-application-screenshots)
 - [✨ Overview \& Problem Statement](#-overview--problem-statement)
 - [🚀 Key Features](#-key-features)
 - [🏗️ System Architecture](#️-system-architecture)
   - [High-Level Data Flow](#high-level-data-flow)
   - [Request Lifecycle Diagram](#request-lifecycle-diagram)
 - [🛠️ Tech Stack](#️-tech-stack)
-- [📂 Comprehensive Repository Structure](#-comprehensive-repository-structure)
+- [📂 Repository Structure](#-repository-structure)
 - [📥 Quick Start \& Local Setup](#-quick-start--local-setup)
   - [Prerequisites](#prerequisites)
   - [Backend Setup](#1-backend-setup)
@@ -99,7 +188,7 @@ graph TD
     subgraph Express Backend Layer
         FrontendV2 -->|Bearer JWT Header| ExpressServer[Express.js Server :5000]
         ExpressServer --> AuthMiddleware{JWT Auth & RBAC}
-        AuthMiddleware -->|Validated| RouteHandlers[API Controllers]
+        AuthMiddleware -->|Validated| RouteHandlers[Unified API Router]
     end
 
     subgraph Service & Persistence Layer
@@ -117,19 +206,19 @@ sequenceDiagram
     participant Client as React 19 Frontend
     participant Server as Express Server
     participant Auth as Auth Middleware
-    participant Controller as Route Controller
+    participant Router as Unified Router
     participant DB as JSON DB Storage
     participant Gemini as Google Gemini AI API
 
     Client->>Server: POST /api/chat (Prompt + Auth Token)
     Server->>Auth: Verify JWT Token
     Auth-->>Server: Token Verified (Attach userId)
-    Server->>Controller: Route to Chat Controller
-    Controller->>DB: Fetch User Profile & Saved Resume
-    DB-->>Controller: Return User Context Data
-    Controller->>Gemini: Inject Context + Prompt into Gemini Model
-    Gemini-->>Controller: Return AI Generated Analysis / Advice
-    Controller->>Server: Package Clean JSON Response
+    Server->>Router: Route to Chat Handler
+    Router->>DB: Fetch User Profile & Saved Resume
+    DB-->>Router: Return User Context Data
+    Router->>Gemini: Inject Context + Prompt into Gemini Model
+    Gemini-->>Router: Return AI Generated Analysis / Advice
+    Router->>Server: Package Clean JSON Response
     Server-->>Client: HTTP 200 OK (Message Payload)
     Client->>Client: Render Markdown & Update UI State
 ```
@@ -152,36 +241,34 @@ sequenceDiagram
 ### **Backend (`backend`)**
 - **Runtime**: Node.js 18+ / 20+
 - **Framework**: Express.js 4.21+
+- **Module System**: ES Modules (`"type": "module"`)
 - **Authentication**: JSON Web Tokens (`jsonwebtoken`), `bcryptjs`
+- **Input Validation**: Zod schema validation middleware
 - **File Parsing**: `multer`, `pdf-parse`
 - **AI Integration**: `@google/generative-ai` (Gemini 1.5 Flash)
-- **Security**: CORS, Environment variable isolation
+- **Security**: CORS, Rate Limiting (`express-rate-limit`), Environment variable isolation
+- **API Docs**: Swagger UI (`swagger-ui-express`, `swagger-jsdoc`)
+- **Testing**: Vitest, Supertest
 
 ---
 
-## 📂 Comprehensive Repository Structure
+## 📂 Repository Structure
 
 ```text
 Online Career Guidance Portal for Underprivileged Students/
-├── backend/                              # Express Node.js API Server
-│   ├── middleware/                       # Authentication & Authorization middlewares
-│   │   ├── admin.js                      # RBAC check for admin endpoints
-│   │   └── auth.js                       # JWT verification middleware
-│   ├── models/                           # Data access abstraction
-│   │   └── User.js                       # Custom User model & JSON DB helper
-│   ├── routes/                           # API Route Controllers
-│   │   ├── admin.js                      # Admin console management API
-│   │   ├── assessment.js                 # Psychometric assessment API
-│   │   ├── auth.js                       # Register, Login, Me endpoints
-│   │   ├── chat.js                       # AI Mentor chat completion API
-│   │   ├── dashboard.js                  # User dashboard aggregation API
-│   │   ├── resources.js                  # Scholarship & course management API
-│   │   └── resume.js                     # PDF parse & resume critique API
-│   ├── .env.example                      # Template for backend environment variables
-│   ├── database.json                     # Local JSON database file
-│   ├── db.js                             # File System (fs) read/write utility
-│   ├── package.json                      # Backend dependencies & scripts
-│   └── server.js                         # Server entry point & CORS configuration
+├── backend/                              # Express Node.js API Server (ES Modules)
+│   ├── middleware/                       # Authentication & Authorization
+│   │   ├── index.js                     # JWT auth + Admin RBAC middleware
+│   │   └── validate.js                  # Zod schema validation middleware
+│   ├── tests/                           # Automated test suite
+│   │   └── api.test.js                  # Vitest integration & auth tests
+│   ├── .env.example                     # Template for backend environment variables
+│   ├── database.json                    # Local JSON database file
+│   ├── db.js                            # Simplified async getUsers/saveUsers (atomic writes)
+│   ├── routes.js                        # Unified API router (all endpoints in one file)
+│   ├── swagger.js                       # OpenAPI/Swagger specification
+│   ├── package.json                     # Backend dependencies & scripts
+│   └── server.js                        # Server entry point & CORS/rate-limit config
 │
 ├── frontend-v2/                          # Modern React 19 + TypeScript SPA
 │   ├── public/                           # Static public assets & branding logos
@@ -212,8 +299,9 @@ Online Career Guidance Portal for Underprivileged Students/
 │   ├── tsconfig.json                     # TypeScript compiler configuration
 │   └── vite.config.ts                    # Vite build & plugin configurations
 │
+├── docs/                                 # Documentation & assets
+│   └── screenshots/                      # Application screenshots for README
 ├── frontend/                             # Legacy Vanilla JS Frontend (v1 fallback)
-├── DESIGN-cohere.md                      # UI/UX Design System Specification
 └── README.md                             # Comprehensive Project Documentation
 ```
 
@@ -257,6 +345,11 @@ Online Career Guidance Portal for Underprivileged Students/
    ```
    *The backend server will run on **`http://localhost:5000`**.*
 
+5. Run the test suite:
+   ```bash
+   npm test
+   ```
+
 ---
 
 ### 2. Frontend v2 (React + Vite) Setup
@@ -297,6 +390,8 @@ Online Career Guidance Portal for Underprivileged Students/
 
 ## 📡 API Documentation
 
+> **Interactive API Docs**: Start the backend server and visit **[http://localhost:5000/api/docs](http://localhost:5000/api/docs)** for the live Swagger UI.
+
 ### 🔐 Authentication Endpoints (`/api/auth`)
 
 | Method | Endpoint | Access | Description |
@@ -304,34 +399,58 @@ Online Career Guidance Portal for Underprivileged Students/
 | `POST` | `/api/auth/register` | Public | Registers a new user, hashes password, returns JWT token. |
 | `POST` | `/api/auth/login` | Public | Authenticates credentials, returns JWT token. |
 | `GET` | `/api/auth/me` | Protected | Fetches authenticated user's profile and progress metrics. |
+| `POST` | `/api/auth/change-password` | Protected | Updates the authenticated user's password. |
 
 ### 🤖 AI Mentor & Assessment Endpoints
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :---: | :--- |
 | `POST` | `/api/chat` | Protected | Sends user prompt + context to Gemini API, returns AI response. |
-| `POST` | `/api/assessment/submit` | Protected | Processes psychometric quiz responses and generates career matches. |
+| `GET` | `/api/assessment` | Protected | Fetches psychometric assessment questions. |
+| `POST` | `/api/assessment/submit` | Protected | Processes quiz responses and generates career match analytics. |
+
+### 👤 Profile Endpoints (`/api/profile`)
+
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :---: | :--- |
+| `GET` | `/api/profile` | Protected | Retrieves the authenticated user's profile data. |
+| `PUT` | `/api/profile` | Protected | Updates profile fields (education, skills, interests, etc.). |
+| `DELETE` | `/api/profile` | Protected | Permanently deletes the user's account. |
 
 ### 📄 Resume Endpoints (`/api/resume`)
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :---: | :--- |
 | `POST` | `/api/resume/upload` | Protected | Accepts PDF upload (`multipart/form-data`), extracts text, returns AI feedback. |
+| `PUT` | `/api/resume` | Protected | Saves resume JSON data to user profile. |
+| `POST` | `/api/resume/analyze` | Protected | Runs AI ATS analysis on resume data, returns score and suggestions. |
+| `POST` | `/api/resume/rewrite` | Protected | Rewrites a resume section with AI for professional impact. |
 
 ### 📚 Resource & Dashboard Endpoints
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :---: | :--- |
-| `GET` | `/api/resources` | Public | Lists all curated scholarships, courses, and learning resources. |
-| `GET` | `/api/dashboard/stats` | Protected | Fetches aggregated user metrics, task deadlines, and progress statistics. |
+| `GET` | `/api/resources` | Protected | Lists all curated scholarships, courses, and learning resources. |
+| `GET` | `/api/resources/search?q=...` | Protected | Searches resources by title, description, skills, or category. |
+| `GET` | `/api/resources/bookmarks` | Protected | Fetches user's bookmarked resources. |
+| `POST` | `/api/resources/bookmarks` | Protected | Bookmarks a resource by ID. |
+| `DELETE` | `/api/resources/bookmarks/:id` | Protected | Removes a resource bookmark. |
+| `GET` | `/api/resources/:id` | Protected | Fetches a single resource by ID. |
+| `GET` | `/api/dashboard` | Protected | Fetches user dashboard with tasks, profile completion, and recommendations. |
+| `GET` | `/api/dashboard/stats` | Protected | Fetches aggregated user metrics and progress statistics. |
 
 ### 🛡️ Admin Endpoints (`/api/admin`)
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :---: | :--- |
-| `GET` | `/api/admin/users` | Admin | Retrieves list of registered users and system usage analytics. |
-| `POST` | `/api/admin/resources` | Admin | Adds a new global scholarship or educational resource item. |
-| `DELETE` | `/api/admin/resources/:id` | Admin | Removes a resource item by ID. |
+| `GET` | `/api/admin/users` | Admin | Retrieves list of all registered users. |
+| `PUT` | `/api/admin/users/:id/role` | Admin | Updates a user's role (user/admin). |
+| `DELETE` | `/api/admin/users/:id` | Admin | Deletes a user by ID. |
+| `POST` | `/api/admin/resources` | Admin | Adds a new scholarship or educational resource. |
+| `PUT` | `/api/admin/resources/:id` | Admin | Updates an existing resource. |
+| `DELETE` | `/api/admin/resources/:id` | Admin | Removes a resource by ID. |
+| `GET` | `/api/admin/export` | Admin | Exports the full database as JSON download. |
+| `POST` | `/api/admin/import` | Admin | Imports and restores a database JSON payload. |
 
 ---
 
@@ -347,16 +466,21 @@ CareerSathi follows strict, high-end web design principles designed to inspire c
 
 ## 🔒 Security & Data Privacy
 
-1. **Password Safety**: Passwords are standardly hashed using `bcryptjs` with salt round factors before saving to database storage.
+1. **Password Safety**: Passwords are hashed using `bcryptjs` with salt round factors (cost ≥ 10) before saving to database storage.
 2. **Stateless JWT Authorization**: Sensitive routes require a valid `Bearer <token>` HTTP header verified on every request.
-3. **Role-Based Protection**: Admin endpoints enforce strict role checks (`req.user.role === 'admin'`) returning `403 Forbidden` for non-authorized attempts.
-4. **Environment Isolation**: API keys and secrets are isolated inside `.env` and never exposed in client bundles.
+3. **Role-Based Protection**: Admin endpoints enforce strict role checks returning `403 Forbidden` for non-authorized attempts.
+4. **Input Validation**: All user inputs are validated with Zod schemas before processing to prevent injection and malformed data.
+5. **Rate Limiting**: Auth endpoints (20 req/15min), AI endpoints (30 req/15min), and general API (200 req/15min) are rate-limited.
+6. **Atomic Database Writes**: Database writes use a temp-file + rename strategy to prevent data corruption during concurrent writes.
+7. **Environment Isolation**: API keys and secrets are isolated inside `.env` and never exposed in client bundles.
 
 ---
 
 ## ⚡ Performance Optimizations
 
-- **Vite Code Splitting**: Frontend bundles are modularized using Vite's dynamic imports, keeping initial page load sizes light.
+- **Route-Level Code Splitting**: All page components are lazily loaded via `React.lazy()` and `Suspense`, keeping the initial bundle size minimal.
+- **Vite Chunk Optimization**: Frontend bundles are modularized using Vite's dynamic imports for optimal caching.
+- **Unified Backend Router**: All API routes consolidated into a single ES module file, reducing import overhead and simplifying maintenance.
 - **In-Memory File Parsing**: PDF resume extractions parse directly from RAM buffers (`multer.memoryStorage()`) without writing temporary files to disk.
 - **Prompt Engineering Truncation**: Resume text content is normalized and capped at optimal token length to ensure rapid 1-2 second responses from Gemini 1.5 Flash.
 
@@ -367,6 +491,10 @@ CareerSathi follows strict, high-end web design principles designed to inspire c
 - [x] Complete React 19 + TypeScript + Vite modern migration (`frontend-v2`).
 - [x] Interactive step-by-step career roadmaps with downloadable guides.
 - [x] Full-stack Admin Console with user role management.
+- [x] Zod input validation middleware for all API endpoints.
+- [x] OpenAPI/Swagger interactive API documentation.
+- [x] Automated test suite with Vitest.
+- [x] Codebase simplification — unified routes, middleware, and streamlined DB layer.
 - [ ] MongoDB Atlas / PostgreSQL database driver connection layer.
 - [ ] Multi-language support (Hindi, Marathi, Tamil, Bengali) for regional accessibility.
 - [ ] Direct Mentor-Student video integration and scheduling system.
