@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from './swagger.js';
 import routes from './routes.js';
+import { logger } from './logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +16,7 @@ dotenv.config();
 
 // Enforce mandatory JWT secret configuration on startup
 if (!process.env.JWT_SECRET) {
-  console.error('FATAL ERROR: JWT_SECRET environment variable is missing.');
+  logger.error('FATAL ERROR: JWT_SECRET environment variable is missing.');
   process.exit(1);
 }
 
@@ -64,6 +65,12 @@ app.use(cors({
 
 app.use(express.json());
 
+// Request logging middleware
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} - ${req.ip}`);
+  next();
+});
+
 // Apply rate limiting
 app.use('/api/', apiLimiter);
 app.use('/api/auth/login', authLimiter);
@@ -91,8 +98,8 @@ app.get('*', (req, res) => {
 
 // Global error handler (must be last middleware)
 app.use((err, req, res, next) => {
-  // Log error with stack (for debugging)
-  console.error('🔥 Error:', err.stack || err);
+  // Log error with Winston
+  logger.error(`Error: ${err.message}`, { stack: err.stack, url: req.url, method: req.method });
 
   // Determine status code
   const status = err.status || err.statusCode || 500;
@@ -107,11 +114,9 @@ app.use((err, req, res, next) => {
   res.status(status).json(response);
 });
 
-
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
 
 export default app;

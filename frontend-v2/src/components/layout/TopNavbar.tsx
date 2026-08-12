@@ -19,7 +19,7 @@ export const TopNavbar = () => {
   const [unreadCount, setUnreadCount] = useState(3);
   
   return (
-    <header className="h-[64px] px-6 py-3 flex items-center justify-between bg-white dark:bg-[#101114] sticky top-0 z-10 border-b border-[#e5e7eb] dark:border-[#22242b]">
+    <header role="banner" aria-label="Top Navigation Header" className="h-[64px] px-6 py-3 flex items-center justify-between bg-white dark:bg-[#101114] sticky top-0 z-10 border-b border-[#e5e7eb] dark:border-[#22242b]">
       
       {/* Zone 1 / Left: Menu & Search */}
       <div className="flex-1 max-w-xl flex items-center gap-4">

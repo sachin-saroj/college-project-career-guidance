@@ -107,18 +107,24 @@ export const QuestionEngine = () => {
                   {question.text}
                 </h3>
 
-                <div className={cn(
-                  "grid gap-3",
-                  question.type === "likert" ? "grid-cols-1 sm:grid-cols-5" : "grid-cols-1"
-                )}>
+                <div 
+                  role="radiogroup"
+                  aria-label={`Options for: ${question.text}`}
+                  className={cn(
+                    "grid gap-3",
+                    question.type === "likert" ? "grid-cols-1 sm:grid-cols-5" : "grid-cols-1"
+                  )}
+                >
                   {question.options.map((option: string, idx: number) => {
                     const isSelected = currentAnswer === option;
                     return (
                       <button
                         key={idx}
+                        role="radio"
+                        aria-checked={isSelected}
                         onClick={() => setAnswer(question.id, option)}
                         className={cn(
-                          "p-4 rounded-md border text-left transition-all duration-150 flex items-center justify-between",
+                          "p-4 rounded-md border text-left transition-all duration-150 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primary",
                           isSelected 
                             ? "border-[#17171c] bg-[#17171c] text-white font-medium shadow-none" 
                             : "border-[#d9d9dd] bg-white text-ink hover:border-[#17171c] hover:bg-[#f7f7f6]"

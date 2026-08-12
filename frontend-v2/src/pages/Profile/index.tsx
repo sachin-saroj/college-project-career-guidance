@@ -278,8 +278,10 @@ export default function Profile() {
               <CardContent className="p-6 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="font-mono text-xs uppercase tracking-wider text-slate">Full Name</label>
+                    <label htmlFor="profile-name" className="font-mono text-xs uppercase tracking-wider text-slate">Full Name</label>
                     <Input 
+                      id="profile-name"
+                      aria-label="Full Name"
                       {...register("name")} 
                       disabled={!isEditing}
                       className={!isEditing ? "bg-[#f7f7f6] border-[#d9d9dd]" : ""}

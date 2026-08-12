@@ -22,6 +22,12 @@ export async function getUsers() {
 
 export async function saveUsers(data) {
   const dataStr = JSON.stringify(data, null, 2);
-  await fs.writeFile(TEMP_PATH, dataStr, 'utf-8');
-  await fs.rename(TEMP_PATH, DB_PATH);
+  try {
+    await fs.writeFile(TEMP_PATH, dataStr, 'utf-8');
+    await fs.rename(TEMP_PATH, DB_PATH);
+  } catch (err) {
+    // If rename fails (e.g. EPERM or EBUSY on Windows due to file locks), fall back to direct write
+    await fs.writeFile(DB_PATH, dataStr, 'utf-8');
+  }
 }
+

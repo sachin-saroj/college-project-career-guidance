@@ -35,6 +35,8 @@ export const Sidebar = () => {
 
   return (
     <motion.aside 
+      role="navigation"
+      aria-label="Main Sidebar Navigation"
       initial={false}
       animate={{ width: isSidebarCollapsed ? 76 : 260 }}
       transition={{ type: "spring", bounce: 0, duration: 0.35 }}
@@ -54,7 +56,7 @@ export const Sidebar = () => {
         )}
 
         {/* Navigation */}
-        <nav className="space-y-1.5 flex-1">
+        <nav role="navigation" aria-label="Primary Links" className="space-y-1.5 flex-1">
           {navItems.map((item) => (
             <NavLink
               key={item.name}

@@ -1,0 +1,376 @@
+{
+  "timestamp": "2026-08-12T14:05:00.110Z",
+  "consoleLogs": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/signup"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/signup"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/signup"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "location": "http://localhost:5000/api/auth/login",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/profile"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/profile"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/profile"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/assessment"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/assessment"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/assessment"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/mentor"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/mentor"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/mentor"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/resume"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/resume"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/resume"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/resources"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/resources"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/resources"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/roadmaps"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/roadmaps"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/roadmaps"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/login"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/admin"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/admin"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/admin"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/dashboard"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": "http://localhost:5173/@vite/client",
+      "pageUrl": "http://localhost:5173/dashboard"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "location": "http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=56a63ba5",
+      "pageUrl": "http://localhost:5173/dashboard"
+    }
+  ],
+  "networkErrors": [
+    {
+      "url": "http://localhost:5000/api/auth/login",
+      "status": 400,
+      "statusText": "Bad Request",
+      "method": "POST",
+      "pageUrl": "http://localhost:5173/login"
+    }
+  ],
+  "pageMetrics": {
+    "Signup Page": {
+      "loadTimeMs": 513,
+      "ariaStats": {
+        "ariaCount": 7,
+        "roleCount": 0,
+        "focusableCount": 8
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\signup_page.png"
+    },
+    "Login Page": {
+      "loadTimeMs": 574,
+      "ariaStats": {
+        "ariaCount": 10,
+        "roleCount": 0,
+        "focusableCount": 8
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\login_page.png"
+    },
+    "Dashboard": {
+      "loadTimeMs": 721,
+      "ariaStats": {
+        "ariaCount": 51,
+        "roleCount": 4,
+        "focusableCount": 29
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\dashboard.png"
+    },
+    "Profile Page": {
+      "loadTimeMs": 933,
+      "ariaStats": {
+        "ariaCount": 30,
+        "roleCount": 4,
+        "focusableCount": 16
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\profile_page.png"
+    },
+    "Assessment Page": {
+      "loadTimeMs": 827,
+      "ariaStats": {
+        "ariaCount": 24,
+        "roleCount": 4,
+        "focusableCount": 16
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\assessment_page.png"
+    },
+    "Assessment Results Page": {
+      "loadTimeMs": 1,
+      "ariaStats": {
+        "ariaCount": 25,
+        "roleCount": 9,
+        "focusableCount": 21
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\assessment_results_page.png"
+    },
+    "Chat Mentor Page": {
+      "loadTimeMs": 644,
+      "ariaStats": {
+        "ariaCount": 37,
+        "roleCount": 4,
+        "focusableCount": 25
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\chat_mentor_page.png"
+    },
+    "Resume Builder Page": {
+      "loadTimeMs": 669,
+      "ariaStats": {
+        "ariaCount": 23,
+        "roleCount": 4,
+        "focusableCount": 17
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\resume_builder_page.png"
+    },
+    "Resources Hub": {
+      "loadTimeMs": 1467,
+      "ariaStats": {
+        "ariaCount": 185,
+        "roleCount": 3,
+        "focusableCount": 103
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\resources_hub.png"
+    },
+    "Roadmaps Page": {
+      "loadTimeMs": 1011,
+      "ariaStats": {
+        "ariaCount": 20,
+        "roleCount": 3,
+        "focusableCount": 38
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\roadmaps_page.png"
+    },
+    "Admin Console": {
+      "loadTimeMs": 812,
+      "ariaStats": {
+        "ariaCount": 21,
+        "roleCount": 4,
+        "focusableCount": 17
+      },
+      "screenshot": "C:\\Users\\Asus\\OneDrive\\Documents\\Online Career Guidance Portal for Underprivileged Students\\.gemini\\antigravity-ide\\brain\\a0584635-e126-4c79-aaf1-ae3fa8fd58fb\\screenshots\\admin_console.png"
+    }
+  },
+  "moduleResults": {
+    "Auth": {
+      "status": "PASS",
+      "notes": "Signup redirect: true, Wrong pass handled: true"
+    },
+    "Dashboard": {
+      "status": "PASS",
+      "notes": "Widgets: 12, Interactive elements: 25"
+    },
+    "Profile": {
+      "status": "PASS",
+      "notes": "Profile edit mode toggle & save: true"
+    },
+    "Assessment": {
+      "status": "WARN",
+      "notes": "Assessment traversed and submitted: false"
+    },
+    "ChatMentor": {
+      "status": "WARN",
+      "notes": "Chat prompt submitted, response received: false"
+    },
+    "ResumeBuilder": {
+      "status": "WARN",
+      "notes": "Resume ATS analysis executed: false"
+    },
+    "ResourcesAndRoadmaps": {
+      "status": "PASS",
+      "notes": "Resources search, filter, bookmark & Roadmaps node inspection complete"
+    },
+    "AdminConsole": {
+      "status": "PASS",
+      "notes": "Admin console accessed: true"
+    },
+    "LogoutAndSecurity": {
+      "status": "PASS",
+      "notes": "Security check: true"
+    }
+  },
+  "bugsFound": []
+}

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { logger } from '../logger.js';
 
 export const auth = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -10,7 +11,7 @@ export const auth = (req, res, next) => {
   try {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      console.error('FATAL: JWT_SECRET environment variable is not defined.');
+      logger.error('FATAL: JWT_SECRET environment variable is not defined.');
       return res.status(500).json({ error: 'Server authentication configuration error' });
     }
     const decoded = jwt.verify(token, secret);
@@ -30,10 +31,9 @@ export const admin = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.error('Admin Middleware Error:', error);
+    logger.error('Admin Middleware Error:', error);
     res.status(500).json({ error: 'Server error in admin authorization' });
   }
 };
 
 export { asyncHandler } from './asyncHandler.js';
-

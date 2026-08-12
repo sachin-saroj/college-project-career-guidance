@@ -6,6 +6,12 @@ dist/
 build/
 .DS_Store
 *.log
+logs/
+backend/logs/
 coverage/
 .vscode/
 database.json
+database.json.tmp
+.gemini/
+
+
