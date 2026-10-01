@@ -1,0 +1,24 @@
+{
+  "name": "careersathi-portal",
+  "version": "1.0.0",
+  "description": "CareerSathi - AI Career Guidance Portal for Underprivileged Students",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend-v2",
+    "build": "npm install --prefix backend && npm install --prefix frontend-v2 && npm run build --prefix frontend-v2",
+    "start": "node backend/server.js",
+    "test": "npm test --prefix backend"
+  },
+  "keywords": [
+    "career-guidance",
+    "ai-mentor",
+    "gemini",
+    "education"
+  ],
+  "author": "CareerSathi Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

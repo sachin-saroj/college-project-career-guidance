@@ -101,7 +101,7 @@ export const ChatInput = () => {
       </div>
       <div className="text-center mt-2">
         <span className="font-mono text-[10px] text-slate uppercase tracking-wider">
-          GEMINI 1.5 FLASH INFRASTRUCTURE • VERIFY CRITICAL ADVICE
+          LIVE GEMINI AI INFRASTRUCTURE • REAL-TIME CAREER COUNSELING
         </span>
       </div>
     </div>

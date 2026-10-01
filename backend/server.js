@@ -41,7 +41,7 @@ const authLimiter = rateLimit({
 
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'AI rate limit exceeded, please wait a few minutes.' }
@@ -54,7 +54,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
       callback(null, true);
     } else {
       callback(new Error('Blocked by CORS policy'));

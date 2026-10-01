@@ -35,7 +35,7 @@ export const MessageBubble = ({ message }: { message: Message }) => {
           <span className="font-mono text-[11px] uppercase tracking-wider text-slate">
             {isAi ? "CAREERSATHI AI MENTOR" : "STUDENT"}
           </span>
-          <span className="font-mono text-[10px] text-slate/60">• {new Date((message as any).timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+          <span className="font-mono text-[10px] text-slate/60">• {new Date(message.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
 
         <div className="prose prose-slate prose-sm max-w-none text-ink leading-relaxed font-sans">
