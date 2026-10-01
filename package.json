@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "install:all": "npm install --prefix backend && npm install --prefix frontend-v2",
-    "build": "npm install --prefix backend && npm install --prefix frontend-v2 && npm run build --prefix frontend-v2",
+    "build": "npm install --prefix backend && npm install --prefix frontend-v2 --include=dev && npm run build --prefix frontend-v2",
     "start": "node backend/server.js",
     "test": "npm test --prefix backend"
   },
