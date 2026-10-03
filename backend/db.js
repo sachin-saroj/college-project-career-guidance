@@ -20,14 +20,19 @@ export async function getUsers() {
   }
 }
 
+let writeQueue = Promise.resolve();
+
 export async function saveUsers(data) {
   const dataStr = JSON.stringify(data, null, 2);
-  try {
-    await fs.writeFile(TEMP_PATH, dataStr, 'utf-8');
-    await fs.rename(TEMP_PATH, DB_PATH);
-  } catch (err) {
-    // If rename fails (e.g. EPERM or EBUSY on Windows due to file locks), fall back to direct write
-    await fs.writeFile(DB_PATH, dataStr, 'utf-8');
-  }
+  writeQueue = writeQueue.then(async () => {
+    try {
+      await fs.writeFile(TEMP_PATH, dataStr, 'utf-8');
+      await fs.rename(TEMP_PATH, DB_PATH);
+    } catch (err) {
+      // Fall back to direct write if rename fails
+      await fs.writeFile(DB_PATH, dataStr, 'utf-8');
+    }
+  });
+  return writeQueue;
 }
 

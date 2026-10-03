@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import api from "../utils/api";
+import { fallbackAssessmentQuestions } from "../data/assessmentQuestions";
 
 export type AssessmentStep = "landing" | "questions" | "processing" | "results";
 
@@ -11,6 +12,7 @@ interface AssessmentState {
   answers: Record<string, string>;
   result: any | null;
   setStep: (step: AssessmentStep) => void;
+  setResult: (result: any) => void;
   fetchQuestions: () => Promise<void>;
   setAnswer: (questionId: string, answer: string) => void;
   nextQuestion: () => void;
@@ -21,17 +23,20 @@ interface AssessmentState {
 
 export const useAssessmentStore = create<AssessmentState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       step: "landing",
       currentQuestionIndex: 0,
-      questions: [],
+      questions: fallbackAssessmentQuestions,
       answers: {},
       result: null,
       setStep: (step) => set({ step }),
+      setResult: (result) => set({ result }),
       fetchQuestions: async () => {
         try {
           const response = await api.get("/assessment");
-          set({ questions: response.data.questions });
+          if (response.data && Array.isArray(response.data.questions)) {
+            set({ questions: response.data.questions });
+          }
         } catch (error) {
           console.error("Failed to fetch questions", error);
         }
@@ -45,7 +50,7 @@ export const useAssessmentStore = create<AssessmentState>()(
         })),
       nextQuestion: () =>
         set((state) => ({
-          currentQuestionIndex: state.currentQuestionIndex + 1,
+          currentQuestionIndex: Math.min(state.questions.length - 1, state.currentQuestionIndex + 1),
         })),
       prevQuestion: () =>
         set((state) => ({
@@ -53,15 +58,28 @@ export const useAssessmentStore = create<AssessmentState>()(
         })),
       submitAssessment: async () => {
         set({ step: "processing" });
+        const startTime = Date.now();
         try {
-          const { answers } = useAssessmentStore.getState();
+          const { answers, questions } = get();
+          // Extract answers in question order Q1..Q10
+          const orderedAnswers = questions.length > 0 
+            ? questions.map((q) => answers[q.id] || "Neutral")
+            : Object.values(answers);
+
           const response = await api.post("/assessment/submit", {
-            answers: Object.values(answers),
+            answers: orderedAnswers,
           });
+
+          // Ensure at least 1.5s in processing so animation displays smoothly
+          const elapsed = Date.now() - startTime;
+          if (elapsed < 1500) {
+            await new Promise((resolve) => setTimeout(resolve, 1500 - elapsed));
+          }
+
           set({ step: "results", result: response.data });
         } catch (error) {
           console.error("Failed to submit assessment:", error);
-          set({ step: "questions" }); // revert on error
+          set({ step: "questions" });
         }
       },
       resetAssessment: () =>
@@ -70,12 +88,10 @@ export const useAssessmentStore = create<AssessmentState>()(
           currentQuestionIndex: 0,
           answers: {},
           result: null,
-          questions: [],
         }),
     }),
     {
       name: "assessment-storage",
-      // Optional: partialize if we don't want to save processing state across reloads
       partialize: (state) => {
         if (state.step === "processing") {
           return { ...state, step: "questions" };

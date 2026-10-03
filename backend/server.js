@@ -12,6 +12,7 @@ import { logger } from './logger.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+dotenv.config({ path: path.join(__dirname, '.env') });
 dotenv.config();
 
 // Enforce mandatory JWT secret configuration on startup
@@ -22,28 +23,41 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 
-// Rate Limiters
+// Trust reverse proxy (Render, Nginx, Cloudflare) for accurate client IP
+app.set('trust proxy', 1);
+
+// Helper to identify local development requests
+const isLocalOrDev = (req) => {
+  if (process.env.NODE_ENV !== 'production') return true;
+  const ip = req.ip || req.connection?.remoteAddress || '';
+  return ip === '127.0.0.1' || ip === '::1' || ip.includes('127.0.0.1') || ip === '::ffff:127.0.0.1';
+};
+
+// Rate Limiters - generous thresholds with dev/local bypass
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200,
+  max: process.env.NODE_ENV === 'production' ? 1000 : 20000,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => isLocalOrDev(req),
   message: { error: 'Too many requests, please try again later.' }
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: process.env.NODE_ENV === 'production' ? 60 : 2000,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => isLocalOrDev(req),
   message: { error: 'Too many authentication attempts, please try again later.' }
 });
 
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: process.env.NODE_ENV === 'production' ? 120 : 2000,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => isLocalOrDev(req),
   message: { error: 'AI rate limit exceeded, please wait a few minutes.' }
 });
 
@@ -72,11 +86,11 @@ app.use((req, res, next) => {
 });
 
 // Apply rate limiting
-app.use('/api/', apiLimiter);
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 app.use('/api/chat', aiLimiter);
 app.use('/api/assessment/submit', aiLimiter);
+app.use('/api/', apiLimiter);
 
 // Serve frontend-v2 static files in production
 app.use(express.static(path.join(__dirname, '../frontend-v2/dist')));
@@ -114,9 +128,11 @@ app.use((err, req, res, next) => {
   res.status(status).json(response);
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
+  });
+}
 
 export default app;
