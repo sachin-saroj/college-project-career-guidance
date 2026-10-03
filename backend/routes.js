@@ -310,6 +310,11 @@ async function generateWithGemini(prompt, generationConfig = {}) {
     throw new Error('GEMINI_API_KEY_NOT_CONFIGURED');
   }
 
+  // In test mode, skip external API network calls
+  if (process.env.NODE_ENV === 'test') {
+    throw new Error('GEMINI_TEST_MODE_BYPASS');
+  }
+
   const genAI = new GoogleGenerativeAI(apiKey);
   let lastError = null;
 
@@ -319,14 +324,20 @@ async function generateWithGemini(prompt, generationConfig = {}) {
         model: modelName,
         ...(generationConfig && Object.keys(generationConfig).length > 0 ? { generationConfig } : {})
       });
-      const result = await model.generateContent(prompt);
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout calling Gemini model ${modelName}`)), 3500)
+      );
+      const result = await Promise.race([model.generateContent(prompt), timeoutPromise]);
       const text = result.response.text();
       if (text && text.trim()) {
         return { text: text.trim(), modelName };
       }
     } catch (err) {
       lastError = err;
-      logger.warn(`Gemini model ${modelName} request failed: ${err.message}. Trying next candidate...`);
+      logger.warn(`Gemini model ${modelName} request failed: ${err.message}.`);
+      if (err.message && (err.message.includes('API key not valid') || err.message.includes('API_KEY_INVALID'))) {
+        break;
+      }
     }
   }
 

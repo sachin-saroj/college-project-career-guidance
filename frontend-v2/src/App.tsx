@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,6 +19,33 @@ const Signup = lazy(() => import("./pages/Auth/Signup"));
 
 const queryClient = new QueryClient();
 
+const pageTitles: Record<string, string> = {
+  "/": "Dashboard | CareerSathi",
+  "/assessment": "Career Assessment & Diagnostic | CareerSathi",
+  "/mentor": "AI Career Mentor | CareerSathi",
+  "/resume": "ATS Resume Builder | CareerSathi",
+  "/resources": "Scholarships & Resource Hub | CareerSathi",
+  "/scholarships": "Verified Scholarships | CareerSathi",
+  "/internships": "Internships & Opportunities | CareerSathi",
+  "/roadmaps": "Career Learning Roadmaps | CareerSathi",
+  "/profile": "Student Profile | CareerSathi",
+  "/settings": "Account & Preferences | CareerSathi",
+  "/login": "Sign In | CareerSathi",
+  "/signup": "Create Student Account | CareerSathi",
+  "/admin": "Admin Console | CareerSathi",
+};
+
+function PageTitleManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const title = pageTitles[location.pathname] || "CareerSathi | AI Career Guidance Platform";
+    document.title = title;
+  }, [location.pathname]);
+
+  return null;
+}
+
 const PageLoader = () => (
   <div className="flex h-screen w-screen items-center justify-center bg-[#f7f7f6]">
     <div className="flex flex-col items-center gap-3 font-mono text-xs text-slate">
@@ -33,6 +60,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Router>
+          <PageTitleManager />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/login" element={<Login />} />
