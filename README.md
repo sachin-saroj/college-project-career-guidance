@@ -141,7 +141,7 @@ CareerSathi utilizes a decoupled, modern client-server architecture:
 - **Frontend (v1)**: Lightweight Vanilla HTML5/JS client for low-bandwidth or legacy environments.
 - **Backend API**: Node.js & Express server handling JWT authentication, request validation, and AI prompt engineering.
 - **AI Core**: Google Gemini 1.5 Flash API wrapper for fast, context-driven natural language generation.
-- **Zero-Setup Database**: In-memory JSON file system abstraction (`database.json`) enabling zero-configuration setup for immediate deployment and evaluation.
+- **Embedded Database**: Local SQLite database with Drizzle ORM (`database.sqlite`) enabling zero-configuration setup, WAL mode concurrency, and ACID reliability for immediate deployment.
 
 ### High-Level Data Flow
 
@@ -163,7 +163,7 @@ graph TD
 
     subgraph "Service & Persistence Layer"
         RouteHandlers -->|Prompt Context| GeminiSDK["Google Gemini 1.5 Flash SDK"]
-        RouteHandlers -->|Read / Write| LocalDB[("Local JSON Database")]
+        RouteHandlers -->|Read / Write| LocalDB[("SQLite Database (Drizzle ORM)")]
         GeminiSDK -->|Generative Output| RouteHandlers
     end
 ```
@@ -177,7 +177,7 @@ sequenceDiagram
     participant Server as Express Server
     participant Auth as Auth Middleware
     participant Router as Unified Router
-    participant DB as JSON DB Storage
+    participant DB as SQLite DB (Drizzle ORM)
     participant Gemini as Google Gemini AI API
 
     Client->>Server: POST /api/chat (Prompt + Auth Token)
@@ -218,6 +218,7 @@ sequenceDiagram
 - **AI Integration**: `@google/generative-ai` (Gemini 1.5 Flash)
 - **Security**: CORS, Rate Limiting (`express-rate-limit`), Environment variable isolation
 - **API Docs**: Swagger UI (`swagger-ui-express`, `swagger-jsdoc`)
+- **Database & ORM**: SQLite (`better-sqlite3`) + Drizzle ORM (`drizzle-orm`, `drizzle-kit`)
 - **Testing**: Vitest, Supertest
 
 ---
@@ -441,7 +442,7 @@ CareerSathi follows strict, high-end web design principles designed to inspire c
 3. **Role-Based Protection**: Admin endpoints enforce strict role checks returning `403 Forbidden` for non-authorized attempts.
 4. **Input Validation**: All user inputs are validated with Zod schemas before processing to prevent injection and malformed data.
 5. **Rate Limiting**: Auth endpoints (20 req/15min), AI endpoints (30 req/15min), and general API (200 req/15min) are rate-limited.
-6. **Atomic Database Writes**: Database writes use a temp-file + rename strategy to prevent data corruption during concurrent writes.
+6. **ACID SQLite Transactions**: SQLite runs with Write-Ahead Logging (WAL) and atomic transactions via Drizzle ORM to guarantee high concurrency and zero data corruption.
 7. **Environment Isolation**: API keys and secrets are isolated inside `.env` and never exposed in client bundles.
 
 ---

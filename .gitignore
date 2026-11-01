@@ -12,6 +12,6 @@ coverage/
 .vscode/
 database.json
 database.json.tmp
+*.sqlite*
+*.db*
 .gemini/
-
-
